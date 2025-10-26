@@ -8,22 +8,20 @@ import Link from "next/link";
 import DropDownMenu from "./drop-down-menu";
 
 interface NavbarProps {
-  scrollToWebsiteDesign?: () => void;
-  scrollToGraphicDesign?: () => void;
-  scrollToShopifyStores?: () => void;
-  scrollToBrands?: () => void;
-  scrollToServices?: () => void; // Define scrollToServices function
+  scrollToWebsiteDesign: () => void;
+  scrollToGraphicDesign: () => void;
+  scrollToShopifyStores: () => void;
+  scrollToBrands: () => void;
+  scrollToServices: () => void; // Define scrollToServices function
 }
 
-const Navbar = (
-  {
-    scrollToWebsiteDesign = () => {},
-    scrollToGraphicDesign = () => {},
-    scrollToShopifyStores = () => {},
-    scrollToBrands = () => {},
-    scrollToServices = () => {},
-  }: Partial<NavbarProps> = {}
-) => {
+const Navbar = ({
+  scrollToWebsiteDesign,
+  scrollToGraphicDesign,
+  scrollToShopifyStores,
+  scrollToBrands,
+  scrollToServices, // Add scrollToServices to props
+}: NavbarProps) => {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
 
   const toggleDropDown = () => {
@@ -57,30 +55,22 @@ const Navbar = (
              bg-gradient-to-b from-neutral-50
               to bg-neutral-400 bg-opacity-50"
         >
-          <Link className="hover:text-gray-50" href="#about">
-            Solutions et Services
-          </Link>
-          <Link className="hover:text-gray-50" href="#about">
-            Etude de cas
-          </Link>
-          <Link className="hover:text-gray-50" href="#about">
-            Clientèle
-          </Link>
-          <Link className="hover:text-gray-50" href="#about">
-            Notre travail
-          </Link>
-          <Link className="hover:text-gray-50" href="/prisee">
-            Prisée
-          </Link>
-          <Link className="hover:text-gray-50" href="#about">
-            Idées
-          </Link>
-          <Link className="hover:text-gray-50" href="#about">
-            Environ
-          </Link>
+          <div onClick={scrollToWebsiteDesign} className="hover:text-gray-50">
+            Conception de Sites Web
+          </div>
+          <div onClick={scrollToGraphicDesign} className="hover:text-gray-50">
+            Conception Graphique
+          </div>
 
-          <Link href="/apropos" className="hover:text-gray-50">
-            À propos
+          <div onClick={scrollToShopifyStores} className="hover:text-gray-50">
+            Boutique
+          </div>
+          <div onClick={scrollToBrands} className="hover:text-gray-50">
+            Marques
+          </div>
+
+          <Link href="/facture" className="hover:text-gray-50">
+            Facturation
           </Link>
         </div>
 
@@ -126,5 +116,3 @@ const Navbar = (
 };
 
 export default Navbar;
-
-

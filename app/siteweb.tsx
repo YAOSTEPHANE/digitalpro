@@ -1,9 +1,6 @@
-'use client';
+"use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
-import ThreeDCardExample from "./snippets/3d-card-snippet";
-import EvervaultCardSnippet from "./snippets/evervault-card-snippet";
 
 const WebsiteDesign = () => {
   return (
@@ -18,24 +15,136 @@ const WebsiteDesign = () => {
         </p>
       </div>
 
-      <div className="items-center md:flex justify-center md:mx-auto md:space-x-10">
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="px-10 md:px-0"
-        >
-          <ThreeDCardExample />
-        </motion.div>
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="px-10 md:px-0"
-        >
-          <EvervaultCardSnippet />
-        </motion.div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid gap-4">
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg"
+              alt="Gallery image"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg"
+              alt="Gallery image 1"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+
+          </div>
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg"
+              alt="Gallery image 2"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+        </div>
+        <div className="grid gap-4">
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg"
+              alt="Gallery image 3"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg"
+              alt="Gallery image 4"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg"
+              alt="Gallery image 5"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+        </div>
+        <div className="grid gap-4">
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg"
+              alt="Gallery image 6"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg"
+              alt="Gallery image 7"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg"
+              alt="Gallery image 8"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+        </div>
+        <div className="grid gap-4">
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg"
+              alt="Gallery image 9"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg"
+              alt="Gallery image 10"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+          <div>
+            <Image
+              className="h-auto max-w-full rounded-lg"
+              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg"
+              alt="Gallery image 11"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+        </div>
       </div>
     </div>
-
-
-    );};
+  );
+};
 export default WebsiteDesign;

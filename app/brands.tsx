@@ -65,7 +65,7 @@ const Brands = () => {
             font.className
           )}
         >
-          &quot;Nous avons éliminé près d&apos;une douzaine d&apos;outils différents grâce à ce que Bird fait pour nous.&quot;
+          &quot;Nous avons éliminé près d&apos;une douzaine d&apos;outils différents grâce à ce que Digitalpro Solutions fait pour nous.&quot;
         </div>
 
         <div className="items-center flex justify-center flex-col text-white">
@@ -79,7 +79,7 @@ const Brands = () => {
 
           <div className=" text-center">
             <div className="text-sm  font-medium pt-4">VANIE LOU RUTH VICTOIRE</div>
-            <div className="text-sm">Directrice Marketing, Logiciel Palium</div>
+            <div className="text-sm">Directrice Marketing</div>
           </div>
         </div>
       </div>

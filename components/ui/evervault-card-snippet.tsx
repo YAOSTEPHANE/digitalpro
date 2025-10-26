@@ -1,5 +1,5 @@
 "use client";
-import { useMotionValue, useMotionTemplate, motion } from "framer-motion";
+import { useMotionValue, useMotionTemplate, motion, MotionValue } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
@@ -55,10 +55,17 @@ export const EvervaultCard = ({
     </div>
   );
 };
-
-export function CardPattern({ mouseX, mouseY, randomString }: any) {
-  const maskImage: any = useMotionTemplate`radial-gradient(250px at ${mouseX}px ${mouseY}px, white, transparent)`;
-  const style: any = { maskImage, WebkitMaskImage: maskImage };
+export function CardPattern({
+  mouseX,
+  mouseY,
+  randomString,
+}: {
+  mouseX: MotionValue<number>;
+  mouseY: MotionValue<number>;
+  randomString: string;
+}) {
+  const maskImage = useMotionTemplate`radial-gradient(250px at ${mouseX}px ${mouseY}px, white, transparent)`;
+  const style = { maskImage, WebkitMaskImage: maskImage };
 
   return (
     <div className="pointer-events-none">
