@@ -22,7 +22,7 @@ const FAQS = () => {
             </div>
             <Accordion type="single" collapsible>
     <AccordionItem value="item-1">
-      <AccordionTrigger>Qu'est-ce que Digitalpro Solutions?</AccordionTrigger>
+      <AccordionTrigger>Qu&apos;est-ce que Digitalpro Solutions?</AccordionTrigger>
       <AccordionContent>
         Digitalpro Solutions est une agence de marketing à part entière qui se spécialise dans le branding, la conception de sites web et le marketing numérique.
       </AccordionContent>
