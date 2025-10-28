@@ -37,12 +37,12 @@ import { PiSmiley } from "react-icons/pi";
 import Navbar from "@/components/navbar";
 
 const FormSchema = z.object({
-  first_name: z.string(),
-  last_name: z.string(),
+  prénoms: z.string(),
+  nom: z.string(),
   email: z.string().email(),
-  job_title: z.string(),
-  company_name: z.string(),
-  help: z.enum([
+  intitulé_du_poste: z.string(),
+  nom_de_l_entreprise: z.string(),
+  aide: z.enum([
     "Evaluatez Digitalpro Solutions",
     "En savoir plus",
     "Obtenez un devis",
@@ -68,12 +68,12 @@ export default function ContactForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      Prénoms: "",
-      Nom: "",
+      prénoms: "",
+      nom: "",
       email: "",
-      Titre Jobs: "",
-      Nom d'entreprise: "",
-      Aide: "En Savoir Plus",
+      intitulé_du_poste: "",
+      nom_de_l_entreprise: "",
+      aide: "En Savoir Plus",
       services: "Développement d'applications mobiles",
       info: "",
       terms: false,
@@ -280,7 +280,7 @@ export default function ContactForm() {
                       <SelectContent>
                         <div className="flex gap-4">
                           <SelectItem value="Evaluate Bird for my company">
-                            Évaluer Bird pour mon entreprise
+                            Évaluer Digitalpro Solutions pour mon entreprise
                           </SelectItem>
                         </div>
                         <SelectItem value="Learn More">En savoir plus</SelectItem>
@@ -320,8 +320,7 @@ export default function ContactForm() {
                         outline
                         border-2
                         text-sm
-                        font-light
-                        bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400
+                        bg-clip-text font-light text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400
                         "
                       />
                     </FormControl>
