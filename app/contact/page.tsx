@@ -42,7 +42,7 @@ const FormSchema = z.object({
   email: z.string().email(),
   intitulé_du_poste: z.string(),
   nom_de_l_entreprise: z.string(),
-  aide: z.enum([
+  help: z.enum([
     "Evaluatez Digitalpro Solutions",
     "En savoir plus",
     "Obtenez un devis",
@@ -73,7 +73,7 @@ export default function ContactForm() {
       email: "",
       intitulé_du_poste: "",
       nom_de_l_entreprise: "",
-      aide: "En Savoir Plus",
+      help: "En Savoir Plus",
       services: "Développement d'applications mobiles",
       info: "",
       terms: false,
