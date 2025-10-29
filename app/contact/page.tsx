@@ -37,16 +37,16 @@ import { PiSmiley } from "react-icons/pi";
 import Navbar from "@/components/navbar";
 
 const FormSchema = z.object({
-  prénoms: z.string(),
-  nom: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
   email: z.string().email(),
-  intitulé_du_poste: z.string(),
-  nom_de_l_entreprise: z.string(),
+  job_title: z.string(),
+  company_name: z.string(),
   help: z.enum([
-    "Evaluatez Digitalpro Solutions",
-    "En savoir plus",
-    "Obtenez un devis",
-    "Autre",
+    "Evaluate Bird for my company",
+    "Learn More",
+    "Get a Quote",
+    "Other",
   ]),
   services: z.enum([
     "Développement d'applications mobiles",
@@ -68,15 +68,13 @@ export default function ContactForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      prénoms: "",
-      nom: "",
-      email: "",
-      intitulé_du_poste: "",
-      nom_de_l_entreprise: "",
-      help: "Evaluatez Digitalpro Solutions",
-    "En savoir plus",
-    "Obtenez un devis",
-    "Autre",
+     type FormValues = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  job_title: string;
+  company_name: string;
+  help: "Evaluate Bird for my company" | "Learn More" | "Get a Quote" | "Other";
       services: "Développement d'applications mobiles",
       info: "",
       terms: false,
