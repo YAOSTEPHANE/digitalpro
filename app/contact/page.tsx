@@ -43,17 +43,17 @@ const FormSchema = z.object({
   job_title: z.string(),
   company_name: z.string(),
   help: z.enum([
-    "Evaluate Bird for my company",
-    "Learn More",
-    "Get a Quote",
-    "Other",
+    "Evaluatez Digitalpro Solutions pour mon entreprise",
+    "En savoir plus",
+    "Obtenir une offre",
+    "Autre",
   ]),
   services: z.enum([
-    "Développement d'applications mobiles",
-    "Marketing des réseaux sociaux",
+    "Développement d'application mobile",
+    "Marketing social",
     "Conception UI/UX",
-    "Image de marque",
-    "Développement de sites web",
+    "Conception d'identité visuelle",
+    "Développement de site web",
   ]),
   info: z.string(),
   terms: z.boolean(),
@@ -68,15 +68,14 @@ export default function ContactForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-     type FormValues = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  job_title: string;
-  company_name: string;
-  help: "Evaluate Bird for my company" | "Learn More" | "Get a Quote" | "Other";
-      services: "Développement d'applications mobiles",
-      info: "",
+      first_name: "",
+      last_name: "",
+      email: "",
+      job_title: "",
+      company_name: "",
+      help: "Evaluatez Digitalpro Solutions pour mon entreprise",
+      services: "Développement d'application mobile",
+      info: "Je souhaite en savoir plus sur Digitalpro Solutions",
       terms: false,
     },
   });
@@ -169,7 +168,7 @@ export default function ContactForm() {
                   name="first_name"
                   render={({ field }) => (
                     <FormItem className="items-center justify-center  w-full">
-                      <FormLabel className="text-sm bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
+                      <FormLabel className="text-sm bg-clip-text text-white bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
                         Prénom *
                       </FormLabel>
                       <FormControl>
@@ -184,7 +183,7 @@ export default function ContactForm() {
                   name="last_name"
                   render={({ field }) => (
                     <FormItem className="items-center justify-center  w-full">
-                      <FormLabel className="text-sm bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
+                      <FormLabel className="text-sm bg-clip-text text-white bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
                         Nom *
                       </FormLabel>
                       <FormControl>
@@ -200,7 +199,7 @@ export default function ContactForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="items-center justify-center  w-full">
-                    <FormLabel className="text-sm bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
+                    <FormLabel className="text-sm bg-clip-text text-white bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
                       Adresse email *
                     </FormLabel>
                     <FormControl>
@@ -215,7 +214,7 @@ export default function ContactForm() {
                 name="company_name"
                 render={({ field }) => (
                   <FormItem className="items-center justify-center  w-full">
-                    <FormLabel className="text-sm bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
+                    <FormLabel className="text-sm bg-clip-text text-white bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
                       Nom de l&apos;entreprise ?
                     </FormLabel>
                     <FormControl>
@@ -230,8 +229,8 @@ export default function ContactForm() {
                 name="services"
                 render={({ field }) => (
                   <FormItem className="items-center justify-center w-full">
-                    <FormLabel className="text-sm bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
-                    Services que vous êtes intéressés par
+                    <FormLabel className="text-sm bg-clip-text text-white bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
+                    Services qui vous intéressent
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -239,19 +238,19 @@ export default function ContactForm() {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Sélectionnez une option" />
+                          <SelectValue placeholder="Sélectionnez une option..." />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         <div className="flex gap-4">
-                          <SelectItem value="Mobile App Develoment">
+                          <SelectItem value="Développement d'application mobile">
                           Développement d&apos;application mobile
                           </SelectItem>
                         </div>
-                        <SelectItem value="Social Media Marketing">Marketing social</SelectItem>
-                        <SelectItem value="UI/UX Design">Conception UI/UX</SelectItem>
-                        <SelectItem value="Branding">Identité visuelle</SelectItem>
-                        <SelectItem value="Website Development">Développement de site web</SelectItem>
+                        <SelectItem value="Marketing social">Marketing social</SelectItem>
+                        <SelectItem value="Conception UI/UX">Conception UI/UX</SelectItem>
+                        <SelectItem value="Conception d&apos;identité visuelle">Conception d&apos;identité visuelle</SelectItem>
+                        <SelectItem value="Développement de site web">Développement de site web</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>
@@ -263,7 +262,7 @@ export default function ContactForm() {
                 name="help"
                 render={({ field }) => (
                   <FormItem className="items-center justify-center  w-full">
-                    <FormLabel className="text-sm bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
+                    <FormLabel className="text-sm bg-clip-text text-white bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
                       Comment pouvons-nous vous aider ?
                     </FormLabel>
                     <Select
@@ -275,18 +274,18 @@ export default function ContactForm() {
                         
                         
                         >
-                          <SelectValue placeholder="Select an option" />
+                            <SelectValue placeholder="Sélectionnez une option..." />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         <div className="flex gap-4">
-                          <SelectItem value="Evaluate Bird for my company">
-                            Évaluer Digitalpro Solutions pour mon entreprise
+                          <SelectItem value="Evaluatez Digitalpro Solutions pour mon entreprise">
+                              Evaluatez Digitalpro Solutions pour mon entreprise
                           </SelectItem>
                         </div>
-                        <SelectItem value="Learn More">En savoir plus</SelectItem>
-                        <SelectItem value="Get a Quote">Obtenir une offre</SelectItem>
-                        <SelectItem value="Other">Autre</SelectItem>
+                        <SelectItem value="En savoir plus">En savoir plus</SelectItem>
+                          <SelectItem value="Obtenir une offre">Obtenir une offre</SelectItem>
+                        <SelectItem value="Autre">Autre</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>
@@ -298,7 +297,7 @@ export default function ContactForm() {
                 name="info"
                 render={({ field }) => (
                   <FormItem className="items-center justify-center w-full">
-                    <FormLabel className="text-sm bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
+                    <FormLabel className="text-sm bg-clip-text text-white bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
                       Autre, pourquoi ?
                     </FormLabel>
                     <FormControl>
@@ -321,7 +320,8 @@ export default function ContactForm() {
                         outline
                         border-2
                         text-sm
-                        bg-clip-text font-light text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400
+                        font-white
+                        bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400
                         "
                       />
                     </FormControl>
