@@ -26,7 +26,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-neutral-400 text-sm leading-relaxed">
-              Agence d'intelligence numérique spécialisée en SEO, médias sociaux et développement web. 
+              Agence d&apos;intelligence numérique spécialisée en SEO, médias sociaux et développement web. 
               Nous accompagnons votre transformation digitale avec des solutions sur mesure.
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-3 text-neutral-400 text-sm">
                 <MapPin className="w-4 h-4 text-purple-400 mt-1" />
-                <span>Bvd Koffi Gadaud, Cocody<br />Abidjan, Côte d'Ivoire</span>
+                <span>Bvd Koffi Gadaud, Cocody<br />Abidjan, Côte d&apos;Ivoire</span>
               </li>
             </ul>
 
@@ -170,7 +170,7 @@ export default function Footer() {
           </div>
           <p className="text-neutral-400 text-sm mt-3 text-center md:text-left">
             <MapPin className="w-4 h-4 inline mr-2 text-purple-400" />
-            Boulevard Koffi Gadaud, Cocody, Abidjan, Côte d'Ivoire
+            Boulevard Koffi Gadaud, Cocody, Abidjan, Côte d&apos;Ivoire
           </p>
         </div>
 
