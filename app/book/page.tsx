@@ -20,7 +20,7 @@ const Book = () => {
           Réserver un rendez-vous
         </div>
 
-        <InlineWidget url="https://calendly.com/birdsoftware/15min" />
+        <InlineWidget url="https://calendly.com/digitalprosolutions27/30min" />
       </div>
     </>
   );
