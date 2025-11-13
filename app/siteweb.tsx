@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image3D from "@/components/ui/image-3d";
 
 const WebsiteDesign = () => {
   return (
@@ -18,7 +18,7 @@ const WebsiteDesign = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="grid gap-4">
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg"
               alt="Gallery image"
@@ -26,7 +26,7 @@ const WebsiteDesign = () => {
               height={300}
               style={{ width: "100%", height: "auto" }}
             />
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg"
               alt="Gallery image 1"
@@ -37,7 +37,7 @@ const WebsiteDesign = () => {
 
           </div>
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg"
               alt="Gallery image 2"
@@ -49,7 +49,7 @@ const WebsiteDesign = () => {
         </div>
         <div className="grid gap-4">
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg"
               alt="Gallery image 3"
@@ -59,7 +59,7 @@ const WebsiteDesign = () => {
             />
           </div>
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg"
               alt="Gallery image 4"
@@ -69,7 +69,7 @@ const WebsiteDesign = () => {
             />
           </div>
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg"
               alt="Gallery image 5"
@@ -81,7 +81,7 @@ const WebsiteDesign = () => {
         </div>
         <div className="grid gap-4">
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg"
               alt="Gallery image 6"
@@ -91,7 +91,7 @@ const WebsiteDesign = () => {
             />
           </div>
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg"
               alt="Gallery image 7"
@@ -101,7 +101,7 @@ const WebsiteDesign = () => {
             />
           </div>
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg"
               alt="Gallery image 8"
@@ -113,7 +113,7 @@ const WebsiteDesign = () => {
         </div>
         <div className="grid gap-4">
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg"
               alt="Gallery image 9"
@@ -123,7 +123,7 @@ const WebsiteDesign = () => {
             />
           </div>
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg"
               alt="Gallery image 10"
@@ -133,7 +133,7 @@ const WebsiteDesign = () => {
             />
           </div>
           <div>
-            <Image
+            <Image3D
               className="h-auto max-w-full rounded-lg"
               src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg"
               alt="Gallery image 11"

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image3D from "@/components/ui/image-3d";
 
 const stores = [
   {
@@ -46,7 +46,7 @@ const ShopifyStores = () => {
               className="flex flex-col items-center justify-center mt-10 md:w-2/3 mx-auto"
             >
               <div className="flex flex-col items-center justify-center ">
-                <Image
+                <Image3D
                   src={store.image}
                   alt="shopify store"
                   width={400}

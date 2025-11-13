@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image3D from "@/components/ui/image-3d";
 import React from "react";
 
 import { Lora } from "next/font/google";
@@ -81,7 +81,7 @@ const Brands = () => {
               className="flex flex-col items-center justify-center p-4 md:p-6 bg-neutral-900/50 rounded-xl border border-neutral-800 hover:border-purple-500/50 transition-all hover:scale-105 cursor-pointer group"
             >
               <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mb-3">
-                <Image
+                <Image3D
                   priority
                   src={tech.image}
                   width={80}
@@ -107,7 +107,7 @@ const Brands = () => {
         </div>
 
         <div className="items-center flex justify-center flex-col text-white">
-          <Image
+          <Image3D
             src="/images/logo.svg"
             alt="logo"
             width={1000}

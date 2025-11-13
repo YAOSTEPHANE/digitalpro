@@ -1,7 +1,7 @@
 "use client";
 
 import Slider from "react-slick";
-import Image from "next/image";
+import Image3D from "@/components/ui/image-3d";
 import { useMediaQuery } from "react-responsive";
 
 import "slick-carousel/slick/slick.css";
@@ -31,67 +31,57 @@ const SliderOne = () => {
     <div>
       <Slider {...settings}>
         <div className="rounded-md px-2 md:p-10">
-            <Image
+            <Image3D
               priority
               src="/images/business.jpeg"
               alt="logo"
               width={500}
               height={500}
-              className="
-                  rounded-2xl
-                      "
+              className="rounded-2xl w-full h-[400px] object-cover"
             />
           </div>
 
         <div className="rounded-md px-2 md:p-10">
-            <Image
+            <Image3D
               priority
               src="/images/coffe.jpeg"
               alt="logo"
               width={500}
               height={500}
-              className="
-                  rounded-2xl 
-                      "
+              className="rounded-2xl w-full h-[400px] object-cover"
             />
           </div>
 
         <div className="rounded-md px-2 md:p-10">
-            <Image
+            <Image3D
               priority
               src="/images/small-business-3.webp"
               alt="logo"
               width={500}
               height={500}
-              className="
-                  rounded-2xl 
-                      "
+              className="rounded-2xl w-full h-[400px] object-cover"
             />
           </div>
 
         <div className="rounded-md px-2 md:p-10">
-            <Image
+            <Image3D
               priority
               src="/images/man.jpeg"
               alt="logo"
               width={500}
               height={500}
-              className="
-                  rounded-2xl 
-                      "
+              className="rounded-2xl w-full h-[400px] object-cover"
             />
           </div>
 
         <div className="rounded-md px-2 md:p-10">
-            <Image
+            <Image3D
               priority
               src="/images/image-business.jpeg"
               alt="logo"
               width={500}
               height={500}
-              className="
-                  rounded-2xl 
-                      "
+              className="rounded-2xl w-full h-[400px] object-cover"
             />
           </div>
       </Slider>

@@ -317,11 +317,11 @@ export default function ContactForm() {
                         checked={field.value}
                         onCheckedChange={field.onChange}
                         className="
-                        outline
                         border-2
-                        text-sm
-                        font-white
-                        bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400
+                        border-neutral-600
+                        data-[state=checked]:bg-purple-600
+                        data-[state=checked]:border-purple-600
+                        bg-neutral-900
                         "
                       />
                     </FormControl>
