@@ -81,3 +81,13 @@ echo "   Voir les logs: ssh $USERNAME@$SERVER_IP 'pm2 logs $APP_NAME'"
 echo "   Status: ssh $USERNAME@$SERVER_IP 'pm2 status'"
 echo "   Redémarrer: ssh $USERNAME@$SERVER_IP 'pm2 restart $APP_NAME'"
 
+
+
+
+
+
+
+
+
+
+

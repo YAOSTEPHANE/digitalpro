@@ -80,3 +80,13 @@ Dans les DNS de votre domaine, ajoutez:
 - Nom: @
 - Valeur: 72.61.167.191
 
+
+
+
+
+
+
+
+
+
+

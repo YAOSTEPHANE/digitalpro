@@ -14,7 +14,6 @@ import Brands from "./brands";
 import Services from "./services";
 
 import FAQS from "./faq";
-import { InfiniteMovingCardsDemo } from "./snippets/infinite-moving-card-snippet";
 
 
 export default function Home() {
@@ -104,10 +103,9 @@ export default function Home() {
         <div ref={brandsRef}>
           <Brands />
         </div>
-        <div id ='services'>
+        <div ref={servicesRef} id='services'>
         <Services />
         </div>
-         <InfiniteMovingCardsDemo />
         <FAQS />
       </div>
     </div>

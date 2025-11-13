@@ -140,3 +140,13 @@ certbot --nginx -d digitalpro-solutions.com -d www.digitalpro-solutions.com -v
 tail -f /var/log/letsencrypt/letsencrypt.log
 ```
 
+
+
+
+
+
+
+
+
+
+

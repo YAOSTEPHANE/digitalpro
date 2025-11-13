@@ -36,3 +36,13 @@ echo "✅ Terminé!"
 echo ""
 echo "Testez avec: curl http://localhost:3000"
 
+
+
+
+
+
+
+
+
+
+

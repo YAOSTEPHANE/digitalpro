@@ -129,3 +129,13 @@ NOTES
 - Le port 3000 doit être ouvert dans le firewall
 - PM2 garde l'application en ligne même après déconnexion
 
+
+
+
+
+
+
+
+
+
+

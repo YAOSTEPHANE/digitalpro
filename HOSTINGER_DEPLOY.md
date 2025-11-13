@@ -42,3 +42,13 @@ Pour déployer votre site, j'ai besoin des informations suivantes :
 - Support Hostinger : https://www.hostinger.com/help
 - Chat Support : Disponible dans votre panneau Hostinger
 
+
+
+
+
+
+
+
+
+
+

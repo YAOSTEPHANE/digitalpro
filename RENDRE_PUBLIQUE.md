@@ -223,3 +223,13 @@ certbot --nginx -d votredomaine.com
 - ✅ Avec votre domaine personnalisé
 - ✅ Avec HTTPS sécurisé (si SSL configuré)
 
+
+
+
+
+
+
+
+
+
+

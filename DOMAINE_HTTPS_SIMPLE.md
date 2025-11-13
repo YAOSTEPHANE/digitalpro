@@ -160,3 +160,13 @@ tail -f /var/log/nginx/error.log
 
 **Votre site est maintenant sécurisé avec HTTPS ! 🔒✨**
 
+
+
+
+
+
+
+
+
+
+

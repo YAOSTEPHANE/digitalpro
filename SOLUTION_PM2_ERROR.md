@@ -54,3 +54,13 @@ pm2 status
 
 Tous les processus devraient être "online" maintenant!
 
+
+
+
+
+
+
+
+
+
+

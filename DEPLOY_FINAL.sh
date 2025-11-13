@@ -90,3 +90,13 @@ echo "   pm2 status                # Voir le statut"
 echo "   pm2 restart digitalpro    # Redémarrer"
 echo ""
 
+
+
+
+
+
+
+
+
+
+

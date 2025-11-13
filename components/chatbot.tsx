@@ -1,0 +1,204 @@
+'use client'
+
+import { useState, useRef, useEffect } from 'react'
+import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
+
+interface Message {
+  id: string
+  text: string
+  sender: 'user' | 'bot'
+  timestamp: Date
+}
+
+export default function Chatbot() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      text: 'Bonjour ! Je suis l\'assistant virtuel de digitalpro solutions. Comment puis-je vous aider aujourd\'hui ?',
+      sender: 'bot',
+      timestamp: new Date(),
+    },
+  ])
+  const [input, setInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  const sendMessage = async () => {
+    if (!input.trim() || isLoading) return
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: input,
+      sender: 'user',
+      timestamp: new Date(),
+    }
+
+    setMessages((prev) => [...prev, userMessage])
+    setInput('')
+    setIsLoading(true)
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: input }),
+      })
+
+      const data = await response.json()
+
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: data.response || 'Désolé, je n\'ai pas pu traiter votre demande.',
+        sender: 'bot',
+        timestamp: new Date(),
+      }
+
+      setMessages((prev) => [...prev, botMessage])
+    } catch (error) {
+      console.error('Error sending message:', error)
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: 'Désolé, une erreur est survenue. Veuillez réessayer.',
+        sender: 'bot',
+        timestamp: new Date(),
+      }
+      setMessages((prev) => [...prev, errorMessage])
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      sendMessage()
+    }
+  }
+
+  return (
+    <>
+      {/* Bouton flottant pour ouvrir le chatbot */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none"
+          aria-label="Ouvrir le chatbot"
+        >
+          <MessageCircle className="w-6 h-6" />
+        </button>
+      )}
+
+      {/* Fenêtre du chatbot */}
+      {isOpen && (
+        <div className="fixed bottom-6 right-6 z-50 w-96 h-[600px] bg-black/95 backdrop-blur-lg border border-neutral-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+          {/* En-tête */}
+          <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-white/20 rounded-full p-2">
+                <Bot className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-white font-semibold">Assistant digitalpro</h3>
+                <p className="text-white/80 text-xs">En ligne</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-white hover:bg-white/20 rounded-full p-1 transition-colors"
+              aria-label="Fermer le chatbot"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Zone de messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral-900/50">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex gap-3 ${
+                  message.sender === 'user' ? 'justify-end' : 'justify-start'
+                }`}
+              >
+                {message.sender === 'bot' && (
+                  <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-full p-2 h-8 w-8 flex items-center justify-center flex-shrink-0">
+                    <Bot className="w-4 h-4 text-white" />
+                  </div>
+                )}
+                <div
+                  className={`max-w-[75%] rounded-2xl px-4 py-2 ${
+                    message.sender === 'user'
+                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                      : 'bg-neutral-800 text-neutral-100 border border-neutral-700'
+                  }`}
+                >
+                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                </div>
+                {message.sender === 'user' && (
+                  <div className="bg-neutral-700 rounded-full p-2 h-8 w-8 flex items-center justify-center flex-shrink-0">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                )}
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex gap-3 justify-start">
+                <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-full p-2 h-8 w-8 flex items-center justify-center">
+                  <Bot className="w-4 h-4 text-white" />
+                </div>
+                <div className="bg-neutral-800 text-neutral-100 border border-neutral-700 rounded-2xl px-4 py-2">
+                  <div className="flex gap-1">
+                    <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                    <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                    <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Zone de saisie */}
+          <div className="p-4 bg-neutral-900/80 border-t border-neutral-800">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Tapez votre message..."
+                className="flex-1 bg-neutral-800 border border-neutral-700 rounded-lg px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                disabled={isLoading}
+              />
+              <button
+                onClick={sendMessage}
+                disabled={isLoading || !input.trim()}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2 transition-all"
+                aria-label="Envoyer le message"
+              >
+                <Send className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Version mobile responsive */}
+      {isOpen && (
+        <div className="md:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setIsOpen(false)} />
+      )}
+    </>
+  )
+}
+

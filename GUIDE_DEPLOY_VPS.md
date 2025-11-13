@@ -64,10 +64,7 @@ Vous devriez voir :
 - npm version : `9.x.x`
 
 ---
-
-## 📦 ÉTAPE 4 : Installer PM2
-
-PM2 permet de garder votre application en ligne même après la fermeture de la connexion SSH :
+y## 📦 ÉTAPE 4 : Installer PM2
 
 ```bash
 npm install -g pm2
@@ -303,4 +300,14 @@ Votre site Digitalpro est maintenant en ligne sur votre VPS Hostinger !
 ---
 
 Besoin d'aide ? Consultez : https://www.hostinger.com/help
+
+
+
+
+
+
+
+
+
+
 

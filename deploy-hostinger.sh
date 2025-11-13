@@ -79,3 +79,13 @@ echo "🌐 Votre site est accessible sur le port 3000"
 echo "   Configurez Nginx pour rediriger le trafic"
 echo ""
 
+
+
+
+
+
+
+
+
+
+

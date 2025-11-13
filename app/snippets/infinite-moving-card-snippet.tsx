@@ -18,9 +18,9 @@ export function InfiniteMovingCardsDemo() {
 const testimonials = [
   {
     quote:
-      "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.",
-    name: "Charles Dickens",
-    title: "A Tale of Two Cities",
+      "C'était le meilleur des temps, c'était le pire des temps, c'était l'âge de la sagesse, c'était l'âge de la folie, c'était l'époque de la croyance, c'était l'époque de l'incrédulité, c'était la saison de la lumière, c'était la saison de la ténèbre, c'était la saison de l'espoir, c'était la saison de la désespoir.",
+    name: "Charles Abole",
+    title: "Une histoire de deux villes",
   },
   {
     quote:

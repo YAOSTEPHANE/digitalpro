@@ -115,3 +115,13 @@ echo "   Redémarrer: pm2 restart digitalpro"
 echo "   Arrêter: pm2 stop digitalpro"
 echo ""
 
+
+
+
+
+
+
+
+
+
+
