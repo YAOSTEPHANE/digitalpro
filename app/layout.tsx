@@ -4,26 +4,23 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Chatbot from "@/components/chatbot";
 import Footer from "@/components/footer";
+import { defaultMetadata } from "@/lib/seo";
+import StructuredData from "@/components/structured-data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "digitalpro solutions - Agence d'intelligence numérique",
-  description: "digitalpro solutions - Agence spécialisée en SEO, médias sociaux et développement web. Solutions sur mesure pour votre transformation digitale.",
-  icons: {
-    icon: '/logo/logo.jpg',
-    shortcut: '/logo/logo.jpg',
-    apple: '/logo/logo.jpg',
-  },
-};
+export const metadata: Metadata = defaultMetadata;
 
 export default function RootLayout({
   children,
@@ -35,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <StructuredData />
         {children}
         <Footer />
         <Chatbot />

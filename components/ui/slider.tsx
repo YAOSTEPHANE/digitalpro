@@ -34,7 +34,7 @@ const SliderOne = () => {
             <Image3D
               priority
               src="/images/business.jpeg"
-              alt="logo"
+              alt="Solutions digitales pour entreprises - digitalpro solutions"
               width={500}
               height={500}
               className="rounded-2xl w-full h-[400px] object-cover"
@@ -45,7 +45,7 @@ const SliderOne = () => {
             <Image3D
               priority
               src="/images/coffe.jpeg"
-              alt="logo"
+              alt="Agence digitale spécialisée en marketing et développement web"
               width={500}
               height={500}
               className="rounded-2xl w-full h-[400px] object-cover"
@@ -56,7 +56,7 @@ const SliderOne = () => {
             <Image3D
               priority
               src="/images/small-business-3.webp"
-              alt="logo"
+              alt="Accompagnement des petites entreprises dans leur transformation digitale"
               width={500}
               height={500}
               className="rounded-2xl w-full h-[400px] object-cover"
@@ -67,7 +67,7 @@ const SliderOne = () => {
             <Image3D
               priority
               src="/images/man.jpeg"
-              alt="logo"
+              alt="Expertise en SEO et référencement naturel - digitalpro solutions"
               width={500}
               height={500}
               className="rounded-2xl w-full h-[400px] object-cover"
@@ -78,7 +78,7 @@ const SliderOne = () => {
             <Image3D
               priority
               src="/images/image-business.jpeg"
-              alt="logo"
+              alt="Services de développement web et création de sites internet professionnels"
               width={500}
               height={500}
               className="rounded-2xl w-full h-[400px] object-cover"
