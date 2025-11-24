@@ -1,11 +1,16 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
+  const [currentYear, setCurrentYear] = useState(2024)
+  
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear())
+  }, [])
 
   return (
     <footer className="w-full bg-black/[0.98] border-t border-neutral-800">

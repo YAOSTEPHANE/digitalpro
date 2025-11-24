@@ -20,10 +20,12 @@ export const EvervaultCard = ({
   const mouseY = useMotionValue(0);
 
   const [randomString, setRandomString] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     // Generate a single random string on mount. Keep it shorter to avoid
     // extremely large DOM content which can hurt performance.
+    setIsMounted(true);
     const str = generateRandomString(500);
     setRandomString(str);
   }, []);
@@ -49,7 +51,7 @@ export const EvervaultCard = ({
         <CardPattern
           mouseX={mouseX}
           mouseY={mouseY}
-          randomString={randomString}
+          randomString={isMounted ? randomString : ""}
         />
         <div className="relative z-10 flex items-center justify-center">
           <div className="relative h-44 w-44  rounded-full flex items-center justify-center

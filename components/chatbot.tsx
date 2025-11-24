@@ -12,7 +12,8 @@ interface Message {
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([
+  // Initialiser les messages avec une fonction pour éviter les problèmes d'hydratation
+  const [messages, setMessages] = useState<Message[]>(() => [
     {
       id: '1',
       text: 'Bonjour ! Je suis l\'assistant virtuel de digitalpro solutions. Comment puis-je vous aider aujourd\'hui ?',
@@ -22,7 +23,13 @@ export default function Chatbot() {
   ])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // S'assurer que le composant est monté côté client avant d'afficher
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -42,18 +49,34 @@ export default function Chatbot() {
       timestamp: new Date(),
     }
 
+    const currentInput = input
     setMessages((prev) => [...prev, userMessage])
     setInput('')
     setIsLoading(true)
 
     try {
+      // Préparer l'historique de conversation pour le contexte
+      const conversationHistory = messages
+        .slice(-5) // Garder seulement les 5 derniers messages pour le contexte
+        .map((msg) => ({
+          role: msg.sender === 'user' ? 'user' : 'assistant',
+          content: msg.text,
+        }))
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ 
+          message: currentInput,
+          history: conversationHistory,
+        }),
       })
+
+      if (!response.ok) {
+        throw new Error('Erreur de réponse du serveur')
+      }
 
       const data = await response.json()
 
@@ -69,7 +92,7 @@ export default function Chatbot() {
       console.error('Error sending message:', error)
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'Désolé, une erreur est survenue. Veuillez réessayer.',
+        text: 'Désolé, une erreur est survenue. Veuillez réessayer dans un instant.',
         sender: 'bot',
         timestamp: new Date(),
       }
@@ -89,7 +112,7 @@ export default function Chatbot() {
   return (
     <>
       {/* Bouton flottant pour ouvrir le chatbot */}
-      {!isOpen && (
+      {isMounted && !isOpen && (
         <button
           onClick={() => setIsOpen(true)}
           className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none"
@@ -100,7 +123,7 @@ export default function Chatbot() {
       )}
 
       {/* Fenêtre du chatbot */}
-      {isOpen && (
+      {isMounted && isOpen && (
         <div className="fixed bottom-6 right-6 z-50 w-96 h-[600px] bg-black/95 backdrop-blur-lg border border-neutral-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
           {/* En-tête */}
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-4 flex items-center justify-between">
@@ -195,7 +218,7 @@ export default function Chatbot() {
       )}
 
       {/* Version mobile responsive */}
-      {isOpen && (
+      {isMounted && isOpen && (
         <div className="md:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setIsOpen(false)} />
       )}
     </>

@@ -43,6 +43,11 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 # En production (remplacez par votre domaine réel) :
 # NEXT_PUBLIC_SITE_URL=https://digitalprosolutions.com
+
+# Clés API pour le Chatbot IA (optionnel mais recommandé)
+# Au moins une clé est recommandée pour activer l'IA
+OPENAI_API_KEY=sk-votre_cle_openai_ici
+GEMINI_API_KEY=votre_cle_gemini_ici
 ```
 
 ## ⚠️ Important

@@ -2,6 +2,8 @@
  * Configuration SEO centralisée pour digitalpro solutions
  */
 
+import type { Metadata } from 'next'
+
 export const siteConfig = {
   name: "digitalpro solutions",
   title: "digitalpro solutions - Agence d'intelligence numérique",
@@ -82,10 +84,10 @@ export const defaultMetadata = {
       index: true,
       follow: true,
       "max-video-preview": -1,
-      "max-image-preview": "large",
+      "max-image-preview": "large" as "large",
       "max-snippet": -1,
     },
-  },
+  } as Metadata['robots'],
   icons: {
     icon: "/logo/logo.jpg",
     shortcut: "/logo/logo.jpg",
