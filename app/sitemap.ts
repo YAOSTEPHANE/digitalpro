@@ -10,7 +10,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/contact',
     '/book',
     '/facture',
-    '/maintenance',
   ]
 
   // Génération des entrées du sitemap
