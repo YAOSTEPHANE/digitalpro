@@ -205,7 +205,7 @@ export default function MaintenancePage() {
             Prêt à Optimiser Votre Infrastructure IT ?
           </h2>
           <p className="text-neutral-300 mb-8 max-w-2xl mx-auto">
-            Contactez-nous dès aujourd'hui pour discuter de vos besoins en maintenance informatique. 
+            Contactez-nous dès aujourd&apos;hui pour discuter de vos besoins en maintenance informatique. 
             Nous vous proposerons une solution sur mesure adaptée à votre entreprise.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
