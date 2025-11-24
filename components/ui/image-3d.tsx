@@ -65,7 +65,8 @@ export default function Image3D({ className, containerClassName, ...imageProps }
       >
         <Image
           {...imageProps}
-          className={cn('transition-all duration-300', imageProps.alt && '')}
+          alt={imageProps.alt || ''}
+          className={cn('transition-all duration-300')}
         />
         {isHovered && (
           <div

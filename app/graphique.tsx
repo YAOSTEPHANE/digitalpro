@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import ThreeDCardExample from "./snippets/3d-card-snippet";
 import EvervaultCardSnippet from "./snippets/evervault-card-snippet";

@@ -25,7 +25,7 @@ const knowledgeBase: { [key: string]: string | ((message: string) => string) } =
 }
 
 // Fonction pour trouver la meilleure réponse basée sur les mots-clés (fallback intelligent)
-function findBestResponse(message: string, conversationHistory: Array<{role: string, content: string}> = []): string {
+function findBestResponse(message: string): string {
   const lowerMessage = message.toLowerCase()
   
   // Recherche de mots-clés dans le message
@@ -189,7 +189,7 @@ async function getAIResponse(
   }
 
   // Fallback vers le système de réponses intelligentes
-  return findBestResponse(message, conversationHistory)
+  return findBestResponse(message)
 }
 
 export async function POST(request: NextRequest) {
@@ -204,17 +204,25 @@ export async function POST(request: NextRequest) {
     }
 
     // Valider et formater l'historique de conversation
-    const conversationHistory = Array.isArray(history)
+    interface HistoryMessage {
+      role: 'user' | 'assistant'
+      content: string
+    }
+    
+    const conversationHistory: Array<{role: string, content: string}> = Array.isArray(history)
       ? history
           .slice(-10) // Limiter à 10 messages pour éviter les requêtes trop longues
-          .filter(
-            (msg: any) =>
-              msg &&
-              typeof msg === 'object' &&
-              (msg.role === 'user' || msg.role === 'assistant') &&
-              typeof msg.content === 'string'
-          )
-          .map((msg: any) => ({
+          .filter((msg): msg is HistoryMessage => {
+            if (msg === null || typeof msg !== 'object') return false
+            if (!('role' in msg) || !('content' in msg)) return false
+            const role = (msg as { role: unknown }).role
+            const content = (msg as { content: unknown }).content
+            return (
+              (role === 'user' || role === 'assistant') &&
+              typeof content === 'string'
+            )
+          })
+          .map((msg) => ({
             role: msg.role,
             content: msg.content,
           }))

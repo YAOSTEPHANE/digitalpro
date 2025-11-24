@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       await transporter.sendMail(mailOptions);
 
       return NextResponse.json("l'email a été envoyé");
-    } catch (error) {
+    } catch {
       return NextResponse.json("l'email n'a pas été envoyé");
     }
   } else {

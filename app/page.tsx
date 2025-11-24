@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import Navbar from "@/components/navbar";
 import SliderOne from "@/components/ui/slider";
 import { Spotlight } from "@/components/ui/spotlight";
-import Image from "next/image";
 import Link from "next/link";
 
 import WebsiteDesign from "./siteweb";
@@ -17,14 +16,6 @@ import FAQS from "./faq";
 
 
 export default function Home() {
-  const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const toggleDropdown = () => {
-    setDropdownVisible(!isDropdownVisible);
-  };
-  const closeDropdown = () => {
-    setDropdownVisible(false);
-  };
-
   const websiteDesignRef = useRef<HTMLDivElement>(null);
   const graphicDesignRef = useRef<HTMLDivElement>(null);
   const shopifyStoresRef = useRef<HTMLDivElement>(null);
