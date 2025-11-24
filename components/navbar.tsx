@@ -81,10 +81,7 @@ const Navbar = ({
               className="w-8 h-8 text-slate-300 cursor-pointer"
             >
               <X />
-              <DropDownMenu
-                onClose={closeDropDown}
-                scrollToServices={scrollToServices} // Pass scrollToServices
-              />
+              <DropDownMenu />
             </div>
           ) : (
             <AlignJustify
