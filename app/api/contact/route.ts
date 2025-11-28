@@ -4,6 +4,7 @@ import nodemailer from "nodemailer";
 export async function POST(req: Request) {
   if (req.method === "POST") {
     try {
+      const body = await req.json();
       const {
         first_name,
         last_name,
@@ -14,11 +15,7 @@ export async function POST(req: Request) {
         service,
         help,
         message,
-        ...rest
-      } = await req.json();
-      
-      // Ignorer les champs non utilisés comme 'terms'
-      void rest;
+      } = body;
 
       const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
