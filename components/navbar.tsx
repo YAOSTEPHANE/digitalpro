@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { AlignJustify, X } from "lucide-react";
 
-import Image from "next/image";
 import Link from "next/link";
 import DropDownMenu from "./drop-down-menu";
 import Logo from "./logo";

@@ -18,7 +18,7 @@ export async function POST(req: Request) {
         features,
         project_description,
         additional_info,
-        terms,
+        terms: _terms,
       } = await req.json();
 
       const transporter = nodemailer.createTransport({

@@ -107,7 +107,7 @@ export default function ContactForm() {
       setSubmitted(true);
       toast.success("Message envoyé avec succès !");
       form.reset();
-    } catch (error) {
+    } catch {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
     } finally {
       setLoading(false);

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, Zap, Rocket, TrendingUp, CheckCircle } from "lucide-react";
+import { ArrowRight, Sparkles, Zap, Rocket, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import Image3D from "@/components/ui/image-3d";
 

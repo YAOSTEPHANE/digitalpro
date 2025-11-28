@@ -116,7 +116,7 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
           try {
             // Essayer de parser le JSON directement
             aiTip = JSON.parse(responseText);
-          } catch (parseError) {
+          } catch {
             // Si le JSON est dans un bloc de code, extraire le contenu
             const jsonMatch = responseText.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
@@ -130,7 +130,7 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
           let generatedImage = categoryImages[selectedCategory] || categoryImages['Contenu'];
 
           try {
-            const imagePrompt = `Créer une image professionnelle et moderne illustrant le concept de "${aiTip.title}" en marketing digital. L'image doit être professionnelle, moderne, colorée avec des tons rouge et bleu, représentant le marketing digital et la technologie, style illustration moderne, sans texte`;
+            // Générer des mots-clés pour l'image avec Gemini
 
             // Utiliser Gemini pour générer une description d'image, puis utiliser Imagen ou une alternative
             // Note: Gemini ne génère pas directement des images, on utilise une description améliorée

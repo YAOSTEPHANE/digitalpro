@@ -17,7 +17,7 @@ export default function Chatbot() {
   const [messages, setMessages] = useState<Message[]>(() => [
     {
       id: '1',
-      text: 'Bonjour ! Je suis l\'assistant virtuel de digitalpro solutions. Comment puis-je vous aider aujourd\'hui ?',
+      text: 'Bonjour ! Je suis l&apos;assistant virtuel de digitalpro solutions. Comment puis-je vous aider aujourd&apos;hui ?',
       sender: 'bot',
       timestamp: new Date(),
     },
@@ -141,7 +141,7 @@ export default function Chatbot() {
             <div className="flex-1">
               <h4 className="text-white font-semibold text-sm mb-1">Bienvenue ! 👋</h4>
               <p className="text-white/90 text-xs mb-3">
-                Besoin d'aide ? Notre assistant est là pour vous accompagner !
+                Besoin d&apos;aide ? Notre assistant est là pour vous accompagner !
               </p>
               <button
                 onClick={() => {

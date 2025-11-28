@@ -5,15 +5,12 @@ import { motion } from "framer-motion";
 import { 
   CheckCircle2, 
   CreditCard, 
-  Download, 
-  Mail, 
   FileText,
   Plus,
   Trash2,
   Calculator,
   Calendar,
-  User,
-  Building
+  User
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -143,7 +140,7 @@ const ModernBilling = () => {
     }
 
     setIsGenerating(true);
-    const { subtotal, taxAmount, discountAmount, total } = calculateTotals();
+    const { subtotal, total } = calculateTotals();
 
     try {
       const response = await fetch("/api/invoice", {
@@ -177,7 +174,7 @@ const ModernBilling = () => {
       } else {
         toast.error(data.error || "Erreur lors de la génération de la facture");
       }
-    } catch (error) {
+    } catch {
       toast.error("Erreur lors de la génération de la facture");
     } finally {
       setIsGenerating(false);
@@ -218,7 +215,7 @@ const ModernBilling = () => {
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as "pricing" | "invoice" | "history")}
               className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                 activeTab === tab.id
                   ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
@@ -447,7 +444,7 @@ const ModernBilling = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-neutral-400 mb-2 block">Date d'échéance</label>
+                  <label className="text-sm text-neutral-400 mb-2 block">Date d&apos;échéance</label>
                   <Input
                     type="date"
                     value={invoiceSettings.dueDate}

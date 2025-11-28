@@ -91,7 +91,7 @@ export default function Book() {
 
       setSubmitted(true);
       toast.success("Demande de rendez-vous envoyée avec succès !");
-    } catch (error) {
+    } catch {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
     } finally {
       setLoading(false);

@@ -16,7 +16,6 @@ import {
   Calendar,
   Target,
   FileText,
-  Sparkles,
   CheckCircle
 } from "lucide-react";
 import Navbar from "@/components/navbar";
@@ -131,7 +130,7 @@ export default function QuoteForm() {
       setSubmitted(true);
       toast.success("Demande de devis envoyée avec succès !");
       form.reset();
-    } catch (error) {
+    } catch {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
     } finally {
       setLoading(false);

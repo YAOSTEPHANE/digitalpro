@@ -119,7 +119,7 @@ const DailyMarketingTips = () => {
     day: number;
     image: string;
     color: string;
-    icon?: any;
+    icon?: React.ElementType;
   }>({
     title: 'Chargement...',
     content: 'Génération de votre conseil du jour...',
@@ -151,7 +151,7 @@ const DailyMarketingTips = () => {
         const tip = await response.json();
         
         // Mapper l'icône selon la catégorie
-        const categoryIcons: Record<string, any> = {
+        const categoryIcons: Record<string, React.ElementType> = {
           'Réseaux Sociaux': Share2,
           'SEO': TrendingUp,
           'Email Marketing': Share2,

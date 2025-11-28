@@ -14,7 +14,7 @@ export async function POST(req: Request) {
         service,
         help,
         message,
-        terms,
+        terms: _terms,
       } = await req.json();
 
       const transporter = nodemailer.createTransport({

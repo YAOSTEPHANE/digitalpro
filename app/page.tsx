@@ -2,9 +2,7 @@
 
 import { useRef } from "react";
 import ModernNavbar from "@/components/modern-navbar";
-import SliderOne from "@/components/ui/slider";
 import { Spotlight } from "@/components/ui/spotlight";
-import Link from "next/link";
 import StarsBackground from "@/components/stars-background";
 import ModernHero from "@/components/modern-hero";
 import ModernSlider from "@/components/modern-slider";
