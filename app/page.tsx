@@ -15,6 +15,7 @@ import ModernBrands from "@/components/modern-brands";
 import BlackFriday from "./black-friday";
 import ServicesVideo from "@/components/services-video";
 import DailyMarketingTips from "@/components/daily-marketing-tips";
+import ChristmasMessage from "@/components/christmas-message";
 
 import FAQS from "./faq";
 
@@ -54,6 +55,7 @@ export default function Home() {
   return (
     <div className="w-full md:items-center md:justify-center bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
       <StarsBackground />
+      <ChristmasMessage />
       <ModernNavbar
         scrollToWebsiteDesign={scrollToWebsiteDesign}
         scrollToGraphicDesign={scrollToGraphicDesign}

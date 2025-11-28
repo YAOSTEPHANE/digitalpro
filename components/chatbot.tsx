@@ -150,7 +150,7 @@ export default function Chatbot() {
                 }}
                 className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-4 rounded-lg transition-colors"
               >
-                Parler à l'assistant
+                Parler à l&apos;assistant
               </button>
             </div>
             <button

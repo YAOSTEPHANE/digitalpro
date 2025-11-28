@@ -205,4 +205,18 @@
   .clip-path-triangle {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   }
+
+  /* Animation shimmer pour le message de Noël */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s infinite;
+  }
 }
