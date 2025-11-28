@@ -10,11 +10,10 @@ export async function POST(req: Request) {
         email,
         phone,
         company_name,
-        job_title,
         service,
-        help,
+        preferred_date,
+        preferred_time,
         message,
-        terms,
       } = await req.json();
 
       const transporter = nodemailer.createTransport({
@@ -27,36 +26,44 @@ export async function POST(req: Request) {
         },
       });
 
-      // Email à l'équipe
+      // Formatage de la date
+      const appointmentDate = new Date(preferred_date);
+      const formattedDate = appointmentDate.toLocaleDateString('fr-FR', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+
       const mailOptions = {
         from: email,
         to: "digitalproslutions01@gmail.com",
-        subject: `Nouveau message de contact - ${first_name} ${last_name}`,
+        subject: `Nouvelle demande de rendez-vous - ${first_name} ${last_name}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #6366f1; border-bottom: 2px solid #6366f1; padding-bottom: 10px;">
-              Nouveau message de contact
+              Nouvelle demande de rendez-vous
             </h2>
             
             <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <h3 style="color: #1f2937; margin-top: 0;">Informations personnelles</h3>
               <p><strong>Nom complet:</strong> ${first_name} ${last_name}</p>
               <p><strong>Email:</strong> ${email}</p>
-              ${phone ? `<p><strong>Téléphone:</strong> ${phone}</p>` : ''}
+              <p><strong>Téléphone:</strong> ${phone}</p>
               ${company_name ? `<p><strong>Entreprise:</strong> ${company_name}</p>` : ''}
-              ${job_title ? `<p><strong>Poste:</strong> ${job_title}</p>` : ''}
             </div>
 
             <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="color: #1f2937; margin-top: 0;">Détails du projet</h3>
+              <h3 style="color: #1f2937; margin-top: 0;">Détails du rendez-vous</h3>
               <p><strong>Service:</strong> ${service}</p>
-              <p><strong>Type de demande:</strong> ${help}</p>
-              <p><strong>Message:</strong><br>${message.replace(/\n/g, '<br>')}</p>
+              <p><strong>Date préférée:</strong> ${formattedDate}</p>
+              <p><strong>Heure préférée:</strong> ${preferred_time}</p>
+              ${message ? `<p><strong>Message:</strong><br>${message}</p>` : ''}
             </div>
 
             <div style="background-color: #e0e7ff; padding: 15px; border-radius: 8px; margin-top: 20px;">
               <p style="margin: 0; color: #4338ca;">
-                <strong>Action requise:</strong> Veuillez répondre à ce message dans les 24 heures.
+                <strong>Action requise:</strong> Veuillez confirmer ce rendez-vous avec le client.
               </p>
             </div>
           </div>
@@ -69,24 +76,25 @@ export async function POST(req: Request) {
       const confirmationMailOptions = {
         from: "digitalproslutions01@gmail.com",
         to: email,
-        subject: "Confirmation de réception - digitalpro solutions",
+        subject: "Confirmation de votre demande de rendez-vous - digitalpro solutions",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #6366f1;">Merci pour votre message !</h2>
+            <h2 style="color: #6366f1;">Merci pour votre demande de rendez-vous !</h2>
             
             <p>Bonjour ${first_name},</p>
             
-            <p>Nous avons bien reçu votre message concernant <strong>${service}</strong>.</p>
+            <p>Nous avons bien reçu votre demande de rendez-vous pour le <strong>${formattedDate} à ${preferred_time}</strong>.</p>
             
             <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="color: #1f2937; margin-top: 0;">Récapitulatif de votre demande</h3>
+              <h3 style="color: #1f2937; margin-top: 0;">Récapitulatif</h3>
               <p><strong>Service:</strong> ${service}</p>
-              <p><strong>Type de demande:</strong> ${help}</p>
+              <p><strong>Date:</strong> ${formattedDate}</p>
+              <p><strong>Heure:</strong> ${preferred_time}</p>
             </div>
 
-            <p>Notre équipe va examiner votre demande et vous contactera dans les plus brefs délais, généralement sous 24 heures.</p>
+            <p>Notre équipe va examiner votre demande et vous contactera dans les plus brefs délais pour confirmer ce rendez-vous.</p>
             
-            <p>En attendant, n&apos;hésitez pas à nous contacter si vous avez des questions urgentes :</p>
+            <p>En attendant, n&apos;hésitez pas à nous contacter si vous avez des questions :</p>
             <ul>
               <li>Email: digitalprosolutions27@gmail.com</li>
               <li>Téléphone: +225 07 48 97 60 31</li>
@@ -101,12 +109,12 @@ export async function POST(req: Request) {
 
       return NextResponse.json({ 
         success: true,
-        message: "Message envoyé avec succès" 
+        message: "Demande de rendez-vous envoyée avec succès" 
       });
     } catch (error) {
-      console.error("Contact API error:", error);
+      console.error("Appointment API error:", error);
       return NextResponse.json(
-        { error: "Une erreur est survenue lors de l'envoi du message" },
+        { error: "Une erreur est survenue lors de l'envoi de la demande" },
         { status: 500 }
       );
     }
@@ -117,3 +125,5 @@ export async function POST(req: Request) {
     );
   }
 }
+
+

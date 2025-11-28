@@ -29,7 +29,7 @@ const DropDownMenu: React.FC = () => {
       <div className="flex-col flex space-y-10">
         <Link href="/prisée">Prisée</Link>
         <Link href="/solutionsservices" className="text-black text-2xl">Solutions et Services</Link>
-        <Link href="/etude de cas" className="text-black text-2xl">Etude de cas</Link>
+        <Link href="/etude-de-cas" className="text-black text-2xl">Etude de cas</Link>
         <Link href="/notretravail" className="text-black text-2xl"> Notre travail</Link>
         <Link href="/environ" className="text-black text-2xl">Environ</Link>
         <Link href="/idées" className="text-black text-2xl">Idées</Link>

@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '',
     '/contact',
     '/book',
+    '/devis',
     '/facture',
   ]
 

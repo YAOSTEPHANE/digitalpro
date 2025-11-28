@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Chatbot from "@/components/chatbot";
-import Footer from "@/components/footer";
+import ModernFooter from "@/components/modern-footer";
 import { defaultMetadata } from "@/lib/seo";
 import StructuredData from "@/components/structured-data";
 
@@ -33,9 +33,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <StructuredData />
-        {children}
-        <Footer />
-        <Chatbot />
+            {children}
+            <ModernFooter />
+            <Chatbot />
         <Analytics />
       </body>
     </html>

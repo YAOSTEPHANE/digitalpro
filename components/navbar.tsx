@@ -5,6 +5,7 @@ import { AlignJustify, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import DropDownMenu from "./drop-down-menu";
+import Logo from "./logo";
 
 interface NavbarProps {
   scrollToWebsiteDesign: () => void;
@@ -34,15 +35,12 @@ const Navbar = ({
   return (
     <div>
       <div className="p-6 md:p-10 flex items-center justify-between z-50">
-        <div>
-          <Link className="cursor-pointer" href="/">
-            <Image
-              priority
-              src="/logo/logo.jpg"
-              alt="Logo"
-              width={100}
-              height={100}
-              className="w-10 h-10 md:w-14 md:h-14 rounded-xl"
+        <div className="flex items-center flex-shrink-0">
+          <Link className="cursor-pointer flex items-center justify-center" href="/">
+            <Logo 
+              className="w-12 h-12 md:w-16 md:h-16 object-contain"
+              width={64}
+              height={64}
             />
           </Link>
         </div>

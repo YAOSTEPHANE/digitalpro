@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+import Logo from './logo'
 
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState(2024)
@@ -19,12 +20,10 @@ export default function Footer() {
           {/* Colonne 1 : Logo et Description */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-3">
-              <Image
-                src="/logo/logo.jpg"
-                alt="digitalpro solutions"
-                width={50}
-                height={50}
-                className="rounded-xl"
+              <Logo 
+                className="w-16 h-16"
+                width={64}
+                height={64}
               />
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">
                 digitalpro solutions

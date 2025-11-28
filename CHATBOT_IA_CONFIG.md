@@ -156,3 +156,6 @@ Pour surveiller l'utilisation de l'API :
 
 Une fois configuré, le chatbot utilisera automatiquement l'IA pour répondre aux questions de manière intelligente et contextuelle.
 
+
+
+

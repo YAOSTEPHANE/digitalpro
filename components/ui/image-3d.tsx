@@ -55,7 +55,7 @@ export default function Image3D({ className, containerClassName, ...imageProps }
     >
       <div
         className={cn(
-          'relative overflow-hidden rounded-lg shadow-2xl transition-all duration-300',
+          'relative overflow-hidden rounded-lg shadow-2xl transition-all duration-300 w-full h-full',
           isHovered && 'shadow-purple-500/50 shadow-2xl',
           className
         )}
@@ -66,7 +66,12 @@ export default function Image3D({ className, containerClassName, ...imageProps }
         <Image
           {...imageProps}
           alt={imageProps.alt || ''}
-          className={cn('transition-all duration-300')}
+          className={cn('transition-all duration-300 w-full h-full object-cover')}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover'
+          }}
         />
         {isHovered && (
           <div

@@ -1,16 +1,22 @@
 'use client'
 
 import { useRef } from "react";
-import Navbar from "@/components/navbar";
+import ModernNavbar from "@/components/modern-navbar";
 import SliderOne from "@/components/ui/slider";
 import { Spotlight } from "@/components/ui/spotlight";
 import Link from "next/link";
+import StarsBackground from "@/components/stars-background";
+import ModernHero from "@/components/modern-hero";
+import ModernSlider from "@/components/modern-slider";
+import ModernServices from "@/components/modern-services";
 
-import WebsiteDesign from "./siteweb";
-import GraphicDesign from "./graphique";
-import ShopifyStores from "./shopify-stores";
-import Brands from "./brands";
-import Services from "./services";
+import ModernWebsiteDesign from "@/components/modern-website-design";
+import ModernGraphicDesign from "@/components/modern-graphic-design";
+import ModernShopify from "@/components/modern-shopify";
+import ModernBrands from "@/components/modern-brands";
+import BlackFriday from "./black-friday";
+import ServicesVideo from "@/components/services-video";
+import DailyMarketingTips from "@/components/daily-marketing-tips";
 
 import FAQS from "./faq";
 
@@ -49,7 +55,8 @@ export default function Home() {
 
   return (
     <div className="w-full md:items-center md:justify-center bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
-      <Navbar
+      <StarsBackground />
+      <ModernNavbar
         scrollToWebsiteDesign={scrollToWebsiteDesign}
         scrollToGraphicDesign={scrollToGraphicDesign}
         scrollToShopifyStores={scrollToShopifyStores}
@@ -57,46 +64,56 @@ export default function Home() {
         scrollToServices={scrollToServices}
       />
 
-      <Spotlight className="hidden md:flex md:-top-80 left-80  " fill="white" />
-      <div className="p-4 mx-auto relative z-10 w-full pt-10 md:pt-20 px-2">
-        <div
-          className="text-4xl pb-5 md:text-7xl px-6 text-center  
-        bg-clip-text text-transparent bg-gradient-to-b 
-        from-neutral-50 to bg-neutral-400 
-        bg-opacity-50"
-        >
-          Créez, développez et <br /> faites évoluer votre entreprise
-        </div>
-        <p className="mt-4 text-lg font-normal  text-neutral-300 max-w-lg text-center mx-auto px-4">
-          Des solutions sur mesure pour votre entreprise. Nous sommes une équipe
-          de créatifs qui sont ravis de vous aider à développer votre
-          entreprise.
-        </p>
-        <Link
-          href={"/book"}
-          className="cursor-pointer flex items-center justify-center border rounded-full w-48 p-2  mx-auto my-6 text-white "
-        >
-          Appelez-nous
-        </Link>
+      <Spotlight className="hidden md:flex md:-top-80 left-80" fill="white" />
+      
+      {/* Hero Section Moderne */}
+      <ModernHero />
 
+      <div className="p-4 mx-auto relative z-10 w-full px-2">
+        {/* Slider Moderne avec images 3D */}
         <div className="w-full pt-20">
-          <SliderOne />
+          <ModernSlider />
         </div>
-        <div ref={websiteDesignRef}>
-          <WebsiteDesign />
-        </div>
-        <div ref={graphicDesignRef}>
-          <GraphicDesign />
-        </div>
-        <div ref={shopifyStoresRef}>
-          <ShopifyStores />
-        </div>
-        <div ref={brandsRef}>
-          <Brands />
-        </div>
+
+        {/* Section Black Friday */}
+        <BlackFriday />
+
+        {/* Blog - Conseils Marketing Digital du Jour */}
+        <DailyMarketingTips />
+
+        {/* Section Vidéo */}
+        <ServicesVideo 
+          videoId="VOTRE_ID_YOUTUBE" 
+          title="Découvrez nos services en vidéo"
+          description="Une présentation complète de nos solutions digitales pour transformer votre entreprise"
+        />
+
+        {/* Services Moderne avec images 3D */}
         <div ref={servicesRef} id='services'>
-        <Services />
+          <ModernServices />
         </div>
+
+        {/* Section Website Design Moderne */}
+        <div ref={websiteDesignRef}>
+          <ModernWebsiteDesign />
+        </div>
+
+        {/* Section Graphic Design Moderne */}
+        <div ref={graphicDesignRef}>
+          <ModernGraphicDesign />
+        </div>
+
+        {/* Section Shopify Stores Moderne */}
+        <div ref={shopifyStoresRef}>
+          <ModernShopify />
+        </div>
+
+        {/* Section Brands Moderne */}
+        <div ref={brandsRef}>
+          <ModernBrands />
+        </div>
+
+        {/* FAQ */}
         <FAQS />
       </div>
     </div>

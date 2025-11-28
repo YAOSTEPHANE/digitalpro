@@ -9,7 +9,7 @@ export const siteConfig = {
   title: "digitalpro solutions - Agence d'intelligence numérique",
   description: "Agence spécialisée en SEO, médias sociaux et développement web. Solutions sur mesure pour votre transformation digitale. Expertise en référencement, marketing digital et création de sites web.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://digitalprosolutions.com",
-  ogImage: "/logo/logo.jpg",
+  ogImage: "/logo/logo.png",
   locale: "fr_FR",
   type: "website",
   twitterHandle: "@digitalprosolutions",
@@ -88,11 +88,11 @@ export const defaultMetadata = {
       "max-snippet": -1,
     },
   } as Metadata['robots'],
-  icons: {
-    icon: "/logo/logo.jpg",
-    shortcut: "/logo/logo.jpg",
-    apple: "/logo/logo.jpg",
-  },
+      icons: {
+        icon: "/logo/logo.png",
+        shortcut: "/logo/logo.png",
+        apple: "/logo/logo.png",
+      },
   verification: {
     // Ajoutez vos codes de vérification ici quand vous les aurez
     // google: "votre-code-google",
