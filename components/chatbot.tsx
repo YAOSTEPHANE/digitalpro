@@ -102,7 +102,7 @@ export default function Chatbot() {
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: data.response || 'Désolé, je n\'ai pas pu traiter votre demande.',
+        text: data.response || 'Désolé, je n&apos;ai pas pu traiter votre demande.',
         sender: 'bot',
         timestamp: new Date(),
       }

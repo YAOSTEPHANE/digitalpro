@@ -18,7 +18,11 @@ export async function POST(req: Request) {
         features,
         project_description,
         additional_info,
+        ...rest
       } = await req.json();
+      
+      // Ignorer les champs non utilisés comme 'terms'
+      void rest;
 
       const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
