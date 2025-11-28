@@ -291,11 +291,12 @@ const ModernBilling = () => {
                         onClick={() => {
                           setActiveTab("invoice");
                           setClientInfo(prev => ({ ...prev }));
+                          const priceValue = plan.priceValue ?? 0;
                           setInvoiceItems([{
                             description: plan.name,
                             quantity: 1,
-                            unitPrice: plan.priceValue,
-                            total: plan.priceValue
+                            unitPrice: priceValue,
+                            total: priceValue
                           }]);
                         }}
                         className="w-full bg-gradient-to-r from-emerald-500 to-blue-400 hover:from-emerald-600 hover:to-blue-500"
