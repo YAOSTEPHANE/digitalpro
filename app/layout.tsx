@@ -6,6 +6,7 @@ import Chatbot from "@/components/chatbot";
 import ModernFooter from "@/components/modern-footer";
 import { defaultMetadata } from "@/lib/seo";
 import StructuredData from "@/components/structured-data";
+import ChristmasDecorations from "@/components/christmas-decorations";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <StructuredData />
+        <ChristmasDecorations />
             {children}
             <ModernFooter />
             <Chatbot />

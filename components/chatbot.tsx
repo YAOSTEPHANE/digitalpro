@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
+import { MessageCircle, X, Send, Bot, User, Bell } from 'lucide-react'
 
 interface Message {
   id: string
@@ -12,6 +12,7 @@ interface Message {
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
+  const [showNotification, setShowNotification] = useState(false)
   // Initialiser les messages avec une fonction pour éviter les problèmes d'hydratation
   const [messages, setMessages] = useState<Message[]>(() => [
     {
@@ -24,12 +25,31 @@ export default function Chatbot() {
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+  const [hasShownWelcome, setHasShownWelcome] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // S'assurer que le composant est monté côté client avant d'afficher
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  // Afficher une notification de bienvenue au chargement de la page
+  useEffect(() => {
+    if (isMounted && !hasShownWelcome) {
+      // Attendre un peu avant d'afficher la notification
+      const timer = setTimeout(() => {
+        setShowNotification(true)
+        setHasShownWelcome(true)
+        
+        // Masquer la notification après 5 secondes
+        setTimeout(() => {
+          setShowNotification(false)
+        }, 5000)
+      }, 2000) // Attendre 2 secondes après le chargement
+
+      return () => clearTimeout(timer)
+    }
+  }, [isMounted, hasShownWelcome])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -111,11 +131,44 @@ export default function Chatbot() {
 
   return (
     <>
+      {/* Notification de bienvenue */}
+      {isMounted && showNotification && !isOpen && (
+        <div className="fixed bottom-24 left-6 z-50 w-80 bg-gradient-to-r from-red-600/95 to-blue-600/95 backdrop-blur-lg border border-red-500/30 rounded-xl shadow-2xl p-4 animate-slide-up">
+          <div className="flex items-start gap-3">
+            <div className="bg-white/20 rounded-full p-2 flex-shrink-0">
+              <Bell className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex-1">
+              <h4 className="text-white font-semibold text-sm mb-1">Bienvenue ! 👋</h4>
+              <p className="text-white/90 text-xs mb-3">
+                Besoin d'aide ? Notre assistant est là pour vous accompagner !
+              </p>
+              <button
+                onClick={() => {
+                  setShowNotification(false)
+                  setIsOpen(true)
+                }}
+                className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-4 rounded-lg transition-colors"
+              >
+                Parler à l'assistant
+              </button>
+            </div>
+            <button
+              onClick={() => setShowNotification(false)}
+              className="text-white/80 hover:text-white transition-colors flex-shrink-0"
+              aria-label="Fermer la notification"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Bouton flottant pour ouvrir le chatbot */}
       {isMounted && !isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none"
+          className="fixed bottom-6 left-6 z-50 bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none"
           aria-label="Ouvrir le chatbot"
         >
           <MessageCircle className="w-6 h-6" />
@@ -124,9 +177,9 @@ export default function Chatbot() {
 
       {/* Fenêtre du chatbot */}
       {isMounted && isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-96 h-[600px] bg-black/95 backdrop-blur-lg border border-neutral-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+        <div className="fixed bottom-6 left-6 z-50 w-96 h-[600px] bg-black/95 backdrop-blur-lg border border-neutral-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
           {/* En-tête */}
-          <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-4 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-red-600 to-blue-600 p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 rounded-full p-2">
                 <Bot className="w-5 h-5 text-white" />
@@ -155,14 +208,14 @@ export default function Chatbot() {
                 }`}
               >
                 {message.sender === 'bot' && (
-                  <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-full p-2 h-8 w-8 flex items-center justify-center flex-shrink-0">
+                  <div className="bg-gradient-to-r from-red-600 to-blue-600 rounded-full p-2 h-8 w-8 flex items-center justify-center flex-shrink-0">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
                 )}
                 <div
                   className={`max-w-[75%] rounded-2xl px-4 py-2 ${
                     message.sender === 'user'
-                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                      ? 'bg-gradient-to-r from-red-600 to-blue-600 text-white'
                       : 'bg-neutral-800 text-neutral-100 border border-neutral-700'
                   }`}
                 >
@@ -177,7 +230,7 @@ export default function Chatbot() {
             ))}
             {isLoading && (
               <div className="flex gap-3 justify-start">
-                <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-full p-2 h-8 w-8 flex items-center justify-center">
+                <div className="bg-gradient-to-r from-red-600 to-blue-600 rounded-full p-2 h-8 w-8 flex items-center justify-center">
                   <Bot className="w-4 h-4 text-white" />
                 </div>
                 <div className="bg-neutral-800 text-neutral-100 border border-neutral-700 rounded-2xl px-4 py-2">
@@ -201,13 +254,13 @@ export default function Chatbot() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Tapez votre message..."
-                className="flex-1 bg-neutral-800 border border-neutral-700 rounded-lg px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="flex-1 bg-neutral-800 border border-neutral-700 rounded-lg px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-red-500"
                 disabled={isLoading}
               />
               <button
                 onClick={sendMessage}
                 disabled={isLoading || !input.trim()}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2 transition-all"
+                className="bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2 transition-all"
                 aria-label="Envoyer le message"
               >
                 <Send className="w-5 h-5" />

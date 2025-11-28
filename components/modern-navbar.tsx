@@ -123,7 +123,14 @@ const ModernNavbar = ({
                 className="w-8 h-8 text-slate-300 cursor-pointer flex items-center justify-center"
               >
                 <X />
-                <DropDownMenu />
+                <DropDownMenu 
+                  scrollToServices={scrollToServices}
+                  scrollToWebsiteDesign={scrollToWebsiteDesign}
+                  scrollToGraphicDesign={scrollToGraphicDesign}
+                  scrollToShopifyStores={scrollToShopifyStores}
+                  scrollToBrands={scrollToBrands}
+                  onClose={closeDropDown}
+                />
               </div>
             ) : (
               <AlignJustify
