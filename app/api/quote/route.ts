@@ -24,19 +24,19 @@ export async function POST(req: Request) {
       } = rest;
 
       const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
+        host: process.env.SMTP_HOST || "smtp.gmail.com",
+        port: parseInt(process.env.SMTP_PORT || "465"),
         secure: true,
         auth: {
-          user: "digitalproslutions01@gmail.com",
-          pass: "glla okbr gnjv ujqw",
+          user: process.env.SMTP_USER || "digitalproslutions01@gmail.com",
+          pass: process.env.SMTP_PASSWORD || "",
         },
       });
 
       // Email à l'équipe
       const mailOptions = {
         from: email,
-        to: "digitalproslutions01@gmail.com",
+        to: process.env.SMTP_USER || "digitalproslutions01@gmail.com",
         subject: `Nouvelle demande de devis - ${first_name} ${last_name}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto;">
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
 
       // Email de confirmation au client
       const confirmationMailOptions = {
-        from: "digitalproslutions01@gmail.com",
+        from: process.env.SMTP_USER || "digitalproslutions01@gmail.com",
         to: email,
         subject: "Confirmation de votre demande de devis - digitalpro solutions",
         html: `

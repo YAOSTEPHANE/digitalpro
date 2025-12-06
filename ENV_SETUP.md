@@ -48,6 +48,13 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 # Au moins une clé est recommandée pour activer l'IA
 OPENAI_API_KEY=sk-votre_cle_openai_ici
 GEMINI_API_KEY=votre_cle_gemini_ici
+
+# Configuration SMTP pour l'envoi d'emails (OBLIGATOIRE)
+# Ces variables sont utilisées pour les formulaires de contact et devis
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_USER=votre_email@gmail.com
+SMTP_PASSWORD=votre_mot_de_passe_application_gmail
 ```
 
 ## ⚠️ Important
