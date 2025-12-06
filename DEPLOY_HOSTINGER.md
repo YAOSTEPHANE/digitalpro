@@ -274,3 +274,7 @@ Pour plus d'aide, consultez :
 - Documentation Hostinger : https://www.hostinger.com/tutorials
 - Documentation Next.js : https://nextjs.org/docs/deployment
 
+
+
+
+

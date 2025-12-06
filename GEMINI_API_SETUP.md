@@ -31,3 +31,7 @@ GEMINI_API_KEY=AIzaSyBeHODPwS3VpZsI7YgBQ7m8xUjduB9mOC4
 
 ⚠️ **Important** : Ne commitez jamais votre fichier `.env.local` dans Git. Il est déjà dans `.gitignore`.
 
+
+
+
+

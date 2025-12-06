@@ -18,3 +18,7 @@ if (Test-Path "node_modules\.cache") {
 Write-Host "`nCache nettoye avec succes!" -ForegroundColor Green
 Write-Host "Redemarrez le serveur avec: npm run dev" -ForegroundColor Cyan
 
+
+
+
+

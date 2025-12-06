@@ -81,3 +81,7 @@ echo -e "${GREEN}✅ Mise à jour terminée avec succès !${NC}"
 echo ""
 echo "Vérifiez votre site: https://votredomaine.com"
 
+
+
+
+

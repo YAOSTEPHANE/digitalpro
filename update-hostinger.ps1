@@ -56,3 +56,7 @@ Write-Host "   npm install" -ForegroundColor Yellow
 Write-Host "   npm run build" -ForegroundColor Yellow
 Write-Host "4. Dans Node.js Version Manager → Restart App" -ForegroundColor White
 
+
+
+
+
