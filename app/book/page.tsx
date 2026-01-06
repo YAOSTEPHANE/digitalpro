@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Calendar, Clock, User, Mail, Phone, Building, MessageSquare, CheckCircle2 } from "lucide-react";
-import Navbar from "@/components/navbar";
+import ModernNavbar from "@/components/modern-navbar";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -124,7 +124,7 @@ export default function Book() {
 
   return (
     <div className="w-full min-h-screen bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
-      <Navbar
+      <ModernNavbar
         scrollToWebsiteDesign={() => {}}
         scrollToGraphicDesign={() => {}}
         scrollToShopifyStores={() => {}}

@@ -46,51 +46,64 @@ export async function POST(request: NextRequest) {
       data.total = subtotal + taxAmount - discountAmount;
     }
 
-    // Envoyer l'email de confirmation au client
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: false,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD,
-      },
-    });
-
+    // Générer le HTML de la facture
     const invoiceHTML = generateInvoiceHTML(data);
 
-    // Email au client
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: data.clientEmail,
-      subject: `Facture ${data.invoiceNumber} - digitalpro solutions`,
-      html: invoiceHTML,
-      attachments: [
-        {
-          filename: `facture-${data.invoiceNumber}.html`,
-          content: invoiceHTML,
-        },
-      ],
-    });
+    // Envoyer l'email seulement si les credentials SMTP sont configurés
+    if (process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
+      try {
+        const transporter = nodemailer.createTransport({
+          host: process.env.SMTP_HOST || 'smtp.gmail.com',
+          port: parseInt(process.env.SMTP_PORT || '587'),
+          secure: false,
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASSWORD,
+          },
+        });
 
-    // Email à l'équipe
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: process.env.SMTP_USER,
-      subject: `Nouvelle facture générée: ${data.invoiceNumber}`,
-      html: `
-        <h2>Nouvelle facture générée</h2>
-        <p><strong>Numéro:</strong> ${data.invoiceNumber}</p>
-        <p><strong>Client:</strong> ${data.clientName}</p>
-        <p><strong>Email:</strong> ${data.clientEmail}</p>
-        <p><strong>Total:</strong> ${data.total.toLocaleString('fr-FR')} FCFA</p>
-      `,
-    });
+        // Email au client
+        await transporter.sendMail({
+          from: process.env.SMTP_USER,
+          to: data.clientEmail,
+          subject: `Facture ${data.invoiceNumber} - digitalpro solutions`,
+          html: invoiceHTML,
+          attachments: [
+            {
+              filename: `facture-${data.invoiceNumber}.html`,
+              content: invoiceHTML,
+            },
+          ],
+        });
+
+        // Email à l'équipe
+        await transporter.sendMail({
+          from: process.env.SMTP_USER,
+          to: process.env.SMTP_USER,
+          subject: `Nouvelle facture générée: ${data.invoiceNumber}`,
+          html: `
+            <h2>Nouvelle facture générée</h2>
+            <p><strong>Numéro:</strong> ${data.invoiceNumber}</p>
+            <p><strong>Client:</strong> ${data.clientName}</p>
+            <p><strong>Email:</strong> ${data.clientEmail}</p>
+            <p><strong>Total:</strong> ${data.total.toLocaleString('fr-FR')} FCFA</p>
+          `,
+        });
+      } catch (emailError) {
+        console.error('Erreur lors de l\'envoi de l\'email:', emailError);
+        // Continuer même si l'email échoue
+      }
+    } else {
+      console.warn('Credentials SMTP non configurés. La facture sera générée mais aucun email ne sera envoyé.');
+    }
 
     return NextResponse.json({
       success: true,
       invoiceNumber: data.invoiceNumber,
-      message: 'Facture générée et envoyée avec succès',
+      message: process.env.SMTP_USER && process.env.SMTP_PASSWORD 
+        ? 'Facture générée et envoyée avec succès' 
+        : 'Facture générée avec succès (email non envoyé - credentials SMTP non configurés)',
+      invoiceHTML: invoiceHTML, // Retourner le HTML pour téléchargement côté client
     });
   } catch (error) {
     console.error('Erreur lors de la génération de la facture:', error);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   CheckCircle2, 
@@ -10,7 +10,11 @@ import {
   Trash2,
   Calculator,
   Calendar,
-  User
+  User,
+  Download,
+  Eye,
+  Search,
+  Filter
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +26,24 @@ interface InvoiceItem {
   quantity: number;
   unitPrice: number;
   total: number;
+}
+
+interface Invoice {
+  id: string;
+  invoiceNumber: string;
+  clientName: string;
+  clientEmail: string;
+  clientPhone?: string;
+  clientAddress?: string;
+  items: InvoiceItem[];
+  subtotal: number;
+  tax?: number;
+  discount?: number;
+  total: number;
+  dueDate?: string;
+  notes?: string;
+  createdAt: string;
+  status: "paid" | "pending" | "overdue";
 }
 
 const ModernBilling = () => {
@@ -42,6 +64,213 @@ const ModernBilling = () => {
     notes: ""
   });
   const [isGenerating, setIsGenerating] = useState(false);
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState<"all" | "paid" | "pending" | "overdue">("all");
+
+  // Charger les factures depuis localStorage
+  useEffect(() => {
+    const savedInvoices = localStorage.getItem("invoices");
+    if (savedInvoices) {
+      try {
+        const parsed = JSON.parse(savedInvoices);
+        setInvoices(parsed);
+      } catch (error) {
+        console.error("Erreur lors du chargement des factures:", error);
+      }
+    }
+  }, []);
+
+  // Sauvegarder les factures dans localStorage
+  const saveInvoice = (invoice: Invoice) => {
+    const updatedInvoices = [invoice, ...invoices];
+    setInvoices(updatedInvoices);
+    localStorage.setItem("invoices", JSON.stringify(updatedInvoices));
+  };
+
+  // Supprimer une facture
+  const deleteInvoice = (id: string) => {
+    const updatedInvoices = invoices.filter(inv => inv.id !== id);
+    setInvoices(updatedInvoices);
+    localStorage.setItem("invoices", JSON.stringify(updatedInvoices));
+    toast.success("Facture supprimée");
+  };
+
+  // Télécharger une facture en HTML
+  const downloadInvoice = (invoice: Invoice) => {
+    const html = generateInvoiceHTML(invoice);
+    const blob = new Blob([html], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `facture-${invoice.invoiceNumber}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success("Facture téléchargée");
+  };
+
+  // Générer le HTML de la facture
+  const generateInvoiceHTML = (invoice: Invoice): string => {
+    const subtotal = invoice.subtotal;
+    const taxAmount = invoice.tax ? (subtotal * invoice.tax) / 100 : 0;
+    const discountAmount = invoice.discount ? (subtotal * invoice.discount) / 100 : 0;
+    const total = invoice.total;
+
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+          }
+          .header {
+            border-bottom: 3px solid #8b5cf6;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+          }
+          .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8b5cf6;
+          }
+          .invoice-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+          }
+          .client-info, .company-info {
+            flex: 1;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+          }
+          th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+          }
+          th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+          }
+          .totals {
+            margin-top: 20px;
+            text-align: right;
+          }
+          .total-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+          }
+          .total-label {
+            width: 150px;
+            text-align: right;
+            margin-right: 20px;
+          }
+          .total-value {
+            width: 150px;
+            text-align: right;
+            font-weight: bold;
+          }
+          .grand-total {
+            font-size: 20px;
+            color: #8b5cf6;
+            border-top: 2px solid #8b5cf6;
+            padding-top: 10px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div class="logo">digitalpro solutions</div>
+          <h1>FACTURE</h1>
+          <p><strong>Numéro:</strong> ${invoice.invoiceNumber}</p>
+          <p><strong>Date:</strong> ${new Date(invoice.createdAt).toLocaleDateString('fr-FR')}</p>
+          ${invoice.dueDate ? `<p><strong>Date d'échéance:</strong> ${new Date(invoice.dueDate).toLocaleDateString('fr-FR')}</p>` : ''}
+        </div>
+
+        <div class="invoice-info">
+          <div class="client-info">
+            <h3>Facturé à:</h3>
+            <p><strong>${invoice.clientName}</strong></p>
+            ${invoice.clientEmail ? `<p>${invoice.clientEmail}</p>` : ''}
+            ${invoice.clientPhone ? `<p>${invoice.clientPhone}</p>` : ''}
+            ${invoice.clientAddress ? `<p>${invoice.clientAddress}</p>` : ''}
+          </div>
+          <div class="company-info">
+            <h3>digitalpro solutions</h3>
+            <p>Bvd Koffi Gadaud, Cocody</p>
+            <p>Abidjan, Côte d'Ivoire</p>
+            <p>Email: digitalprosolutions27@gmail.com</p>
+            <p>Tél: +225 07 48 97 60 31</p>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Quantité</th>
+              <th>Prix unitaire</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${invoice.items.map(item => `
+              <tr>
+                <td>${item.description}</td>
+                <td>${item.quantity}</td>
+                <td>${item.unitPrice.toLocaleString('fr-FR')} FCFA</td>
+                <td>${item.total.toLocaleString('fr-FR')} FCFA</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <div class="totals">
+          <div class="total-row">
+            <span class="total-label">Sous-total:</span>
+            <span class="total-value">${subtotal.toLocaleString('fr-FR')} FCFA</span>
+          </div>
+          ${invoice.tax ? `
+            <div class="total-row">
+              <span class="total-label">TVA (${invoice.tax}%):</span>
+              <span class="total-value">${taxAmount.toLocaleString('fr-FR')} FCFA</span>
+            </div>
+          ` : ''}
+          ${invoice.discount ? `
+            <div class="total-row">
+              <span class="total-label">Remise (${invoice.discount}%):</span>
+              <span class="total-value">-${discountAmount.toLocaleString('fr-FR')} FCFA</span>
+            </div>
+          ` : ''}
+          <div class="total-row grand-total">
+            <span class="total-label">TOTAL:</span>
+            <span class="total-value">${total.toLocaleString('fr-FR')} FCFA</span>
+          </div>
+        </div>
+
+        ${invoice.notes ? `
+          <div style="margin-top: 30px;">
+            <h3>Notes:</h3>
+            <p>${invoice.notes}</p>
+          </div>
+        ` : ''}
+      </body>
+      </html>
+    `;
+  };
 
   const plans = [
     {
@@ -165,6 +394,28 @@ const ModernBilling = () => {
       const data = await response.json();
 
       if (response.ok) {
+        // Créer l'objet facture pour l'historique
+        const newInvoice: Invoice = {
+          id: `inv-${Date.now()}`,
+          invoiceNumber: data.invoiceNumber || `INV-${Date.now()}`,
+          clientName: clientInfo.name,
+          clientEmail: clientInfo.email,
+          clientPhone: clientInfo.phone || undefined,
+          clientAddress: clientInfo.address || undefined,
+          items: invoiceItems,
+          subtotal,
+          tax: invoiceSettings.tax || undefined,
+          discount: invoiceSettings.discount || undefined,
+          total,
+          dueDate: invoiceSettings.dueDate || undefined,
+          notes: invoiceSettings.notes || undefined,
+          createdAt: new Date().toISOString(),
+          status: "pending",
+        };
+
+        // Sauvegarder la facture
+        saveInvoice(newInvoice);
+
         toast.success("Facture générée et envoyée avec succès!");
         // Réinitialiser le formulaire
         setInvoiceItems([{ description: "", quantity: 1, unitPrice: 0, total: 0 }]);
@@ -512,16 +763,146 @@ const ModernBilling = () => {
             className="max-w-5xl mx-auto"
           >
             <div className="bg-gradient-to-br from-neutral-900/90 to-black border border-purple-500/20 rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <Calendar className="w-6 h-6 text-purple-400" />
-                Historique des factures
-              </h2>
-              
-              <div className="text-center py-12 text-neutral-400">
-                <FileText className="w-16 h-16 mx-auto mb-4 text-neutral-600" />
-                <p>Aucune facture générée pour le moment</p>
-                <p className="text-sm mt-2">Les factures générées apparaîtront ici</p>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <Calendar className="w-6 h-6 text-purple-400" />
+                  Historique des factures
+                </h2>
+
+                {/* Recherche et filtres */}
+                <div className="flex gap-3">
+                  <div className="relative flex-1 max-w-xs">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                    <Input
+                      placeholder="Rechercher..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="bg-neutral-800 border-neutral-700 text-white pl-10"
+                    />
+                  </div>
+                  <div className="relative">
+                    <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                    <select
+                      value={filterStatus}
+                      onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
+                      className="bg-neutral-800 border border-neutral-700 text-white rounded-md px-10 py-2 appearance-none cursor-pointer"
+                    >
+                      <option value="all">Tous</option>
+                      <option value="paid">Payées</option>
+                      <option value="pending">En attente</option>
+                      <option value="overdue">En retard</option>
+                    </select>
+                  </div>
+                </div>
               </div>
+
+              {/* Liste des factures */}
+              {invoices.length === 0 ? (
+                <div className="text-center py-12 text-neutral-400">
+                  <FileText className="w-16 h-16 mx-auto mb-4 text-neutral-600" />
+                  <p>Aucune facture générée pour le moment</p>
+                  <p className="text-sm mt-2">Les factures générées apparaîtront ici</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {invoices
+                    .filter((invoice) => {
+                      const matchesSearch =
+                        invoice.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        invoice.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        invoice.clientEmail.toLowerCase().includes(searchTerm.toLowerCase());
+                      const matchesFilter = filterStatus === "all" || invoice.status === filterStatus;
+                      return matchesSearch && matchesFilter;
+                    })
+                    .map((invoice) => {
+                      const isOverdue =
+                        invoice.dueDate &&
+                        new Date(invoice.dueDate) < new Date() &&
+                        invoice.status !== "paid";
+                      const status = isOverdue ? "overdue" : invoice.status;
+
+                      return (
+                        <div
+                          key={invoice.id}
+                          className="bg-neutral-800/50 border border-neutral-700 rounded-lg p-6 hover:border-purple-500/50 transition-colors"
+                        >
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                <h3 className="text-lg font-semibold text-white">
+                                  {invoice.invoiceNumber}
+                                </h3>
+                                <span
+                                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                    status === "paid"
+                                      ? "bg-green-500/20 text-green-400"
+                                      : status === "overdue"
+                                      ? "bg-red-500/20 text-red-400"
+                                      : "bg-yellow-500/20 text-yellow-400"
+                                  }`}
+                                >
+                                  {status === "paid"
+                                    ? "Payée"
+                                    : status === "overdue"
+                                    ? "En retard"
+                                    : "En attente"}
+                                </span>
+                              </div>
+                              <div className="text-sm text-neutral-400 space-y-1">
+                                <p>
+                                  <span className="text-neutral-500">Client:</span>{" "}
+                                  {invoice.clientName}
+                                </p>
+                                <p>
+                                  <span className="text-neutral-500">Email:</span>{" "}
+                                  {invoice.clientEmail}
+                                </p>
+                                <p>
+                                  <span className="text-neutral-500">Date:</span>{" "}
+                                  {new Date(invoice.createdAt).toLocaleDateString("fr-FR", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  })}
+                                </p>
+                                {invoice.dueDate && (
+                                  <p>
+                                    <span className="text-neutral-500">Échéance:</span>{" "}
+                                    {new Date(invoice.dueDate).toLocaleDateString("fr-FR")}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex flex-col items-end gap-2">
+                              <div className="text-2xl font-bold text-purple-400">
+                                {invoice.total.toLocaleString("fr-FR")} FCFA
+                              </div>
+                              <div className="flex gap-2">
+                                <Button
+                                  onClick={() => downloadInvoice(invoice)}
+                                  variant="outline"
+                                  size="sm"
+                                  className="bg-neutral-700 border-neutral-600 text-white hover:bg-neutral-600"
+                                >
+                                  <Download className="w-4 h-4 mr-2" />
+                                  Télécharger
+                                </Button>
+                                <Button
+                                  onClick={() => deleteInvoice(invoice.id)}
+                                  variant="outline"
+                                  size="sm"
+                                  className="bg-red-500/20 border-red-500/50 text-red-400 hover:bg-red-500/30"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
             </div>
           </motion.div>
         )}

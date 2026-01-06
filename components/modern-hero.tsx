@@ -55,7 +55,7 @@ const ModernHero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
+          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight pt-16 md:pt-24"
         >
           <span className="block bg-clip-text text-transparent bg-gradient-to-r from-white via-red-200 to-blue-200">
             Créez, développez

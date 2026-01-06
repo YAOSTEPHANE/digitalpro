@@ -6,6 +6,7 @@ import Chatbot from "@/components/chatbot";
 import ModernFooter from "@/components/modern-footer";
 import { defaultMetadata } from "@/lib/seo";
 import StructuredData from "@/components/structured-data";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
             {children}
             <ModernFooter />
             <Chatbot />
+            <Toaster />
         <Analytics />
       </body>
     </html>

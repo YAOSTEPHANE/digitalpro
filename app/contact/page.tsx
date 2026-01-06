@@ -16,7 +16,7 @@ import {
   Clock,
   Sparkles
 } from "lucide-react";
-import Navbar from "@/components/navbar";
+import ModernNavbar from "@/components/modern-navbar";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -116,7 +116,7 @@ export default function ContactForm() {
 
   return (
     <div className="w-full min-h-screen bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
-      <Navbar
+      <ModernNavbar
         scrollToWebsiteDesign={() => {}}
         scrollToGraphicDesign={() => {}}
         scrollToShopifyStores={() => {}}

@@ -78,34 +78,73 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
 }`;
 
         // Générer le texte du conseil avec Gemini
-        const geminiResponse = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              contents: [
-                {
-                  parts: [
+        // Essayer d'abord avec gemini-1.5-flash (plus récent), puis gemini-pro en fallback
+        let geminiResponse;
+        let modelUsed = 'gemini-1.5-flash';
+        
+        try {
+          geminiResponse = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${modelUsed}:generateContent?key=${GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                contents: [
+                  {
+                    parts: [
+                      {
+                        text: `Tu es un expert en marketing digital qui donne des conseils pratiques et actionnables. Réponds toujours en JSON valide.\n\n${prompt}`,
+                      },
+                    ],
+                  },
+                ],
+                generationConfig: {
+                  temperature: 0.8,
+                  maxOutputTokens: 500,
+                  responseMimeType: 'application/json',
+                },
+              }),
+            }
+          );
+
+          // Si le modèle flash n'est pas disponible, essayer gemini-pro
+          if (!geminiResponse.ok && geminiResponse.status === 404) {
+            modelUsed = 'gemini-pro';
+            geminiResponse = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/${modelUsed}:generateContent?key=${GEMINI_API_KEY}`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  contents: [
                     {
-                      text: `Tu es un expert en marketing digital qui donne des conseils pratiques et actionnables. Réponds toujours en JSON valide.\n\n${prompt}`,
+                      parts: [
+                        {
+                          text: `Tu es un expert en marketing digital qui donne des conseils pratiques et actionnables. Réponds toujours en JSON valide.\n\n${prompt}`,
+                        },
+                      ],
                     },
                   ],
-                },
-              ],
-              generationConfig: {
-                temperature: 0.8,
-                maxOutputTokens: 500,
-                responseMimeType: 'application/json',
-              },
-            }),
+                  generationConfig: {
+                    temperature: 0.8,
+                    maxOutputTokens: 500,
+                    responseMimeType: 'application/json',
+                  },
+                }),
+              }
+            );
           }
-        );
 
-        if (!geminiResponse.ok) {
-          throw new Error(`Gemini API error: ${geminiResponse.status}`);
+          if (!geminiResponse.ok) {
+            const errorData = await geminiResponse.json().catch(() => ({}));
+            throw new Error(`Gemini API error (${modelUsed}): ${geminiResponse.status} - ${JSON.stringify(errorData)}`);
+          }
+        } catch (fetchError: any) {
+          throw new Error(`Gemini API fetch error: ${fetchError.message}`);
         }
 
         const geminiData = await geminiResponse.json();
@@ -137,36 +176,76 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
             // Pour les images, on peut utiliser un service comme Unsplash avec des mots-clés générés
             
             // Générer des mots-clés pour l'image avec Gemini
-            const imageKeywordsResponse = await fetch(
-              `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  contents: [
-                    {
-                      parts: [
+            let imageKeywordsResponse;
+            try {
+              // Essayer d'abord avec gemini-1.5-flash
+              imageKeywordsResponse = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    contents: [
+                      {
+                        parts: [
+                          {
+                            text: `Génère 3-5 mots-clés en anglais pour rechercher une image sur Unsplash qui illustre le concept: "${aiTip.title}" en marketing digital. Réponds uniquement avec les mots-clés séparés par des virgules, sans autre texte.`,
+                          },
+                        ],
+                      },
+                    ],
+                    generationConfig: {
+                      temperature: 0.7,
+                      maxOutputTokens: 50,
+                    },
+                  }),
+                }
+              );
+
+              // Si le modèle flash n'est pas disponible, essayer gemini-pro
+              if (!imageKeywordsResponse.ok && imageKeywordsResponse.status === 404) {
+                imageKeywordsResponse = await fetch(
+                  `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
+                  {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      contents: [
                         {
-                          text: `Génère 3-5 mots-clés en anglais pour rechercher une image sur Unsplash qui illustre le concept: "${aiTip.title}" en marketing digital. Réponds uniquement avec les mots-clés séparés par des virgules, sans autre texte.`,
+                          parts: [
+                            {
+                              text: `Génère 3-5 mots-clés en anglais pour rechercher une image sur Unsplash qui illustre le concept: "${aiTip.title}" en marketing digital. Réponds uniquement avec les mots-clés séparés par des virgules, sans autre texte.`,
+                            },
+                          ],
                         },
                       ],
-                    },
-                  ],
-                  generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 50,
-                  },
-                }),
+                      generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 50,
+                      },
+                    }),
+                  }
+                );
               }
-            );
+            } catch (imageKeywordsError) {
+              // Si la génération de mots-clés échoue, on continue avec l'image par défaut
+              imageKeywordsResponse = null;
+            }
 
-            if (imageKeywordsResponse.ok) {
-              const keywordsData = await imageKeywordsResponse.json();
-              const keywords = keywordsData.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || 'marketing digital technology';
-              // Utiliser Unsplash avec les mots-clés générés
-              generatedImage = `https://source.unsplash.com/800x600/?${encodeURIComponent(keywords)}`;
+            if (imageKeywordsResponse && imageKeywordsResponse.ok) {
+              try {
+                const keywordsData = await imageKeywordsResponse.json();
+                const keywords = keywordsData.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || 'marketing digital technology';
+                // Utiliser Unsplash avec les mots-clés générés
+                generatedImage = `https://source.unsplash.com/800x600/?${encodeURIComponent(keywords)}`;
+              } catch (parseError) {
+                // En cas d'erreur de parsing, utiliser l'image par défaut
+                console.error('Error parsing image keywords:', parseError);
+              }
             }
           } catch (imageError) {
             console.error('Error generating image keywords:', imageError);
@@ -182,8 +261,11 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
         } else {
           throw new Error('No response from Gemini');
         }
-      } catch (error) {
-        console.error('Gemini error, using fallback:', error);
+      } catch (error: any) {
+        // Logger l'erreur seulement si ce n'est pas une erreur 404 (modèle non disponible)
+        if (error?.message && !error.message.includes('404')) {
+          console.error('Gemini error, using fallback:', error.message);
+        }
         // Fallback vers génération locale
         tip = generateLocalTip(dayOfYear, selectedCategory, categoryImages);
       }

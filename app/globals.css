@@ -119,6 +119,12 @@
   body {
     @apply bg-background text-foreground;
   }
+  a {
+    @apply no-underline;
+  }
+  a:focus {
+    @apply outline-none ring-0;
+  }
 }
 
 /* Scrollbar personnalisée */
