@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Cloud, CloudRain, Sun, CloudSnow, Wind, Droplets } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Cloud, CloudRain, Sun, CloudSnow } from "lucide-react";
 
 interface WeatherData {
   temperature: number;
@@ -14,19 +14,22 @@ const TimeWeather = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Mettre à jour l'heure chaque seconde
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    // Récupérer la météo (simulation - vous pouvez utiliser une vraie API)
-    fetchWeather();
-
-    return () => clearInterval(timer);
+  const setMockWeather = useCallback(() => {
+    const conditions = [
+      { condition: "Ensoleillé", icon: "sun" },
+      { condition: "Nuageux", icon: "cloud" },
+      { condition: "Partiellement nuageux", icon: "cloud" },
+      { condition: "Pluvieux", icon: "rain" },
+    ];
+    const random = conditions[Math.floor(Math.random() * conditions.length)];
+    setWeather({
+      temperature: Math.floor(Math.random() * 15) + 20,
+      condition: random.condition,
+      icon: random.icon,
+    });
   }, []);
 
-  const fetchWeather = async () => {
+  const fetchWeather = useCallback(async () => {
     try {
       // Essayer d'obtenir la position de l'utilisateur
       if (navigator.geolocation) {
@@ -77,22 +80,20 @@ const TimeWeather = () => {
       setMockWeather();
       setLoading(false);
     }
-  };
+  }, [setMockWeather]);
 
-  const setMockWeather = () => {
-    const conditions = [
-      { condition: "Ensoleillé", icon: "sun" },
-      { condition: "Nuageux", icon: "cloud" },
-      { condition: "Partiellement nuageux", icon: "cloud" },
-      { condition: "Pluvieux", icon: "rain" },
-    ];
-    const random = conditions[Math.floor(Math.random() * conditions.length)];
-    setWeather({
-      temperature: Math.floor(Math.random() * 15) + 20,
-      condition: random.condition,
-      icon: random.icon,
-    });
-  };
+  useEffect(() => {
+    // Mettre à jour l'heure chaque seconde
+    const timer = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    // Récupérer la météo (simulation - vous pouvez utiliser une vraie API)
+    fetchWeather();
+
+    return () => clearInterval(timer);
+  }, [fetchWeather]);
+
 
   const formatTime = (date: Date) => {
     const hours = date.getHours().toString().padStart(2, "0");

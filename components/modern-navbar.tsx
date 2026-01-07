@@ -25,7 +25,6 @@ const ModernNavbar = ({
 }: NavbarProps) => {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeItem, setActiveItem] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -111,8 +110,6 @@ const ModernNavbar = ({
                 <Link
                   key={item.id}
                   href={item.href}
-                  onMouseEnter={() => setActiveItem(item.id)}
-                  onMouseLeave={() => setActiveItem(null)}
                   className="relative px-4 py-2.5 text-sm font-medium text-white/80 hover:text-white transition-colors whitespace-nowrap rounded-lg group no-underline focus:outline-none focus:ring-0"
                 >
                   <span className="relative z-10 border-b-2 border-transparent hover:border-blue-500 transition-colors duration-300 pb-0.5">
@@ -133,8 +130,6 @@ const ModernNavbar = ({
                   key={link.href}
                   href={link.href}
                   className="relative px-3 py-2 text-sm font-medium text-white/90 hover:text-white transition-colors whitespace-nowrap rounded-lg group no-underline focus:outline-none focus:ring-0"
-                  onMouseEnter={() => setActiveItem(`link-${index}`)}
-                  onMouseLeave={() => setActiveItem(null)}
                 >
                   <span className="relative z-10 border-b-2 border-transparent hover:border-blue-500 transition-colors duration-300 pb-0.5">
                     {link.label}
@@ -151,8 +146,6 @@ const ModernNavbar = ({
             <Link
               href="/contact"
               className="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-cyan-600 text-white font-semibold text-sm hover:from-violet-700 hover:to-cyan-700 transition-all whitespace-nowrap ml-2 rounded-lg no-underline focus:outline-none focus:ring-0"
-              onMouseEnter={() => setActiveItem("contact")}
-              onMouseLeave={() => setActiveItem(null)}
             >
               Contact
             </Link>

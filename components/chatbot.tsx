@@ -143,7 +143,6 @@ export default function Chatbot() {
               <p className="text-white/90 text-xs mb-3">
                 Besoin d&apos;aide ? Notre assistant est là pour vous accompagner !
               </p>
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
               <button
                 onClick={() => {
                   setShowNotification(false)

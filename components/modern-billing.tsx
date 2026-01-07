@@ -12,7 +12,6 @@ import {
   Calendar,
   User,
   Download,
-  Eye,
   Search,
   Filter
 } from "lucide-react";

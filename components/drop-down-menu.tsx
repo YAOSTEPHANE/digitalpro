@@ -13,11 +13,11 @@ interface DropDownMenuProps {
 }
 
 const DropDownMenu: React.FC<DropDownMenuProps> = ({
-  scrollToServices,
-  scrollToWebsiteDesign,
-  scrollToGraphicDesign,
-  scrollToShopifyStores,
-  scrollToBrands,
+  scrollToServices: _scrollToServices,
+  scrollToWebsiteDesign: _scrollToWebsiteDesign,
+  scrollToGraphicDesign: _scrollToGraphicDesign,
+  scrollToShopifyStores: _scrollToShopifyStores,
+  scrollToBrands: _scrollToBrands,
   onClose,
 }) => {
   const menuItems = [

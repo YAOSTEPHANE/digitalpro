@@ -143,8 +143,9 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
             const errorData = await geminiResponse.json().catch(() => ({}));
             throw new Error(`Gemini API error (${modelUsed}): ${geminiResponse.status} - ${JSON.stringify(errorData)}`);
           }
-        } catch (fetchError: any) {
-          throw new Error(`Gemini API fetch error: ${fetchError.message}`);
+        } catch (fetchError: unknown) {
+          const errorMessage = fetchError instanceof Error ? fetchError.message : 'Unknown error';
+          throw new Error(`Gemini API fetch error: ${errorMessage}`);
         }
 
         const geminiData = await geminiResponse.json();
@@ -231,7 +232,7 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
                   }
                 );
               }
-            } catch (imageKeywordsError) {
+            } catch (_imageKeywordsError) {
               // Si la génération de mots-clés échoue, on continue avec l'image par défaut
               imageKeywordsResponse = null;
             }
@@ -261,10 +262,11 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
         } else {
           throw new Error('No response from Gemini');
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         // Logger l'erreur seulement si ce n'est pas une erreur 404 (modèle non disponible)
-        if (error?.message && !error.message.includes('404')) {
-          console.error('Gemini error, using fallback:', error.message);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        if (errorMessage && !errorMessage.includes('404')) {
+          console.error('Gemini error, using fallback:', errorMessage);
         }
         // Fallback vers génération locale
         tip = generateLocalTip(dayOfYear, selectedCategory, categoryImages);

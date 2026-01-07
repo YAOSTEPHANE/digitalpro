@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Star, Quote, ThumbsUp, Award, Users, Heart, Send } from "lucide-react";
+import { Star, Quote, Award, Users, Heart, Send } from "lucide-react";
 import { motion } from "framer-motion";
 import StarsBackground from "@/components/stars-background";
 
@@ -100,14 +100,14 @@ export default function RetoursPage() {
     },
   });
 
-  const onSubmit = async (data: ReviewFormValues) => {
+  const onSubmit = async (_data: ReviewFormValues) => {
     setIsSubmitting(true);
     try {
       // Simuler l'envoi du formulaire
       await new Promise((resolve) => setTimeout(resolve, 1500));
       toast.success("Merci pour votre retour ! Votre avis a été enregistré.");
       form.reset();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
     } finally {
       setIsSubmitting(false);
@@ -448,5 +448,6 @@ export default function RetoursPage() {
     </div>
   );
 }
+
 
 

@@ -12,7 +12,7 @@ interface SiteRequest {
 
 // Fonction pour générer le code HTML/CSS/JS du site avec fonctionnalités avancées
 function generateSiteCode(request: SiteRequest): string {
-  const { type, style, colors, features, description, businessName, businessType } = request
+  const { style, colors, features, description, businessName, businessType } = request
   
   // Couleurs par défaut si non spécifiées
   const primaryColor = colors[0] || '#ef4444'

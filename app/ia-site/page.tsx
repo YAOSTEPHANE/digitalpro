@@ -12,12 +12,10 @@ import {
   CheckCircle2,
   Wand2,
   Zap,
-  Eye,
   FileCode,
   Loader2,
   Monitor,
-  LayoutTemplate,
-  X
+  LayoutTemplate
 } from "lucide-react";
 import ModernNavbar from "@/components/modern-navbar";
 import { Spotlight } from "@/components/ui/spotlight";
