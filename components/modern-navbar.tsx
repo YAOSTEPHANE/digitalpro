@@ -125,7 +125,7 @@ const ModernNavbar = ({
 
             {/* Liens rapides */}
             <div className="flex items-center gap-2">
-              {quickLinks.map((link, index) => (
+              {quickLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
