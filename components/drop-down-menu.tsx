@@ -12,6 +12,12 @@ interface DropDownMenuProps {
   onClose?: () => void;
 }
 
+interface MenuItem {
+  label: string;
+  href?: string;
+  action?: (() => void) | null;
+}
+
 const DropDownMenu: React.FC<DropDownMenuProps> = ({
   scrollToServices: _scrollToServices,
   scrollToWebsiteDesign: _scrollToWebsiteDesign,
@@ -20,7 +26,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({
   scrollToBrands: _scrollToBrands,
   onClose,
 }) => {
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     {
       label: "Accueil",
       href: "/",
@@ -88,8 +94,8 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({
     },
   ];
 
-  const handleClick = (item: typeof menuItems[0]) => {
-    if (item.action) {
+  const handleClick = (item: MenuItem) => {
+    if (item.action && typeof item.action === 'function') {
       item.action();
     }
     if (onClose) {
