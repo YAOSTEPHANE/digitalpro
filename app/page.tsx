@@ -81,7 +81,7 @@ export default function Home() {
       cta: "/book",
       ctaLabel: "Planifier une démo mobile",
       gradient: "from-fuchsia-500 to-violet-500",
-      video: "/demos/Screenrecorder-2026-04-06-14-37-19-866.mp4",
+      video: "/demos/video-demos.mp4",
       media: "/demos/mobile-demo-preview.svg",
       mediaAlt: "Aperçu d'une démo application mobile premium",
     },
@@ -345,9 +345,9 @@ export default function Home() {
                 </p>
                 <div className="mt-4 flex justify-center">
                   <div className="relative h-[340px] w-[190px] overflow-hidden rounded-[28px] border border-slate-300 bg-black shadow-xl">
-                    {!videoUnavailable["/demos/Screenrecorder-2026-04-06-14-37-19-866.mp4"] ? (
+                    {!videoUnavailable["/demos/video-demos.mp4"] ? (
                       <video
-                        src="/demos/Screenrecorder-2026-04-06-14-37-19-866.mp4"
+                        src="/demos/video-demos.mp4"
                         poster="/demos/mobile-demo-preview.svg"
                         className="h-full w-full object-cover"
                         autoPlay
@@ -358,7 +358,7 @@ export default function Home() {
                         onError={() =>
                           setVideoUnavailable((prev) => ({
                             ...prev,
-                            "/demos/Screenrecorder-2026-04-06-14-37-19-866.mp4": true,
+                            "/demos/video-demos.mp4": true,
                           }))
                         }
                       />
