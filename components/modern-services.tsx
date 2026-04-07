@@ -69,7 +69,7 @@ const ModernServices = () => {
   return (
     <div className="relative w-full py-20 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-black to-black" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-cyan-50/40" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4">
         {/* En-tête */}
@@ -81,13 +81,13 @@ const ModernServices = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-6xl font-bold mb-4">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-blue-400 to-blue-500">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-blue-500 to-cyan-500">
               Optimisez votre entreprise
             </span>
             <br />
-            <span className="text-white">grâce à nos services</span>
+            <span className="text-slate-900">grâce à nos services</span>
           </h2>
-          <p className="text-xl text-neutral-300 max-w-2xl mx-auto mt-4">
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto mt-4">
             De la conception de sites Web à la gestion des médias sociaux, nous offrons une large gamme de services pour vous aider à développer votre entreprise.
           </p>
         </motion.div>
@@ -104,10 +104,10 @@ const ModernServices = () => {
               className="h-full flex"
             >
               <CardContainer className="inter-var h-full w-full">
-                <CardBody className="bg-gradient-to-br from-neutral-900/90 to-black border border-red-500/20 relative group/card w-full h-full rounded-2xl p-6 hover:border-red-500/40 transition-all flex flex-col">
+                <CardBody className="bg-white border border-slate-200 relative group/card w-full h-full rounded-2xl p-6 hover:border-cyan-300 transition-all flex flex-col shadow-sm">
                   <CardItem
                     translateZ="50"
-                    className="text-xl font-bold text-white mb-2 flex-shrink-0"
+                    className="text-xl font-bold text-slate-900 mb-2 flex-shrink-0"
                   >
                     <div className="flex items-center gap-3 mb-4">
                       <div className={`bg-gradient-to-r ${service.color} p-3 rounded-xl flex-shrink-0`}>
@@ -130,7 +130,7 @@ const ModernServices = () => {
                   <CardItem
                     as="p"
                     translateZ="60"
-                    className="text-neutral-400 text-sm mb-6 flex-grow min-h-[60px]"
+                    className="text-slate-600 text-sm mb-6 flex-grow min-h-[60px]"
                   >
                     {service.description}
                   </CardItem>

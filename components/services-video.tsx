@@ -49,7 +49,7 @@ const ServicesVideo = ({
   return (
     <div className="relative w-full py-20 overflow-hidden">
       {/* Background avec effet de particules */}
-      <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-black to-black" />
+      <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-white to-blue-50/50" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4">
         {/* En-tête */}
@@ -61,11 +61,11 @@ const ServicesVideo = ({
           className="text-center mb-12"
         >
           <h2 className="text-4xl md:text-6xl font-bold mb-4">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-blue-500 to-blue-600">
               {title}
             </span>
           </h2>
-          <p className="text-xl text-neutral-300 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
             {description}
           </p>
         </motion.div>
@@ -76,7 +76,7 @@ const ServicesVideo = ({
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800 shadow-2xl"
+          className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-sm"
         >
           {/* Vidéo YouTube intégrée */}
           <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
@@ -92,10 +92,10 @@ const ServicesVideo = ({
             
             {/* Overlay de chargement */}
             {!videoLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-neutral-900 rounded-2xl">
+              <div className="absolute inset-0 flex items-center justify-center bg-white rounded-2xl">
                 <div className="text-center">
-                  <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                  <p className="text-neutral-400">Chargement de la vidéo...</p>
+                  <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                  <p className="text-slate-600">Chargement de la vidéo...</p>
                 </div>
               </div>
             )}
@@ -107,7 +107,7 @@ const ServicesVideo = ({
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleMute}
-              className="absolute bottom-4 right-4 bg-black/70 hover:bg-black/90 rounded-full p-3 text-white transition-all z-10"
+              className="absolute bottom-4 right-4 bg-white/95 hover:bg-white rounded-full p-3 text-slate-900 border border-slate-200 transition-all z-10"
               aria-label={isMuted ? "Activer le son" : "Couper le son"}
             >
               {isMuted ? (
@@ -127,43 +127,43 @@ const ServicesVideo = ({
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
         >
-          <div className="bg-gradient-to-br from-purple-600/10 to-blue-600/10 border border-purple-500/20 rounded-xl p-6 text-center hover:border-purple-500/40 transition-all">
+          <div className="bg-gradient-to-br from-red-600/10 to-blue-600/10 border border-red-200 rounded-xl p-6 text-center hover:border-red-300 transition-all">
             <div className="text-4xl mb-3">🌐</div>
-            <h3 className="text-xl font-semibold text-white mb-2">Développement Web</h3>
-            <p className="text-neutral-400 text-sm mb-4">
+            <h3 className="text-xl font-semibold text-slate-900 mb-2">Développement Web</h3>
+            <p className="text-slate-600 text-sm mb-4">
               Sites web modernes et performants adaptés à vos besoins. Technologies de pointe pour une expérience utilisateur optimale.
             </p>
             <Link 
               href="/contact" 
-              className="text-purple-400 hover:text-purple-300 text-sm font-medium inline-flex items-center gap-1"
+              className="text-red-600 hover:text-red-700 text-sm font-medium inline-flex items-center gap-1"
             >
               En savoir plus <ExternalLink className="w-3 h-3" />
             </Link>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-600/10 to-cyan-600/10 border border-blue-500/20 rounded-xl p-6 text-center hover:border-blue-500/40 transition-all">
+          <div className="bg-gradient-to-br from-blue-600/10 to-red-600/10 border border-blue-200 rounded-xl p-6 text-center hover:border-blue-300 transition-all">
             <div className="text-4xl mb-3">📱</div>
-            <h3 className="text-xl font-semibold text-white mb-2">Applications Mobile</h3>
-            <p className="text-neutral-400 text-sm mb-4">
+            <h3 className="text-xl font-semibold text-slate-900 mb-2">Applications Mobile</h3>
+            <p className="text-slate-600 text-sm mb-4">
               Applications iOS et Android natives et cross-platform. Solutions mobiles innovantes pour votre entreprise.
             </p>
             <Link 
               href="/contact" 
-              className="text-blue-400 hover:text-blue-300 text-sm font-medium inline-flex items-center gap-1"
+              className="text-blue-600 hover:text-blue-700 text-sm font-medium inline-flex items-center gap-1"
             >
               En savoir plus <ExternalLink className="w-3 h-3" />
             </Link>
           </div>
 
-          <div className="bg-gradient-to-br from-cyan-600/10 to-purple-600/10 border border-cyan-500/20 rounded-xl p-6 text-center hover:border-cyan-500/40 transition-all">
+          <div className="bg-gradient-to-br from-red-600/10 to-blue-600/10 border border-red-200 rounded-xl p-6 text-center hover:border-red-300 transition-all">
             <div className="text-4xl mb-3">📈</div>
-            <h3 className="text-xl font-semibold text-white mb-2">Marketing Digital</h3>
-            <p className="text-neutral-400 text-sm mb-4">
+            <h3 className="text-xl font-semibold text-slate-900 mb-2">Marketing Digital</h3>
+            <p className="text-slate-600 text-sm mb-4">
               SEO, réseaux sociaux et stratégies de croissance digitale. Augmentez votre visibilité en ligne.
             </p>
             <Link 
               href="/contact" 
-              className="text-cyan-400 hover:text-cyan-300 text-sm font-medium inline-flex items-center gap-1"
+              className="text-red-600 hover:text-red-700 text-sm font-medium inline-flex items-center gap-1"
             >
               En savoir plus <ExternalLink className="w-3 h-3" />
             </Link>
@@ -180,7 +180,7 @@ const ServicesVideo = ({
         >
           <Link
             href="/devis"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105"
           >
             Demander un devis gratuit
             <ExternalLink className="w-5 h-5" />

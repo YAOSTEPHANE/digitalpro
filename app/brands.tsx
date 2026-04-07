@@ -1,13 +1,7 @@
 import Image3D from "@/components/ui/image-3d";
 import React from "react";
 
-import { Lora } from "next/font/google";
 import { cn } from "@/lib/utils";
-
-const font = Lora({
-  subsets: ["latin"],
-  weight: ["400"],
-});
 
 const technologies = [
   {
@@ -99,8 +93,7 @@ const Brands = () => {
 
         <div
           className={cn(
-            "flex items-center justify-center text-xl xl:text-2xl pt-10 md:pt-0 pb-4  px-8  text-center text-white  ",
-            font.className
+            "flex items-center justify-center text-xl xl:text-2xl pt-10 md:pt-0 pb-4  px-8  text-center text-white font-serif"
           )}
         >
           &quot;Nous avons éliminé près d&apos;une douzaine d&apos;outils différents grâce à ce que Digitalpro Solutions fait pour nous.&quot;

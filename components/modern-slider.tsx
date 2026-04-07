@@ -90,11 +90,11 @@ const ModernSlider = () => {
         className="text-center mb-12"
       >
         <h2 className="text-4xl md:text-6xl font-bold mb-4">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-blue-400 to-blue-500">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-blue-500 to-blue-600">
             Nos Réalisations
           </span>
         </h2>
-        <p className="text-xl text-neutral-300 max-w-2xl mx-auto">
+        <p className="text-xl text-slate-600 max-w-2xl mx-auto">
           Découvrez nos projets et laissez-vous inspirer
         </p>
       </motion.div>
@@ -120,8 +120,8 @@ const ModernSlider = () => {
                     className="rounded-2xl w-full h-[350px] md:h-[400px] object-cover mb-4"
                   />
                   <div className="text-center">
-                    <h3 className="text-xl font-bold text-white mb-2">{slide.title}</h3>
-                    <p className="text-neutral-400 text-sm">{slide.description}</p>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">{slide.title}</h3>
+                    <p className="text-slate-600 text-sm">{slide.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -134,10 +134,10 @@ const ModernSlider = () => {
           {slides.slice(0, 3).map((slide, index) => (
             <div key={index} className="w-full max-w-sm">
               <div className="bg-gradient-to-br from-red-600/10 to-blue-600/10 border border-red-500/20 rounded-3xl p-6 backdrop-blur-sm">
-                <div className="animate-pulse bg-neutral-800 rounded-2xl w-full h-[350px] mb-4" />
+                <div className="animate-pulse bg-slate-200 rounded-2xl w-full h-[350px] mb-4" />
                 <div className="text-center">
-                  <div className="h-6 bg-neutral-800 rounded w-3/4 mx-auto mb-2" />
-                  <div className="h-4 bg-neutral-800 rounded w-1/2 mx-auto" />
+                  <div className="h-6 bg-slate-200 rounded w-3/4 mx-auto mb-2" />
+                  <div className="h-4 bg-slate-200 rounded w-1/2 mx-auto" />
                 </div>
               </div>
             </div>

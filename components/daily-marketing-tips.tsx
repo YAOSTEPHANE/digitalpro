@@ -186,8 +186,8 @@ const DailyMarketingTips = () => {
   return (
     <div className="relative w-full py-20 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-black to-black" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(220,38,38,0.1),transparent_50%)]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-white to-blue-50/50" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(220,38,38,0.08),transparent_50%)]" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4">
         {/* En-tête */}
@@ -198,20 +198,20 @@ const DailyMarketingTips = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 bg-red-600/20 border border-red-500/30 rounded-full px-4 py-2 mb-6">
+          <div className="inline-flex items-center gap-2 bg-white border border-red-200 rounded-full px-4 py-2 mb-6">
             <Calendar className="w-4 h-4 text-red-400 animate-pulse" />
-            <span className="text-sm text-red-300 font-semibold">CONSEIL DU JOUR</span>
+            <span className="text-sm text-red-700 font-semibold">CONSEIL DU JOUR</span>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-bold mb-4">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-blue-400 to-blue-500">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-blue-500 to-blue-600">
               Marketing Digital
             </span>
             <br />
-            <span className="text-white">Conseil du Jour #{dayOfYear}</span>
+            <span className="text-slate-900">Conseil du Jour #{dayOfYear}</span>
           </h2>
 
-          <p className="text-xl text-neutral-300 max-w-2xl mx-auto mt-4">
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto mt-4">
             Chaque jour, découvrez un nouveau conseil pour améliorer votre stratégie digitale
           </p>
         </motion.div>
@@ -219,12 +219,12 @@ const DailyMarketingTips = () => {
         {/* Carte du conseil */}
         {loading ? (
           <div className="max-w-5xl mx-auto">
-            <div className="bg-gradient-to-br from-neutral-900/90 to-black border border-red-500/30 rounded-3xl p-12 text-center">
+            <div className="bg-white border border-red-200 rounded-3xl p-12 text-center shadow-sm">
               <div className="animate-pulse">
                 <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-blue-500 rounded-2xl mx-auto mb-6" />
-                <div className="h-8 bg-neutral-700 rounded-lg w-3/4 mx-auto mb-4" />
-                <div className="h-4 bg-neutral-700 rounded-lg w-full mb-2" />
-                <div className="h-4 bg-neutral-700 rounded-lg w-5/6 mx-auto" />
+                <div className="h-8 bg-slate-200 rounded-lg w-3/4 mx-auto mb-4" />
+                <div className="h-4 bg-slate-200 rounded-lg w-full mb-2" />
+                <div className="h-4 bg-slate-200 rounded-lg w-5/6 mx-auto" />
               </div>
             </div>
           </div>
@@ -236,9 +236,9 @@ const DailyMarketingTips = () => {
             transition={{ duration: 0.6 }}
             className="max-w-5xl mx-auto"
           >
-            <div className="bg-gradient-to-br from-neutral-900/90 to-black border border-red-500/30 rounded-3xl overflow-hidden relative group hover:border-red-500/60 transition-all duration-300">
+            <div className="bg-white border border-red-200 rounded-3xl overflow-hidden relative group hover:border-red-400 transition-all duration-300 shadow-sm">
             {/* Effet de brillance */}
-            <div className="absolute inset-0 bg-gradient-to-r from-red-600/10 via-blue-600/10 to-red-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0" />
+                <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 via-blue-600/8 to-red-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0" />
             
             <div className="relative z-10 grid md:grid-cols-2 gap-0">
               {/* Colonne gauche - Image */}
@@ -252,7 +252,7 @@ const DailyMarketingTips = () => {
                   containerClassName="!w-full !h-full !absolute !inset-0 !rounded-none"
                 />
                 {/* Overlay avec gradient */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent md:bg-gradient-to-b md:from-black/60 md:via-black/40 md:to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/10 to-transparent md:bg-gradient-to-b md:from-black/25 md:via-black/10 md:to-transparent" />
                 
                 {/* Badge de catégorie sur l'image */}
                 <div className="absolute top-4 left-4 inline-flex items-center gap-2 bg-gradient-to-r from-red-600/90 to-blue-600/90 border border-red-500/50 rounded-full px-4 py-2 backdrop-blur-sm">
@@ -269,12 +269,12 @@ const DailyMarketingTips = () => {
               {/* Colonne droite - Contenu */}
               <div className="p-8 md:p-12 flex flex-col justify-center">
                 {/* Titre */}
-                <h3 className="text-2xl md:text-4xl font-bold text-white mb-4 md:mb-6 leading-tight">
+                <h3 className="text-2xl md:text-4xl font-bold text-slate-900 mb-4 md:mb-6 leading-tight">
                   {currentTip.title}
                 </h3>
 
                 {/* Contenu */}
-                <p className="text-base md:text-lg text-neutral-300 leading-relaxed mb-6 md:mb-8">
+                <p className="text-base md:text-lg text-slate-600 leading-relaxed mb-6 md:mb-8">
                   {currentTip.content}
                 </p>
 
@@ -289,7 +289,7 @@ const DailyMarketingTips = () => {
                   </Link>
                   <Link
                     href="/devis"
-                    className="group flex items-center gap-2 bg-transparent border-2 border-red-500/50 hover:border-red-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-red-500/10"
+                    className="group flex items-center gap-2 bg-transparent border-2 border-red-300 hover:border-red-500 text-slate-900 font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-red-50"
                   >
                     Demander un devis
                   </Link>
@@ -298,7 +298,7 @@ const DailyMarketingTips = () => {
             </div>
 
             {/* Indicateur de jour */}
-            <div className="absolute top-4 right-4 md:top-6 md:right-6 text-neutral-600 text-sm font-medium bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm z-20">
+            <div className="absolute top-4 right-4 md:top-6 md:right-6 text-slate-600 text-sm font-medium bg-white/90 border border-slate-200 px-3 py-1 rounded-full backdrop-blur-sm z-20">
               Jour {dayOfYear}/365
             </div>
           </div>
@@ -313,12 +313,12 @@ const DailyMarketingTips = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mt-12 text-center"
         >
-          <p className="text-neutral-400 mb-4">
+          <p className="text-slate-600 mb-4">
             Retrouvez tous nos conseils et guides complets
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-medium"
+            className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 transition-colors font-medium"
           >
             Consulter nos ressources
             <ArrowRight className="w-4 h-4" />

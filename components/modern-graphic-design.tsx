@@ -40,7 +40,7 @@ const ModernGraphicDesign = () => {
   return (
     <div className="relative w-full py-20 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-black to-black" />
+      <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-white to-blue-50/50" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4">
         {/* En-tête */}
@@ -56,7 +56,7 @@ const ModernGraphicDesign = () => {
               Conception Graphique
             </span>
           </h2>
-          <p className="mt-4 text-lg font-normal text-neutral-300 max-w-lg text-center mx-auto">
+          <p className="mt-4 text-lg font-normal text-slate-600 max-w-lg text-center mx-auto">
             Nous créons des visuels époustouflants pour votre marque. Des logos
             aux publications sur les réseaux sociaux, nous avons tout ce qu&apos;il
             vous faut.

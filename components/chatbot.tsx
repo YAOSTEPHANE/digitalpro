@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { MessageCircle, X, Send, Bot, User, Bell } from 'lucide-react'
+import { MessageCircle, X, Send, Bot, User, Bell, Sparkles, ShieldCheck } from 'lucide-react'
 
 interface Message {
   id: string
@@ -59,17 +59,17 @@ export default function Chatbot() {
     scrollToBottom()
   }, [messages])
 
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return
+  const sendMessageWithText = async (text: string) => {
+    if (!text.trim() || isLoading) return
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: input,
+      text,
       sender: 'user',
       timestamp: new Date(),
     }
 
-    const currentInput = input
+    const currentInput = text
     setMessages((prev) => [...prev, userMessage])
     setInput('')
     setIsLoading(true)
@@ -122,6 +122,14 @@ export default function Chatbot() {
     }
   }
 
+  const sendMessage = async () => {
+    await sendMessageWithText(input)
+  }
+
+  const handleQuickAction = async (prompt: string) => {
+    await sendMessageWithText(prompt)
+  }
+
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
@@ -133,29 +141,29 @@ export default function Chatbot() {
     <>
       {/* Notification de bienvenue */}
       {isMounted && showNotification && !isOpen && (
-        <div className="fixed bottom-24 left-6 z-50 w-80 bg-gradient-to-r from-red-600/95 to-blue-600/95 backdrop-blur-lg border border-red-500/30 rounded-xl shadow-2xl p-4 animate-slide-up">
+        <div className="fixed bottom-24 left-6 z-50 w-80 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_20px_60px_rgba(2,6,23,0.12)] backdrop-blur-2xl animate-slide-up">
           <div className="flex items-start gap-3">
-            <div className="bg-white/20 rounded-full p-2 flex-shrink-0">
-              <Bell className="w-5 h-5 text-white" />
+            <div className="rounded-full border border-slate-200 bg-slate-100 p-2.5 text-blue-600 flex-shrink-0">
+              <Bell className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <h4 className="text-white font-semibold text-sm mb-1">Bienvenue ! 👋</h4>
-              <p className="text-white/90 text-xs mb-3">
-                Besoin d&apos;aide ? Notre assistant est là pour vous accompagner !
+              <h4 className="mb-1 text-sm font-semibold text-slate-900">Bienvenue</h4>
+              <p className="mb-3 text-xs leading-relaxed text-slate-600">
+                Expérience concierge activée : réponses prioritaires sur vos besoins web, SEO et acquisition.
               </p>
               <button
                 onClick={() => {
                   setShowNotification(false)
                   setIsOpen(true)
                 }}
-                className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-4 rounded-lg transition-colors"
+                className="w-full rounded-xl border border-white/20 bg-gradient-to-r from-red-500/90 to-blue-500/90 px-4 py-2 text-xs font-medium text-white transition hover:from-red-500 hover:to-blue-500"
               >
-                Parler à l&apos;assistant
+                Démarrer la conversation
               </button>
             </div>
             <button
               onClick={() => setShowNotification(false)}
-              className="text-white/80 hover:text-white transition-colors flex-shrink-0"
+              className="text-slate-500 transition hover:text-slate-900 flex-shrink-0"
               aria-label="Fermer la notification"
             >
               <X className="w-4 h-4" />
@@ -168,38 +176,83 @@ export default function Chatbot() {
       {isMounted && !isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 left-6 z-50 bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none"
+          className="group fixed bottom-6 left-6 z-50 rounded-2xl border border-slate-200 bg-white p-4 text-slate-900 shadow-[0_12px_40px_rgba(15,23,42,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_rgba(15,23,42,0.2)]"
           aria-label="Ouvrir le chatbot"
         >
-          <MessageCircle className="w-6 h-6" />
+          <div className="absolute -inset-0.5 -z-10 rounded-[18px] bg-gradient-to-r from-red-500/40 via-fuchsia-500/30 to-blue-500/40 opacity-80 blur-md transition group-hover:opacity-100" />
+          <div className="flex items-center gap-2">
+            <MessageCircle className="h-6 w-6" />
+            <Sparkles className="h-4 w-4 text-blue-600" />
+          </div>
         </button>
       )}
 
       {/* Fenêtre du chatbot */}
       {isMounted && isOpen && (
-        <div className="fixed bottom-6 left-6 z-50 w-96 h-[600px] bg-black/95 backdrop-blur-lg border border-neutral-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+        <div className="fixed bottom-6 left-6 z-50 flex h-[440px] w-[24rem] flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_30px_90px_rgba(2,6,23,0.2)] backdrop-blur-2xl sm:h-[460px]">
           {/* En-tête */}
-          <div className="bg-gradient-to-r from-red-600 to-blue-600 p-4 flex items-center justify-between">
+          <div className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-r from-red-50 to-blue-50 p-4">
+            <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-blue-500/10 blur-2xl" />
+            <div className="pointer-events-none absolute -left-8 -bottom-10 h-28 w-28 rounded-full bg-red-500/10 blur-2xl" />
+            <div className="relative flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="bg-white/20 rounded-full p-2">
-                <Bot className="w-5 h-5 text-white" />
+              <div className="rounded-xl border border-slate-200 bg-white p-2.5">
+                <Bot className="h-5 w-5 text-slate-900" />
               </div>
               <div>
-                <h3 className="text-white font-semibold">Assistant digitalpro</h3>
-                <p className="text-white/80 text-xs">En ligne</p>
+                <h3 className="text-sm font-semibold tracking-wide text-slate-900">Assistant digitalpro</h3>
+                <div className="mt-0.5 flex items-center gap-2 text-[11px] text-slate-600">
+                  <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(74,222,128,0.8)]" />
+                  <span>Conseiller IA en ligne</span>
+                </div>
               </div>
+            </div>
+            <div className="mr-2 hidden items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-1 text-[10px] text-slate-600 sm:flex">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-300" />
+              Réponses sécurisées
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-white hover:bg-white/20 rounded-full p-1 transition-colors"
+              className="rounded-lg border border-slate-200 bg-white p-1.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
               aria-label="Fermer le chatbot"
             >
-              <X className="w-5 h-5" />
+              <X className="h-4 w-4" />
             </button>
+          </div>
+          </div>
+
+          <div className="border-b border-slate-200 bg-white px-4 py-2 text-[11px] text-slate-600">
+            Assistance premium sur vos projets digitaux - réponse en quelques secondes
+          </div>
+
+          <div className="border-b border-slate-200 bg-slate-50 px-3 py-2">
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => handleQuickAction('Je souhaite un devis personnalisé pour mon projet.')}
+                disabled={isLoading}
+                className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[11px] text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                Demander un devis
+              </button>
+              <button
+                onClick={() => handleQuickAction('Je veux prendre un rendez-vous rapide cette semaine.')}
+                disabled={isLoading}
+                className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[11px] text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                Prendre RDV
+              </button>
+              <button
+                onClick={() => handleQuickAction('Pouvez-vous faire un audit rapide de mon site ?')}
+                disabled={isLoading}
+                className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[11px] text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                Audit express
+              </button>
+            </div>
           </div>
 
           {/* Zone de messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral-900/50">
+          <div className="custom-scrollbar flex-1 space-y-4 overflow-y-auto bg-[radial-gradient(circle_at_top_right,_rgba(59,130,246,0.08),transparent_40%),radial-gradient(circle_at_bottom_left,_rgba(239,68,68,0.08),transparent_40%),#ffffff] p-4">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -208,36 +261,37 @@ export default function Chatbot() {
                 }`}
               >
                 {message.sender === 'bot' && (
-                  <div className="bg-gradient-to-r from-red-600 to-blue-600 rounded-full p-2 h-8 w-8 flex items-center justify-center flex-shrink-0">
-                    <Bot className="w-4 h-4 text-white" />
+                  <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-red-500/90 to-blue-500/90 shadow-lg">
+                    <Bot className="h-4 w-4 text-white" />
                   </div>
                 )}
                 <div
-                  className={`max-w-[75%] rounded-2xl px-4 py-2 ${
+                  className={`max-w-[78%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed shadow-sm ${
                     message.sender === 'user'
-                      ? 'bg-gradient-to-r from-red-600 to-blue-600 text-white'
-                      : 'bg-neutral-800 text-neutral-100 border border-neutral-700'
+                      ? 'border border-red-400/30 bg-gradient-to-br from-red-500 to-blue-500 text-white shadow-[0_10px_30px_rgba(59,130,246,0.25)]'
+                      : 'border border-slate-200 bg-white text-slate-700'
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                  <p className="whitespace-pre-wrap">{message.text}</p>
                 </div>
                 {message.sender === 'user' && (
-                  <div className="bg-neutral-700 rounded-full p-2 h-8 w-8 flex items-center justify-center flex-shrink-0">
-                    <User className="w-4 h-4 text-white" />
+                  <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-100">
+                    <User className="h-4 w-4 text-slate-900" />
                   </div>
                 )}
               </div>
             ))}
             {isLoading && (
               <div className="flex gap-3 justify-start">
-                <div className="bg-gradient-to-r from-red-600 to-blue-600 rounded-full p-2 h-8 w-8 flex items-center justify-center">
-                  <Bot className="w-4 h-4 text-white" />
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-red-500/90 to-blue-500/90">
+                  <Bot className="h-4 w-4 text-white" />
                 </div>
-                <div className="bg-neutral-800 text-neutral-100 border border-neutral-700 rounded-2xl px-4 py-2">
+                <div className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-slate-700">
+                  <div className="mb-1 text-[11px] text-slate-500">L&apos;assistant rédige une réponse...</div>
                   <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                    <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                    <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                    <span className="h-2 w-2 animate-bounce animate-bounce-delay-0 rounded-full bg-slate-400"></span>
+                    <span className="h-2 w-2 animate-bounce animate-bounce-delay-140 rounded-full bg-slate-400"></span>
+                    <span className="h-2 w-2 animate-bounce animate-bounce-delay-280 rounded-full bg-slate-400"></span>
                   </div>
                 </div>
               </div>
@@ -246,33 +300,36 @@ export default function Chatbot() {
           </div>
 
           {/* Zone de saisie */}
-          <div className="p-4 bg-neutral-900/80 border-t border-neutral-800">
-            <div className="flex gap-2">
+          <div className="border-t border-slate-200 bg-slate-50 p-4">
+            <div className="flex gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-inner shadow-slate-100/50">
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Tapez votre message..."
-                className="flex-1 bg-neutral-800 border border-neutral-700 rounded-lg px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+                placeholder="Posez votre question..."
+                className="flex-1 rounded-xl border border-transparent bg-white px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 outline-none transition focus:border-red-400/40 focus:ring-2 focus:ring-red-400/30"
                 disabled={isLoading}
               />
               <button
                 onClick={sendMessage}
                 disabled={isLoading || !input.trim()}
-                className="bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2 transition-all"
+                className="rounded-xl border border-red-300/30 bg-gradient-to-r from-red-500 to-blue-500 px-4 py-2 text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
                 aria-label="Envoyer le message"
               >
-                <Send className="w-5 h-5" />
+                <Send className="h-4 w-4" />
               </button>
             </div>
+            <p className="mt-2 text-center text-[10px] text-slate-500">
+              Propulsé par IA - vérifiez les informations critiques avant décision.
+            </p>
           </div>
         </div>
       )}
 
       {/* Version mobile responsive */}
       {isMounted && isOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setIsOpen(false)} />
+        <div className="md:hidden fixed inset-0 z-40 bg-slate-900/20" onClick={() => setIsOpen(false)} />
       )}
     </>
   )

@@ -283,7 +283,7 @@ const ModernBilling = () => {
         "Canal de communication privé",
         "Délai d'exécution de 1 à 3 jours",
       ],
-      style: "rounded-3xl py-10 bg-clip-text text-transparent bg-gradient-to-b from-neutral-300 to-neutral-50",
+      style: "rounded-3xl py-10",
       description: "Composants autonomes adaptés à vos besoins et facilement intégrables. Parfaits pour les éléments ou sections de sites web.",
       button: "Acheter maintenant",
       popular: false,
@@ -301,7 +301,7 @@ const ModernBilling = () => {
         "Canal de communication privé",
         "Délai d'exécution de 3 à 5 jours",
       ],
-      style: "rounded-3xl py-10 bg-clip-text text-transparent bg-gradient-to-b from-neutral-300 to-neutral-50",
+      style: "rounded-3xl py-10",
       description: "Idéal pour les startups en phase de démarrage, les entreprises et les freelances qui ont besoin d'un volet marketing pour présenter leur travail et leur vision.",
       button: "Acheter maintenant",
       popular: true,
@@ -321,7 +321,7 @@ const ModernBilling = () => {
         "File d'attente de développement prioritaire",
         "Chef de projet dédié",
       ],
-      style: "h-full rounded-3xl py-10 flex flex-col bg-clip-text text-transparent bg-gradient-to-b from-neutral-300 to-neutral-50",
+      style: "h-full rounded-3xl py-10 flex flex-col",
       description: "Idéal pour les petites entreprises et les startups qui ont besoin d'un site web performant qui a fière allure et convertit les visiteurs en clients.",
       button: "Contactez-nous",
       popular: false,
@@ -436,7 +436,7 @@ const ModernBilling = () => {
   return (
     <div className="relative w-full min-h-screen py-20 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-black to-black" />
+      <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-white to-blue-50/50" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4">
         {/* En-tête */}
@@ -447,11 +447,11 @@ const ModernBilling = () => {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-blue-500 to-blue-600">
               Facturation
             </span>
           </h1>
-          <p className="text-xl text-neutral-300 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
             Gérez vos tarifs et générez vos factures facilement
           </p>
         </motion.div>
@@ -468,8 +468,8 @@ const ModernBilling = () => {
               onClick={() => setActiveTab(tab.id as "pricing" | "invoice" | "history")}
               className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                 activeTab === tab.id
-                  ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
-                  : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
+                  ? "bg-gradient-to-r from-red-600 to-blue-600 text-white"
+                  : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50"
               }`}
             >
               <tab.icon className="w-5 h-5" />
@@ -495,11 +495,11 @@ const ModernBilling = () => {
                   className={`relative h-full flex flex-col border rounded-3xl px-6 ${
                     plan.popular
                       ? "border-purple-500 shadow-lg shadow-purple-500/20 scale-105"
-                      : "border-neutral-800"
+                      : "border-slate-200 bg-white"
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-red-600 to-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">
                       Populaire
                     </div>
                   )}
@@ -508,17 +508,17 @@ const ModernBilling = () => {
                     <div className="text-4xl flex items-center font-medium mb-4">
                       {plan.name}
                       {plan.feature === "Contactez-nous" && (
-                        <div className="text-sm font-medium text-blue-400 bg-blue-500/20 px-2 py-1 rounded-full ml-4">
+                        <div className="text-sm font-medium text-blue-700 bg-blue-100 px-2 py-1 rounded-full ml-4">
                           {plan.feature}
                         </div>
                       )}
                     </div>
-                    <div className="text-3xl pt-6 text-white">{plan.price}</div>
-                    <div className="py-6 text-neutral-400">{plan.description}</div>
+                    <div className="text-3xl pt-6 text-slate-900">{plan.price}</div>
+                    <div className="py-6 text-slate-600">{plan.description}</div>
 
                     <ul className="space-y-3">
                       {plan.features.map((feature, idx) => (
-                        <li key={idx} className="text-lg py-2 flex items-center text-neutral-300">
+                        <li key={idx} className="text-lg py-2 flex items-center text-slate-700">
                           <CheckCircle2 className={`mr-2 text-xl ${
                             plan.feature === "Contactez-nous" ? "text-blue-400" : "text-green-500"
                           }`} />
@@ -532,7 +532,7 @@ const ModernBilling = () => {
                     {index === 2 ? (
                       <Button
                         onClick={() => setActiveTab("invoice")}
-                        className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+                        className="w-full bg-gradient-to-r from-red-500 to-blue-500 hover:from-red-600 hover:to-blue-600"
                       >
                         {plan.button}
                       </Button>
@@ -568,15 +568,15 @@ const ModernBilling = () => {
             transition={{ duration: 0.5 }}
             className="max-w-5xl mx-auto"
           >
-            <div className="bg-gradient-to-br from-neutral-900/90 to-black border border-purple-500/20 rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
+              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                 <FileText className="w-6 h-6 text-purple-400" />
                 Créer une nouvelle facture
               </h2>
 
               {/* Informations client */}
               <div className="mb-8">
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
                   <User className="w-5 h-5 text-purple-400" />
                   Informations client
                 </h3>
@@ -585,27 +585,27 @@ const ModernBilling = () => {
                     placeholder="Nom complet *"
                     value={clientInfo.name}
                     onChange={(e) => setClientInfo({ ...clientInfo, name: e.target.value })}
-                    className="bg-neutral-800 border-neutral-700 text-white"
+                    className="bg-white border-slate-300 text-slate-900"
                   />
                   <Input
                     type="email"
                     placeholder="Email *"
                     value={clientInfo.email}
                     onChange={(e) => setClientInfo({ ...clientInfo, email: e.target.value })}
-                    className="bg-neutral-800 border-neutral-700 text-white"
+                    className="bg-white border-slate-300 text-slate-900"
                   />
                   <Input
                     type="tel"
                     placeholder="Téléphone"
                     value={clientInfo.phone}
                     onChange={(e) => setClientInfo({ ...clientInfo, phone: e.target.value })}
-                    className="bg-neutral-800 border-neutral-700 text-white"
+                    className="bg-white border-slate-300 text-slate-900"
                   />
                   <Input
                     placeholder="Adresse"
                     value={clientInfo.address}
                     onChange={(e) => setClientInfo({ ...clientInfo, address: e.target.value })}
-                    className="bg-neutral-800 border-neutral-700 text-white"
+                    className="bg-white border-slate-300 text-slate-900"
                   />
                 </div>
               </div>
@@ -613,7 +613,7 @@ const ModernBilling = () => {
               {/* Articles */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+                  <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2">
                     <Calculator className="w-5 h-5 text-purple-400" />
                     Articles
                   </h3>
@@ -625,13 +625,13 @@ const ModernBilling = () => {
                 
                 <div className="space-y-4">
                   {invoiceItems.map((item, index) => (
-                    <div key={index} className="grid md:grid-cols-12 gap-4 items-end bg-neutral-800/50 p-4 rounded-lg">
+                    <div key={index} className="grid md:grid-cols-12 gap-4 items-end bg-slate-50 p-4 rounded-lg border border-slate-200">
                       <div className="md:col-span-5">
                         <Input
                           placeholder="Description"
                           value={item.description}
                           onChange={(e) => updateItem(index, "description", e.target.value)}
-                          className="bg-neutral-900 border-neutral-700 text-white"
+                          className="bg-white border-slate-300 text-slate-900"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -640,7 +640,7 @@ const ModernBilling = () => {
                           placeholder="Quantité"
                           value={item.quantity}
                           onChange={(e) => updateItem(index, "quantity", parseInt(e.target.value) || 0)}
-                          className="bg-neutral-900 border-neutral-700 text-white"
+                          className="bg-white border-slate-300 text-slate-900"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -649,14 +649,14 @@ const ModernBilling = () => {
                           placeholder="Prix unitaire"
                           value={item.unitPrice}
                           onChange={(e) => updateItem(index, "unitPrice", parseFloat(e.target.value) || 0)}
-                          className="bg-neutral-900 border-neutral-700 text-white"
+                          className="bg-white border-slate-300 text-slate-900"
                         />
                       </div>
                       <div className="md:col-span-2">
                         <Input
                           value={`${item.total.toLocaleString('fr-FR')} FCFA`}
                           disabled
-                          className="bg-neutral-900 border-neutral-700 text-white"
+                          className="bg-white border-slate-300 text-slate-900"
                         />
                       </div>
                       <div className="md:col-span-1">
@@ -677,66 +677,66 @@ const ModernBilling = () => {
               {/* Paramètres */}
               <div className="mb-8 grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm text-neutral-400 mb-2 block">TVA (%)</label>
+                  <label className="text-sm text-slate-600 mb-2 block">TVA (%)</label>
                   <Input
                     type="number"
                     value={invoiceSettings.tax}
                     onChange={(e) => setInvoiceSettings({ ...invoiceSettings, tax: parseFloat(e.target.value) || 0 })}
-                    className="bg-neutral-800 border-neutral-700 text-white"
+                    className="bg-white border-slate-300 text-slate-900"
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-neutral-400 mb-2 block">Remise (%)</label>
+                  <label className="text-sm text-slate-600 mb-2 block">Remise (%)</label>
                   <Input
                     type="number"
                     value={invoiceSettings.discount}
                     onChange={(e) => setInvoiceSettings({ ...invoiceSettings, discount: parseFloat(e.target.value) || 0 })}
-                    className="bg-neutral-800 border-neutral-700 text-white"
+                    className="bg-white border-slate-300 text-slate-900"
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-neutral-400 mb-2 block">Date d&apos;échéance</label>
+                  <label className="text-sm text-slate-600 mb-2 block">Date d&apos;échéance</label>
                   <Input
                     type="date"
                     value={invoiceSettings.dueDate}
                     onChange={(e) => setInvoiceSettings({ ...invoiceSettings, dueDate: e.target.value })}
-                    className="bg-neutral-800 border-neutral-700 text-white"
+                    className="bg-white border-slate-300 text-slate-900"
                   />
                 </div>
               </div>
 
               <div className="mb-8">
-                <label className="text-sm text-neutral-400 mb-2 block">Notes</label>
+                <label className="text-sm text-slate-600 mb-2 block">Notes</label>
                 <Textarea
                   value={invoiceSettings.notes}
                   onChange={(e) => setInvoiceSettings({ ...invoiceSettings, notes: e.target.value })}
                   placeholder="Notes additionnelles..."
-                  className="bg-neutral-800 border-neutral-700 text-white"
+                  className="bg-white border-slate-300 text-slate-900"
                   rows={3}
                 />
               </div>
 
               {/* Totaux */}
-              <div className="bg-neutral-800/50 rounded-lg p-6 mb-6">
+              <div className="bg-slate-50 rounded-lg p-6 mb-6 border border-slate-200">
                 <div className="flex justify-between mb-2">
-                  <span className="text-neutral-400">Sous-total:</span>
-                  <span className="text-white font-medium">{subtotal.toLocaleString('fr-FR')} FCFA</span>
+                  <span className="text-slate-600">Sous-total:</span>
+                  <span className="text-slate-900 font-medium">{subtotal.toLocaleString('fr-FR')} FCFA</span>
                 </div>
                 {invoiceSettings.tax > 0 && (
                   <div className="flex justify-between mb-2">
-                    <span className="text-neutral-400">TVA ({invoiceSettings.tax}%):</span>
-                    <span className="text-white font-medium">{taxAmount.toLocaleString('fr-FR')} FCFA</span>
+                    <span className="text-slate-600">TVA ({invoiceSettings.tax}%):</span>
+                    <span className="text-slate-900 font-medium">{taxAmount.toLocaleString('fr-FR')} FCFA</span>
                   </div>
                 )}
                 {invoiceSettings.discount > 0 && (
                   <div className="flex justify-between mb-2">
-                    <span className="text-neutral-400">Remise ({invoiceSettings.discount}%):</span>
-                    <span className="text-white font-medium">-{discountAmount.toLocaleString('fr-FR')} FCFA</span>
+                    <span className="text-slate-600">Remise ({invoiceSettings.discount}%):</span>
+                    <span className="text-slate-900 font-medium">-{discountAmount.toLocaleString('fr-FR')} FCFA</span>
                   </div>
                 )}
-                <div className="flex justify-between pt-4 border-t border-neutral-700">
-                  <span className="text-xl font-bold text-white">TOTAL:</span>
-                  <span className="text-xl font-bold text-purple-400">{total.toLocaleString('fr-FR')} FCFA</span>
+                <div className="flex justify-between pt-4 border-t border-slate-200">
+                  <span className="text-xl font-bold text-slate-900">TOTAL:</span>
+                  <span className="text-xl font-bold text-red-600">{total.toLocaleString('fr-FR')} FCFA</span>
                 </div>
               </div>
 
@@ -745,7 +745,7 @@ const ModernBilling = () => {
                 <Button
                   onClick={generateInvoice}
                   disabled={isGenerating}
-                  className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700"
                 >
                   {isGenerating ? "Génération..." : "Générer et envoyer la facture"}
                 </Button>
@@ -761,9 +761,9 @@ const ModernBilling = () => {
             transition={{ duration: 0.5 }}
             className="max-w-5xl mx-auto"
           >
-            <div className="bg-gradient-to-br from-neutral-900/90 to-black border border-purple-500/20 rounded-2xl p-6 md:p-8">
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
                   <Calendar className="w-6 h-6 text-purple-400" />
                   Historique des factures
                 </h2>
@@ -771,20 +771,22 @@ const ModernBilling = () => {
                 {/* Recherche et filtres */}
                 <div className="flex gap-3">
                   <div className="relative flex-1 max-w-xs">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <Input
                       placeholder="Rechercher..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="bg-neutral-800 border-neutral-700 text-white pl-10"
+                      className="bg-white border-slate-300 text-slate-900 pl-10"
                     />
                   </div>
                   <div className="relative">
-                    <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                    <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <select
                       value={filterStatus}
                       onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
-                      className="bg-neutral-800 border border-neutral-700 text-white rounded-md px-10 py-2 appearance-none cursor-pointer"
+                      aria-label="Filtrer les factures par statut"
+                      title="Filtrer les factures par statut"
+                      className="bg-white border border-slate-300 text-slate-900 rounded-md px-10 py-2 appearance-none cursor-pointer"
                     >
                       <option value="all">Tous</option>
                       <option value="paid">Payées</option>
@@ -797,8 +799,8 @@ const ModernBilling = () => {
 
               {/* Liste des factures */}
               {invoices.length === 0 ? (
-                <div className="text-center py-12 text-neutral-400">
-                  <FileText className="w-16 h-16 mx-auto mb-4 text-neutral-600" />
+                <div className="text-center py-12 text-slate-500">
+                  <FileText className="w-16 h-16 mx-auto mb-4 text-slate-400" />
                   <p>Aucune facture générée pour le moment</p>
                   <p className="text-sm mt-2">Les factures générées apparaîtront ici</p>
                 </div>
@@ -823,12 +825,12 @@ const ModernBilling = () => {
                       return (
                         <div
                           key={invoice.id}
-                          className="bg-neutral-800/50 border border-neutral-700 rounded-lg p-6 hover:border-purple-500/50 transition-colors"
+                          className="bg-slate-50 border border-slate-200 rounded-lg p-6 hover:border-blue-300 transition-colors"
                         >
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
-                                <h3 className="text-lg font-semibold text-white">
+                                <h3 className="text-lg font-semibold text-slate-900">
                                   {invoice.invoiceNumber}
                                 </h3>
                                 <span
@@ -847,17 +849,17 @@ const ModernBilling = () => {
                                     : "En attente"}
                                 </span>
                               </div>
-                              <div className="text-sm text-neutral-400 space-y-1">
+                              <div className="text-sm text-slate-600 space-y-1">
                                 <p>
-                                  <span className="text-neutral-500">Client:</span>{" "}
+                                  <span className="text-slate-500">Client:</span>{" "}
                                   {invoice.clientName}
                                 </p>
                                 <p>
-                                  <span className="text-neutral-500">Email:</span>{" "}
+                                  <span className="text-slate-500">Email:</span>{" "}
                                   {invoice.clientEmail}
                                 </p>
                                 <p>
-                                  <span className="text-neutral-500">Date:</span>{" "}
+                                  <span className="text-slate-500">Date:</span>{" "}
                                   {new Date(invoice.createdAt).toLocaleDateString("fr-FR", {
                                     year: "numeric",
                                     month: "long",
@@ -866,14 +868,14 @@ const ModernBilling = () => {
                                 </p>
                                 {invoice.dueDate && (
                                   <p>
-                                    <span className="text-neutral-500">Échéance:</span>{" "}
+                                    <span className="text-slate-500">Échéance:</span>{" "}
                                     {new Date(invoice.dueDate).toLocaleDateString("fr-FR")}
                                   </p>
                                 )}
                               </div>
                             </div>
                             <div className="flex flex-col items-end gap-2">
-                              <div className="text-2xl font-bold text-purple-400">
+                              <div className="text-2xl font-bold text-red-600">
                                 {invoice.total.toLocaleString("fr-FR")} FCFA
                               </div>
                               <div className="flex gap-2">
@@ -881,7 +883,7 @@ const ModernBilling = () => {
                                   onClick={() => downloadInvoice(invoice)}
                                   variant="outline"
                                   size="sm"
-                                  className="bg-neutral-700 border-neutral-600 text-white hover:bg-neutral-600"
+                                  className="bg-white border-slate-300 text-slate-900 hover:bg-slate-100"
                                 >
                                   <Download className="w-4 h-4 mr-2" />
                                   Télécharger

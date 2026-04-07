@@ -10,7 +10,8 @@ interface WeatherData {
 }
 
 const TimeWeather = () => {
-  const [time, setTime] = useState(new Date());
+  const [isMounted, setIsMounted] = useState(false);
+  const [time, setTime] = useState<Date | null>(null);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -83,6 +84,9 @@ const TimeWeather = () => {
   }, [setMockWeather]);
 
   useEffect(() => {
+    setIsMounted(true);
+    setTime(new Date());
+
     // Mettre à jour l'heure chaque seconde
     const timer = setInterval(() => {
       setTime(new Date());
@@ -115,40 +119,48 @@ const TimeWeather = () => {
     }
   };
 
-  const { hours, minutes, seconds } = formatTime(time);
+  const { hours, minutes, seconds } = time
+    ? formatTime(time)
+    : { hours: "--", minutes: "--", seconds: "--" };
 
   return (
     <div className="flex items-center gap-4">
       {/* Heure */}
       <div className="flex items-baseline gap-1.5">
-        <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-mono tabular-nums">
+        <div
+          suppressHydrationWarning
+          className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-red-500 to-blue-600 bg-clip-text text-transparent font-mono tabular-nums"
+        >
           {hours}:{minutes}
         </div>
-        <div className="text-sm md:text-base text-cyan-400/70 font-mono tabular-nums">
+        <div
+          suppressHydrationWarning
+          className="text-sm md:text-base text-blue-600/80 font-mono tabular-nums"
+        >
           :{seconds}
         </div>
       </div>
 
       {/* Météo */}
-      {!loading && weather && (
+      {isMounted && !loading && weather && (
         <div className="flex items-center gap-2.5">
           <div>
             {getWeatherIcon(weather.condition)}
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="text-base font-semibold text-orange-400">
+            <div className="text-base font-semibold text-red-600">
               {weather.temperature}°C
             </div>
-            <div className="text-sm text-white/70 hidden xl:inline">
+            <div className="text-sm text-slate-600 hidden xl:inline">
               {weather.condition}
             </div>
           </div>
         </div>
       )}
 
-      {loading && (
+      {isMounted && loading && (
         <div>
-          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-slate-300 border-t-blue-500 rounded-full animate-spin" />
         </div>
       )}
     </div>

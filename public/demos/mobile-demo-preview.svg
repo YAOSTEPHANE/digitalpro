@@ -1,0 +1,27 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1200" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1F1147"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="phone" x1="420" y1="90" x2="780" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C084FC" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#8B5CF6" stop-opacity="0.25"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" rx="28" fill="url(#bg2)"/>
+  <circle cx="180" cy="150" r="180" fill="#A855F7" fill-opacity="0.16"/>
+  <circle cx="1060" cy="620" r="220" fill="#6366F1" fill-opacity="0.18"/>
+  <rect x="430" y="80" width="340" height="560" rx="46" fill="#09090B" stroke="#A78BFA"/>
+  <rect x="454" y="112" width="292" height="496" rx="32" fill="url(#phone)" stroke="#C4B5FD"/>
+  <rect x="546" y="98" width="110" height="8" rx="4" fill="#27272A"/>
+  <rect x="484" y="156" width="232" height="22" rx="11" fill="#E9D5FF" fill-opacity="0.65"/>
+  <rect x="484" y="190" width="184" height="11" rx="5.5" fill="#DDD6FE" fill-opacity="0.45"/>
+  <rect x="484" y="214" width="160" height="11" rx="5.5" fill="#DDD6FE" fill-opacity="0.3"/>
+  <rect x="484" y="246" width="232" height="120" rx="20" fill="#F5D0FE" fill-opacity="0.16" stroke="#E9D5FF" stroke-opacity="0.6"/>
+  <rect x="484" y="386" width="108" height="108" rx="18" fill="#FAE8FF" fill-opacity="0.2" stroke="#E9D5FF" stroke-opacity="0.5"/>
+  <rect x="608" y="386" width="108" height="108" rx="18" fill="#FAE8FF" fill-opacity="0.2" stroke="#E9D5FF" stroke-opacity="0.5"/>
+  <rect x="484" y="512" width="232" height="56" rx="18" fill="#A855F7" fill-opacity="0.8"/>
+  <text x="92" y="602" fill="#F5F3FF" font-size="40" font-family="Arial, sans-serif" font-weight="700">Demo Mobile Premium</text>
+  <text x="92" y="640" fill="#DDD6FE" font-size="20" font-family="Arial, sans-serif">Onboarding " Réservation " Push " Paiement</text>
+</svg>

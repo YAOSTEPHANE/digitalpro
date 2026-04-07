@@ -121,7 +121,7 @@ export default function RetoursPage() {
   const scrollToBrands = () => {};
 
   return (
-    <div className="w-full min-h-screen bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
+    <div className="w-full min-h-screen bg-slate-50 antialiased relative overflow-hidden">
       <StarsBackground />
       <ModernNavbar
         scrollToServices={scrollToServices}
@@ -140,17 +140,17 @@ export default function RetoursPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-violet-500/10 border border-violet-500/20 rounded-full mb-6">
-              <Quote className="w-4 h-4 text-violet-400" />
-              <span className="text-sm text-violet-300">Vos retours nous importent</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full mb-6 backdrop-blur-md">
+              <Quote className="w-4 h-4 text-cyan-300" />
+              <span className="text-sm text-slate-700">Vos retours nous importent</span>
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-6">
               Partagez votre
-              <span className="block bg-gradient-to-r from-violet-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-amber-300 via-cyan-300 to-indigo-300 bg-clip-text text-transparent">
                 expérience avec nous
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
               Votre avis compte ! Partagez votre expérience avec Digitalpro Solutions et aidez d'autres entreprises à découvrir nos services.
             </p>
           </motion.div>
@@ -170,13 +170,13 @@ export default function RetoursPage() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                  className="bg-gradient-to-br from-violet-900/20 to-purple-900/20 border border-violet-500/20 rounded-xl p-6 text-center backdrop-blur-sm"
+                  className="bg-white border border-slate-200 rounded-xl p-6 text-center backdrop-blur-md shadow-sm"
                 >
-                  <Icon className="w-8 h-8 text-violet-400 mx-auto mb-3" />
-                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                  <Icon className="w-8 h-8 text-cyan-300 mx-auto mb-3" />
+                  <div className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-white/60">{stat.label}</div>
+                  <div className="text-sm text-slate-600">{stat.label}</div>
                 </motion.div>
               );
             })}
@@ -194,10 +194,10 @@ export default function RetoursPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">
               Ce que disent nos clients
             </h2>
-            <p className="text-lg text-white/70">
+            <p className="text-lg text-slate-600">
               Découvrez les témoignages de nos clients satisfaits
             </p>
           </motion.div>
@@ -210,18 +210,18 @@ export default function RetoursPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-gradient-to-br from-violet-900/20 to-purple-900/20 border border-violet-500/20 rounded-xl p-6 md:p-8 backdrop-blur-sm"
+                className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 backdrop-blur-md shadow-sm"
               >
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center text-black font-bold text-lg flex-shrink-0">
                     {testimonial.avatar}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-lg font-semibold text-white">
+                      <h3 className="text-lg font-semibold text-slate-900">
                         {testimonial.name}
                       </h3>
-                      <span className="text-sm text-white/60">
+                      <span className="text-sm text-slate-500">
                         - {testimonial.company}
                       </span>
                     </div>
@@ -233,12 +233,12 @@ export default function RetoursPage() {
                         />
                       ))}
                     </div>
-                    <div className="text-xs text-violet-400 mb-3">
+                    <div className="text-xs text-cyan-300 mb-3">
                       Service : {testimonial.service}
                     </div>
                   </div>
                 </div>
-                <p className="text-white/80 leading-relaxed">{testimonial.message}</p>
+                <p className="text-slate-600 leading-relaxed">{testimonial.message}</p>
               </motion.div>
             ))}
           </div>
@@ -253,13 +253,13 @@ export default function RetoursPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gradient-to-br from-violet-900/20 to-purple-900/20 border border-violet-500/20 rounded-2xl p-8 md:p-12 backdrop-blur-sm"
+            className="bg-white border border-slate-200 rounded-2xl p-8 md:p-12 backdrop-blur-md shadow-sm"
           >
             <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                 Laissez votre avis
               </h2>
-              <p className="text-white/70">
+              <p className="text-slate-600">
                 Partagez votre expérience et aidez-nous à nous améliorer
               </p>
             </div>
@@ -272,12 +272,12 @@ export default function RetoursPage() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Nom complet *</FormLabel>
+                        <FormLabel className="text-slate-800">Nom complet *</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             placeholder="Votre nom"
-                            className="bg-black/40 border-neutral-700 text-white placeholder:text-neutral-500"
+                            className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-500"
                           />
                         </FormControl>
                         <FormMessage />
@@ -290,13 +290,13 @@ export default function RetoursPage() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Email *</FormLabel>
+                        <FormLabel className="text-slate-800">Email *</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             type="email"
                             placeholder="votre@email.com"
-                            className="bg-black/40 border-neutral-700 text-white placeholder:text-neutral-500"
+                            className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-500"
                           />
                         </FormControl>
                         <FormMessage />
@@ -310,12 +310,12 @@ export default function RetoursPage() {
                   name="company"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Entreprise (optionnel)</FormLabel>
+                      <FormLabel className="text-slate-800">Entreprise (optionnel)</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           placeholder="Nom de votre entreprise"
-                          className="bg-black/40 border-neutral-700 text-white placeholder:text-neutral-500"
+                          className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-500"
                         />
                       </FormControl>
                       <FormMessage />
@@ -329,30 +329,30 @@ export default function RetoursPage() {
                     name="service"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Service utilisé *</FormLabel>
+                        <FormLabel className="text-slate-800">Service utilisé *</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="bg-black/40 border-neutral-700 text-white">
+                            <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                               <SelectValue placeholder="Sélectionnez un service" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-neutral-900 border-neutral-700">
-                            <SelectItem value="site-web" className="text-white">
+                          <SelectContent className="bg-white border-slate-300">
+                            <SelectItem value="site-web" className="text-slate-900">
                               Site Web
                             </SelectItem>
-                            <SelectItem value="e-commerce" className="text-white">
+                            <SelectItem value="e-commerce" className="text-slate-900">
                               E-commerce
                             </SelectItem>
-                            <SelectItem value="design" className="text-white">
+                            <SelectItem value="design" className="text-slate-900">
                               Design Graphique
                             </SelectItem>
-                            <SelectItem value="seo" className="text-white">
+                            <SelectItem value="seo" className="text-slate-900">
                               SEO & Marketing
                             </SelectItem>
-                            <SelectItem value="autre" className="text-white">
+                            <SelectItem value="autre" className="text-slate-900">
                               Autre
                             </SelectItem>
                           </SelectContent>
@@ -367,22 +367,22 @@ export default function RetoursPage() {
                     name="rating"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Note *</FormLabel>
+                        <FormLabel className="text-slate-800">Note *</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="bg-black/40 border-neutral-700 text-white">
+                            <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                               <SelectValue placeholder="Votre note" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-neutral-900 border-neutral-700">
+                          <SelectContent className="bg-white border-slate-300">
                             {[5, 4, 3, 2, 1].map((rating) => (
                               <SelectItem
                                 key={rating}
                                 value={rating.toString()}
-                                className="text-white"
+                                className="text-slate-900"
                               >
                                 <div className="flex items-center gap-2">
                                   {[...Array(rating)].map((_, i) => (
@@ -412,13 +412,13 @@ export default function RetoursPage() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Votre avis *</FormLabel>
+                      <FormLabel className="text-slate-800">Votre avis *</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
                           placeholder="Partagez votre expérience avec nous..."
                           rows={6}
-                          className="bg-black/40 border-neutral-700 text-white placeholder:text-neutral-500 resize-none"
+                          className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-500 resize-none"
                         />
                       </FormControl>
                       <FormMessage />
@@ -429,7 +429,7 @@ export default function RetoursPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700 text-white font-semibold py-6 text-lg"
+                  className="w-full bg-gradient-to-r from-indigo-500 to-cyan-400 hover:brightness-110 text-black font-semibold py-6 text-lg"
                 >
                   {isSubmitting ? (
                     "Envoi en cours..."

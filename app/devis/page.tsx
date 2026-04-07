@@ -138,7 +138,7 @@ export default function QuoteForm() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
+    <div className="w-full min-h-screen bg-slate-50 antialiased relative overflow-hidden">
       <ModernNavbar
         scrollToWebsiteDesign={() => {}}
         scrollToGraphicDesign={() => {}}
@@ -155,25 +155,44 @@ export default function QuoteForm() {
             <span className="text-sm text-purple-300">Demande de devis</span>
           </div>
           
-          <h1 className="text-4xl pb-5 md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 mb-4">
+          <h1 className="text-4xl pb-5 md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-slate-900 to-slate-600 mb-4">
             Obtenez votre devis gratuit
           </h1>
           
-          <p className="text-lg text-neutral-300 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Remplissez ce formulaire détaillé et recevez un devis personnalisé dans les 24 heures. 
             Notre équipe analysera votre projet et vous proposera la meilleure solution.
           </p>
         </div>
 
+        <section className="mb-10">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-2xl font-semibold text-slate-900 mb-3">
+              Comment nous construisons votre devis
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                "Analyse de vos objectifs business et de vos priorités",
+                "Estimation par lots: conception, développement, contenu, optimisation",
+                "Feuille de route avec délais, livrables et options d'évolution",
+              ].map((step, index) => (
+                <p key={step} className="text-sm text-slate-600 rounded-xl bg-slate-50 border border-slate-200 p-4">
+                  <span className="font-semibold text-slate-900">Étape {index + 1}:</span> {step}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {!submitted ? (
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-8 bg-neutral-900/50 border border-neutral-800 rounded-2xl p-6 md:p-10"
+              className="space-y-8 bg-white/90 border border-slate-200 rounded-2xl p-6 md:p-10 shadow-sm"
             >
               {/* Informations personnelles */}
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-white flex items-center gap-2 mb-4">
+                <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-4">
                   <User className="w-5 h-5 text-purple-400" />
                   Informations personnelles
                 </h2>
@@ -184,12 +203,12 @@ export default function QuoteForm() {
                     name="first_name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Prénom *</FormLabel>
+                        <FormLabel className="text-slate-800">Prénom *</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             placeholder="Votre prénom"
-                            className="bg-neutral-800 border-neutral-700 text-white"
+                            className="bg-white border-slate-300 text-slate-900"
                           />
                         </FormControl>
                         <FormMessage />
@@ -202,12 +221,12 @@ export default function QuoteForm() {
                     name="last_name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Nom *</FormLabel>
+                        <FormLabel className="text-slate-800">Nom *</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             placeholder="Votre nom"
-                            className="bg-neutral-800 border-neutral-700 text-white"
+                            className="bg-white border-slate-300 text-slate-900"
                           />
                         </FormControl>
                         <FormMessage />
@@ -222,7 +241,7 @@ export default function QuoteForm() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white flex items-center gap-2">
+                        <FormLabel className="text-slate-800 flex items-center gap-2">
                           <Mail className="w-4 h-4" />
                           Email *
                         </FormLabel>
@@ -231,7 +250,7 @@ export default function QuoteForm() {
                             {...field}
                             type="email"
                             placeholder="votre@email.com"
-                            className="bg-neutral-800 border-neutral-700 text-white"
+                            className="bg-white border-slate-300 text-slate-900"
                           />
                         </FormControl>
                         <FormMessage />
@@ -244,7 +263,7 @@ export default function QuoteForm() {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white flex items-center gap-2">
+                        <FormLabel className="text-slate-800 flex items-center gap-2">
                           <Phone className="w-4 h-4" />
                           Téléphone *
                         </FormLabel>
@@ -253,7 +272,7 @@ export default function QuoteForm() {
                             {...field}
                             type="tel"
                             placeholder="+225 XX XX XX XX XX"
-                            className="bg-neutral-800 border-neutral-700 text-white"
+                            className="bg-white border-slate-300 text-slate-900"
                           />
                         </FormControl>
                         <FormMessage />
@@ -268,7 +287,7 @@ export default function QuoteForm() {
                     name="company_name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white flex items-center gap-2">
+                        <FormLabel className="text-slate-800 flex items-center gap-2">
                           <Building className="w-4 h-4" />
                           Entreprise
                         </FormLabel>
@@ -276,7 +295,7 @@ export default function QuoteForm() {
                           <Input
                             {...field}
                             placeholder="Nom de votre entreprise"
-                            className="bg-neutral-800 border-neutral-700 text-white"
+                            className="bg-white border-slate-300 text-slate-900"
                           />
                         </FormControl>
                         <FormMessage />
@@ -289,12 +308,12 @@ export default function QuoteForm() {
                     name="job_title"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Poste</FormLabel>
+                        <FormLabel className="text-slate-800">Poste</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             placeholder="Votre poste"
-                            className="bg-neutral-800 border-neutral-700 text-white"
+                            className="bg-white border-slate-300 text-slate-900"
                           />
                         </FormControl>
                         <FormMessage />
@@ -305,8 +324,8 @@ export default function QuoteForm() {
               </div>
 
               {/* Détails du projet */}
-              <div className="space-y-4 pt-6 border-t border-neutral-800">
-                <h2 className="text-xl font-semibold text-white flex items-center gap-2 mb-4">
+              <div className="space-y-4 pt-6 border-t border-slate-200">
+                <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-4">
                   <Target className="w-5 h-5 text-purple-400" />
                   Détails du projet
                 </h2>
@@ -317,14 +336,14 @@ export default function QuoteForm() {
                     name="service"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Service demandé *</FormLabel>
+                        <FormLabel className="text-slate-800">Service demandé *</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
+                            <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                               <SelectValue placeholder="Sélectionnez un service" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-neutral-800 border-neutral-700">
+                          <SelectContent className="bg-white border-slate-300">
                             <SelectItem value="Développement de site web">Développement de site web</SelectItem>
                             <SelectItem value="Développement d'application mobile">Développement d&apos;application mobile</SelectItem>
                             <SelectItem value="SEO & Référencement">SEO & Référencement</SelectItem>
@@ -346,14 +365,14 @@ export default function QuoteForm() {
                     name="project_type"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Type de projet *</FormLabel>
+                        <FormLabel className="text-slate-800">Type de projet *</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
+                            <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                               <SelectValue placeholder="Sélectionnez un type" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-neutral-800 border-neutral-700">
+                          <SelectContent className="bg-white border-slate-300">
                             <SelectItem value="Nouveau projet">Nouveau projet</SelectItem>
                             <SelectItem value="Refonte / Amélioration">Refonte / Amélioration</SelectItem>
                             <SelectItem value="Maintenance">Maintenance</SelectItem>
@@ -372,17 +391,17 @@ export default function QuoteForm() {
                     name="budget_range"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white flex items-center gap-2">
+                        <FormLabel className="text-slate-800 flex items-center gap-2">
                           <DollarSign className="w-4 h-4" />
                           Budget estimé *
                         </FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
+                            <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                               <SelectValue placeholder="Sélectionnez une fourchette" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-neutral-800 border-neutral-700">
+                          <SelectContent className="bg-white border-slate-300">
                             <SelectItem value="Moins de 500.000 F">Moins de 500.000 F</SelectItem>
                             <SelectItem value="500.000 F - 1.000.000 F">500.000 F - 1.000.000 F</SelectItem>
                             <SelectItem value="1.000.000 F - 2.500.000 F">1.000.000 F - 2.500.000 F</SelectItem>
@@ -401,17 +420,17 @@ export default function QuoteForm() {
                     name="timeline"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white flex items-center gap-2">
+                        <FormLabel className="text-slate-800 flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
                           Délai souhaité *
                         </FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
+                            <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                               <SelectValue placeholder="Sélectionnez un délai" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-neutral-800 border-neutral-700">
+                          <SelectContent className="bg-white border-slate-300">
                             <SelectItem value="Urgent (moins de 1 mois)">Urgent (moins de 1 mois)</SelectItem>
                             <SelectItem value="1-3 mois">1-3 mois</SelectItem>
                             <SelectItem value="3-6 mois">3-6 mois</SelectItem>
@@ -431,7 +450,7 @@ export default function QuoteForm() {
                   name="project_description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white flex items-center gap-2">
+                      <FormLabel className="text-slate-800 flex items-center gap-2">
                         <FileText className="w-4 h-4" />
                         Description du projet *
                       </FormLabel>
@@ -439,7 +458,7 @@ export default function QuoteForm() {
                         <Textarea
                           {...field}
                           placeholder="Décrivez votre projet en détail : objectifs, fonctionnalités souhaitées, public cible, etc."
-                          className="bg-neutral-800 border-neutral-700 text-white min-h-[120px]"
+                          className="bg-white border-slate-300 text-slate-900 min-h-[120px]"
                         />
                       </FormControl>
                       <FormMessage />
@@ -452,12 +471,12 @@ export default function QuoteForm() {
                   name="features"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Fonctionnalités spécifiques</FormLabel>
+                      <FormLabel className="text-slate-800">Fonctionnalités spécifiques</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
                           placeholder="Listez les fonctionnalités importantes pour votre projet (ex: paiement en ligne, authentification utilisateur, tableau de bord admin, etc.)"
-                          className="bg-neutral-800 border-neutral-700 text-white min-h-[100px]"
+                          className="bg-white border-slate-300 text-slate-900 min-h-[100px]"
                         />
                       </FormControl>
                       <FormMessage />
@@ -470,7 +489,7 @@ export default function QuoteForm() {
                   name="additional_info"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white flex items-center gap-2">
+                      <FormLabel className="text-slate-800 flex items-center gap-2">
                         <MessageSquare className="w-4 h-4" />
                         Informations complémentaires
                       </FormLabel>
@@ -478,7 +497,7 @@ export default function QuoteForm() {
                         <Textarea
                           {...field}
                           placeholder="Toute autre information que vous souhaitez partager (références, contraintes techniques, préférences, etc.)"
-                          className="bg-neutral-800 border-neutral-700 text-white min-h-[100px]"
+                          className="bg-white border-slate-300 text-slate-900 min-h-[100px]"
                         />
                       </FormControl>
                       <FormMessage />
@@ -497,11 +516,11 @@ export default function QuoteForm() {
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                        className="mt-1 border-neutral-600 data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600 bg-neutral-800"
+                        className="mt-1 border-slate-400 data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600 bg-white"
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel className="text-white cursor-pointer">
+                      <FormLabel className="text-slate-800 cursor-pointer">
                         J&apos;accepte que digitalpro solutions traite mes données personnelles 
                         conformément à la politique de confidentialité. *
                       </FormLabel>
@@ -532,25 +551,25 @@ export default function QuoteForm() {
             </form>
           </Form>
         ) : (
-          <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-10 md:p-16 text-center">
+          <div className="bg-white/90 border border-slate-200 rounded-2xl p-10 md:p-16 text-center shadow-sm">
             <div className="max-w-md mx-auto">
               <div className="bg-gradient-to-r from-green-500 to-emerald-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle2 className="w-10 h-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-white mb-4">
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">
                 Demande de devis envoyée !
               </h2>
-              <p className="text-neutral-300 mb-8">
+              <p className="text-slate-600 mb-8">
                 Merci pour votre demande de devis. Notre équipe va analyser votre projet 
                 et vous enverra un devis personnalisé dans les 24 heures.
               </p>
               <div className="space-y-4">
                 <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4 text-left">
-                  <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
+                  <h3 className="text-slate-900 font-semibold mb-2 flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-purple-400" />
                     Prochaines étapes
                   </h3>
-                  <ul className="space-y-2 text-sm text-neutral-300">
+                  <ul className="space-y-2 text-sm text-slate-600">
                     <li className="flex items-start gap-2">
                       <span className="text-purple-400">•</span>
                       <span>Vous recevrez une confirmation par email</span>

@@ -14,7 +14,8 @@ import {
   Send,
   MapPin,
   Clock,
-  Sparkles
+  Sparkles,
+  Facebook
 } from "lucide-react";
 import ModernNavbar from "@/components/modern-navbar";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import StarsBackground from "@/components/stars-background";
 
 const FormSchema = z.object({
   first_name: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
@@ -115,7 +117,8 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
+    <div className="w-full min-h-screen bg-slate-50 antialiased relative overflow-hidden">
+      <StarsBackground />
       <ModernNavbar
         scrollToWebsiteDesign={() => {}}
         scrollToGraphicDesign={() => {}}
@@ -124,40 +127,64 @@ export default function ContactForm() {
         scrollToServices={() => {}}
       />
 
-      <div className="max-w-7xl mx-auto px-4 py-10 md:py-20">
+      <div className="max-w-7xl mx-auto px-4 py-10 md:py-20 relative z-10">
         {/* En-tête */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-full px-4 py-2 mb-6">
-            <Sparkles className="w-4 h-4 text-red-400" />
-            <span className="text-sm text-red-300">Contactez-nous</span>
+          <div className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-4 py-2 mb-6 backdrop-blur-md">
+            <Sparkles className="w-4 h-4 text-amber-300" />
+            <span className="text-sm text-slate-700">Contact</span>
           </div>
           
-          <h1 className="text-4xl pb-5 md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 mb-4">
+          <h1 className="text-4xl pb-5 md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 mb-4">
             Parlons de votre projet
           </h1>
           
-          <p className="text-lg text-neutral-300 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Remplissez le formulaire ci-dessous et notre équipe vous contactera dans les 24 heures. 
             Nous sommes là pour transformer vos idées en réalité digitale.
           </p>
         </div>
 
+        <section className="mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              {
+                title: "Ce que vous obtenez",
+                text: "Un premier échange structuré, un cadrage clair de vos besoins et un plan d'action réaliste.",
+              },
+              {
+                title: "Délai de réponse",
+                text: "Réponse initiale sous 24h ouvrées, puis proposition de créneau de travail selon votre urgence.",
+              },
+              {
+                title: "Comment préparer votre demande",
+                text: "Partagez vos objectifs, votre audience, vos contraintes et des exemples de sites que vous aimez.",
+              },
+            ].map((item) => (
+              <article key={item.title} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                <h2 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h2>
+                <p className="text-sm text-slate-600 leading-relaxed">{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Informations de contact */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-6">
-              <h2 className="text-xl font-semibold text-white mb-6">Nos coordonnées</h2>
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 backdrop-blur-md shadow-sm">
+              <h2 className="text-xl font-semibold text-slate-900 mb-6">Nos coordonnées</h2>
               
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="bg-red-500/10 p-3 rounded-lg">
-                    <Mail className="w-5 h-5 text-red-400" />
+                  <div className="bg-cyan-400/10 p-3 rounded-lg border border-cyan-300/20">
+                    <Mail className="w-5 h-5 text-cyan-300" />
                   </div>
                   <div>
-                    <h3 className="text-white font-medium mb-1">Email</h3>
+                    <h3 className="text-slate-900 font-medium mb-1">Email</h3>
                     <a 
                       href="mailto:digitalprosolutions27@gmail.com" 
-                      className="text-neutral-400 hover:text-red-400 transition-colors"
+                      className="text-slate-600 hover:text-cyan-700 transition-colors"
                     >
                       digitalprosolutions27@gmail.com
                     </a>
@@ -165,14 +192,14 @@ export default function ContactForm() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-red-500/10 p-3 rounded-lg">
-                    <Phone className="w-5 h-5 text-red-400" />
+                  <div className="bg-cyan-400/10 p-3 rounded-lg border border-cyan-300/20">
+                    <Phone className="w-5 h-5 text-cyan-300" />
                   </div>
                   <div>
-                    <h3 className="text-white font-medium mb-1">Téléphone</h3>
+                    <h3 className="text-slate-900 font-medium mb-1">Téléphone</h3>
                     <a 
                       href="tel:+2250748976031" 
-                      className="text-neutral-400 hover:text-red-400 transition-colors"
+                      className="text-slate-600 hover:text-cyan-700 transition-colors"
                     >
                       +225 07 48 97 60 31
                     </a>
@@ -180,12 +207,12 @@ export default function ContactForm() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-red-500/10 p-3 rounded-lg">
-                    <MapPin className="w-5 h-5 text-red-400" />
+                  <div className="bg-cyan-400/10 p-3 rounded-lg border border-cyan-300/20">
+                    <MapPin className="w-5 h-5 text-cyan-300" />
                   </div>
                   <div>
-                    <h3 className="text-white font-medium mb-1">Adresse</h3>
-                    <p className="text-neutral-400">
+                    <h3 className="text-slate-900 font-medium mb-1">Adresse</h3>
+                    <p className="text-slate-600">
                       Bvd Koffi Gadaud, Cocody<br />
                       Abidjan, Côte d&apos;Ivoire
                     </p>
@@ -193,38 +220,55 @@ export default function ContactForm() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-red-500/10 p-3 rounded-lg">
-                    <Clock className="w-5 h-5 text-red-400" />
+                  <div className="bg-cyan-400/10 p-3 rounded-lg border border-cyan-300/20">
+                    <Clock className="w-5 h-5 text-cyan-300" />
                   </div>
                   <div>
-                    <h3 className="text-white font-medium mb-1">Horaires</h3>
-                    <p className="text-neutral-400">
+                    <h3 className="text-slate-900 font-medium mb-1">Horaires</h3>
+                    <p className="text-slate-600">
                       Lundi - Vendredi: 9h - 18h<br />
                       Samedi: 9h - 13h
                     </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="bg-cyan-400/10 p-3 rounded-lg border border-cyan-300/20">
+                    <Facebook className="w-5 h-5 text-cyan-300" />
+                  </div>
+                  <div>
+                    <h3 className="text-slate-900 font-medium mb-1">Facebook</h3>
+                    <a
+                      href="https://www.facebook.com/profile.php?id=61574110564242"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-slate-600 hover:text-cyan-700 transition-colors"
+                    >
+                      Digitalpro solutions
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Avantages */}
-            <div className="bg-gradient-to-br from-red-600/10 to-blue-600/10 border border-red-500/20 rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Pourquoi nous choisir ?</h3>
+            <div className="bg-gradient-to-br from-indigo-50 to-cyan-50 border border-slate-200 rounded-2xl p-6 backdrop-blur-md">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Pourquoi nous choisir ?</h3>
               <ul className="space-y-3">
-                <li className="flex items-start gap-2 text-neutral-300 text-sm">
-                  <CheckCircle2 className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
+                <li className="flex items-start gap-2 text-slate-600 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-300 mt-0.5 flex-shrink-0" />
                   <span>Réponse sous 24h</span>
                 </li>
-                <li className="flex items-start gap-2 text-neutral-300 text-sm">
-                  <CheckCircle2 className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
+                <li className="flex items-start gap-2 text-slate-600 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-300 mt-0.5 flex-shrink-0" />
                   <span>Consultation gratuite</span>
                 </li>
-                <li className="flex items-start gap-2 text-neutral-300 text-sm">
-                  <CheckCircle2 className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
+                <li className="flex items-start gap-2 text-slate-600 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-300 mt-0.5 flex-shrink-0" />
                   <span>Solutions sur mesure</span>
                 </li>
-                <li className="flex items-start gap-2 text-neutral-300 text-sm">
-                  <CheckCircle2 className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
+                <li className="flex items-start gap-2 text-slate-600 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-300 mt-0.5 flex-shrink-0" />
                   <span>Support dédié</span>
                 </li>
               </ul>
@@ -237,12 +281,12 @@ export default function ContactForm() {
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-6 bg-neutral-900/50 border border-neutral-800 rounded-2xl p-6 md:p-10"
+                  className="space-y-6 bg-white border border-slate-200 rounded-2xl p-6 md:p-10 backdrop-blur-md shadow-sm"
                 >
                   {/* Informations personnelles */}
                   <div className="space-y-4">
-                    <h2 className="text-xl font-semibold text-white flex items-center gap-2 mb-4">
-                      <User className="w-5 h-5 text-red-400" />
+                    <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-4">
+                      <User className="w-5 h-5 text-cyan-300" />
                       Informations personnelles
                     </h2>
                     
@@ -252,12 +296,12 @@ export default function ContactForm() {
                         name="first_name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white">Prénom *</FormLabel>
+                            <FormLabel className="text-slate-800">Prénom *</FormLabel>
                             <FormControl>
                               <Input
                                 {...field}
                                 placeholder="Votre prénom"
-                                className="bg-neutral-800 border-neutral-700 text-white"
+                                className="bg-white border-slate-300 text-slate-900"
                               />
                             </FormControl>
                             <FormMessage />
@@ -270,12 +314,12 @@ export default function ContactForm() {
                         name="last_name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white">Nom *</FormLabel>
+                            <FormLabel className="text-slate-800">Nom *</FormLabel>
                             <FormControl>
                               <Input
                                 {...field}
                                 placeholder="Votre nom"
-                                className="bg-neutral-800 border-neutral-700 text-white"
+                                className="bg-white border-slate-300 text-slate-900"
                               />
                             </FormControl>
                             <FormMessage />
@@ -290,7 +334,7 @@ export default function ContactForm() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white flex items-center gap-2">
+                            <FormLabel className="text-slate-800 flex items-center gap-2">
                               <Mail className="w-4 h-4" />
                               Email *
                             </FormLabel>
@@ -299,7 +343,7 @@ export default function ContactForm() {
                                 {...field}
                                 type="email"
                                 placeholder="votre@email.com"
-                                className="bg-neutral-800 border-neutral-700 text-white"
+                                className="bg-white border-slate-300 text-slate-900"
                               />
                             </FormControl>
                             <FormMessage />
@@ -312,7 +356,7 @@ export default function ContactForm() {
                         name="phone"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white flex items-center gap-2">
+                            <FormLabel className="text-slate-800 flex items-center gap-2">
                               <Phone className="w-4 h-4" />
                               Téléphone
                             </FormLabel>
@@ -321,7 +365,7 @@ export default function ContactForm() {
                                 {...field}
                                 type="tel"
                                 placeholder="+225 XX XX XX XX XX"
-                                className="bg-neutral-800 border-neutral-700 text-white"
+                                className="bg-white border-slate-300 text-slate-900"
                               />
                             </FormControl>
                             <FormMessage />
@@ -336,7 +380,7 @@ export default function ContactForm() {
                         name="company_name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white flex items-center gap-2">
+                            <FormLabel className="text-slate-800 flex items-center gap-2">
                               <Building className="w-4 h-4" />
                               Entreprise
                             </FormLabel>
@@ -344,7 +388,7 @@ export default function ContactForm() {
                               <Input
                                 {...field}
                                 placeholder="Nom de votre entreprise"
-                                className="bg-neutral-800 border-neutral-700 text-white"
+                                className="bg-white border-slate-300 text-slate-900"
                               />
                             </FormControl>
                             <FormMessage />
@@ -357,12 +401,12 @@ export default function ContactForm() {
                         name="job_title"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white">Poste</FormLabel>
+                            <FormLabel className="text-slate-800">Poste</FormLabel>
                             <FormControl>
                               <Input
                                 {...field}
                                 placeholder="Votre poste"
-                                className="bg-neutral-800 border-neutral-700 text-white"
+                                className="bg-white border-slate-300 text-slate-900"
                               />
                             </FormControl>
                             <FormMessage />
@@ -374,8 +418,8 @@ export default function ContactForm() {
 
                   {/* Détails du projet */}
                   <div className="space-y-4 pt-6 border-t border-neutral-800">
-                    <h2 className="text-xl font-semibold text-white flex items-center gap-2 mb-4">
-                      <MessageSquare className="w-5 h-5 text-red-400" />
+                    <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-4">
+                      <MessageSquare className="w-5 h-5 text-cyan-300" />
                       Détails du projet
                     </h2>
 
@@ -384,14 +428,14 @@ export default function ContactForm() {
                       name="service"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-white">Service qui vous intéresse *</FormLabel>
+                          <FormLabel className="text-slate-800">Service qui vous intéresse *</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
+                              <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                                 <SelectValue placeholder="Sélectionnez un service" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent className="bg-neutral-800 border-neutral-700">
+                            <SelectContent className="bg-white border-slate-300">
                               <SelectItem value="Développement de site web">Développement de site web</SelectItem>
                               <SelectItem value="Développement d'application mobile">Développement d&apos;application mobile</SelectItem>
                               <SelectItem value="SEO & Référencement">SEO & Référencement</SelectItem>
@@ -413,14 +457,14 @@ export default function ContactForm() {
                       name="help"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-white">Comment pouvons-nous vous aider ? *</FormLabel>
+                          <FormLabel className="text-slate-800">Comment pouvons-nous vous aider ? *</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
+                              <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                                 <SelectValue placeholder="Sélectionnez une option" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent className="bg-neutral-800 border-neutral-700">
+                            <SelectContent className="bg-white border-slate-300">
                               <SelectItem value="Évaluer digitalpro solutions pour mon entreprise">
                                 Évaluer digitalpro solutions pour mon entreprise
                               </SelectItem>
@@ -442,12 +486,12 @@ export default function ContactForm() {
                       name="message"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-white">Message *</FormLabel>
+                          <FormLabel className="text-slate-800">Message *</FormLabel>
                           <FormControl>
                             <Textarea
                               {...field}
                               placeholder="Décrivez votre projet, vos besoins ou posez-nous vos questions..."
-                              className="bg-neutral-800 border-neutral-700 text-white min-h-[120px]"
+                              className="bg-white border-slate-300 text-slate-900 min-h-[120px]"
                             />
                           </FormControl>
                           <FormMessage />
@@ -466,11 +510,11 @@ export default function ContactForm() {
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            className="mt-1 border-neutral-600 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600 bg-neutral-800"
+                            className="mt-1 border-slate-400 data-[state=checked]:bg-indigo-500 data-[state=checked]:border-indigo-500 bg-white"
                           />
                         </FormControl>
                         <div className="space-y-1 leading-none">
-                          <FormLabel className="text-white cursor-pointer">
+                          <FormLabel className="text-slate-800 cursor-pointer">
                             J&apos;accepte que digitalpro solutions traite mes données personnelles 
                             conformément à la politique de confidentialité. *
                           </FormLabel>
@@ -484,7 +528,7 @@ export default function ContactForm() {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700 text-white font-semibold py-6 text-lg"
+                    className="w-full bg-gradient-to-r from-indigo-500 to-cyan-400 hover:brightness-110 text-black font-semibold py-6 text-lg"
                   >
                     {loading ? (
                       <>
@@ -501,20 +545,20 @@ export default function ContactForm() {
                 </form>
               </Form>
             ) : (
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-10 md:p-16 text-center">
+              <div className="bg-white border border-slate-200 rounded-2xl p-10 md:p-16 text-center backdrop-blur-md shadow-sm">
                 <div className="max-w-md mx-auto">
                   <div className="bg-gradient-to-r from-green-500 to-emerald-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 className="w-10 h-10 text-white" />
                   </div>
-                  <h2 className="text-3xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-slate-900 mb-4">
                     Message envoyé avec succès !
                   </h2>
-                  <p className="text-neutral-300 mb-8">
+                  <p className="text-slate-600 mb-8">
                     Merci pour votre message. Notre équipe vous contactera dans les plus brefs délais, 
                     généralement sous 24 heures.
                   </p>
                   <div className="space-y-4">
-                    <p className="text-sm text-neutral-400">
+                    <p className="text-sm text-slate-400">
                       Vous recevrez une confirmation par email à l&apos;adresse que vous avez fournie.
                     </p>
                     <Button
@@ -522,7 +566,7 @@ export default function ContactForm() {
                         setSubmitted(false);
                         form.reset();
                       }}
-                      className="bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700 text-white"
+                      className="bg-gradient-to-r from-indigo-500 to-cyan-400 hover:brightness-110 text-black"
                     >
                       Envoyer un autre message
                     </Button>

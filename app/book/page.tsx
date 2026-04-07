@@ -123,7 +123,7 @@ export default function Book() {
   const availableDates = getAvailableDates();
 
   return (
-    <div className="w-full min-h-screen bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
+    <div className="w-full min-h-screen bg-slate-50 antialiased relative overflow-hidden">
       <ModernNavbar
         scrollToWebsiteDesign={() => {}}
         scrollToGraphicDesign={() => {}}
@@ -140,25 +140,44 @@ export default function Book() {
             <span className="text-sm text-purple-300">Prendre rendez-vous</span>
           </div>
           
-          <h1 className="text-4xl pb-5 md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 mb-4">
+          <h1 className="text-4xl pb-5 md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-slate-900 to-slate-600 mb-4">
             Réserver un rendez-vous
           </h1>
           
-          <p className="text-lg text-neutral-300 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Planifiez une consultation gratuite de 30 minutes avec notre équipe. 
             Discutons de votre projet et découvrons comment nous pouvons vous aider.
           </p>
         </div>
 
+        <section className="mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <h2 className="text-lg font-semibold text-slate-900 mb-2">Pendant la consultation</h2>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Nous clarifions vos objectifs, votre cible, votre positionnement et les priorités
+                techniques pour définir un plan concret.
+              </p>
+            </article>
+            <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <h2 className="text-lg font-semibold text-slate-900 mb-2">Après la consultation</h2>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Vous recevez une synthèse actionnable avec recommandations, ordre de mise en oeuvre
+                et prochaines étapes adaptées à votre budget.
+              </p>
+            </article>
+          </div>
+        </section>
+
         {!submitted ? (
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-6 bg-neutral-900/50 border border-neutral-800 rounded-2xl p-6 md:p-10"
+              className="space-y-6 bg-white/90 border border-slate-200 rounded-2xl p-6 md:p-10 shadow-sm"
             >
               {/* Informations personnelles */}
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-white flex items-center gap-2 mb-4">
+                <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-4">
                   <User className="w-5 h-5 text-purple-400" />
                   Informations personnelles
                 </h2>
@@ -169,12 +188,12 @@ export default function Book() {
                     name="first_name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Prénom *</FormLabel>
+                        <FormLabel className="text-slate-800">Prénom *</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             placeholder="Votre prénom"
-                            className="bg-neutral-800 border-neutral-700 text-white"
+                            className="bg-white border-slate-300 text-slate-900"
                           />
                         </FormControl>
                         <FormMessage />
@@ -187,12 +206,12 @@ export default function Book() {
                     name="last_name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Nom *</FormLabel>
+                        <FormLabel className="text-slate-800">Nom *</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             placeholder="Votre nom"
-                            className="bg-neutral-800 border-neutral-700 text-white"
+                            className="bg-white border-slate-300 text-slate-900"
                           />
                         </FormControl>
                         <FormMessage />
@@ -207,7 +226,7 @@ export default function Book() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white flex items-center gap-2">
+                        <FormLabel className="text-slate-800 flex items-center gap-2">
                           <Mail className="w-4 h-4" />
                           Email *
                         </FormLabel>
@@ -216,7 +235,7 @@ export default function Book() {
                             {...field}
                             type="email"
                             placeholder="votre@email.com"
-                            className="bg-neutral-800 border-neutral-700 text-white"
+                            className="bg-white border-slate-300 text-slate-900"
                           />
                         </FormControl>
                         <FormMessage />
@@ -229,7 +248,7 @@ export default function Book() {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white flex items-center gap-2">
+                        <FormLabel className="text-slate-800 flex items-center gap-2">
                           <Phone className="w-4 h-4" />
                           Téléphone *
                         </FormLabel>
@@ -238,7 +257,7 @@ export default function Book() {
                             {...field}
                             type="tel"
                             placeholder="+225 XX XX XX XX XX"
-                            className="bg-neutral-800 border-neutral-700 text-white"
+                            className="bg-white border-slate-300 text-slate-900"
                           />
                         </FormControl>
                         <FormMessage />
@@ -252,7 +271,7 @@ export default function Book() {
                   name="company_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white flex items-center gap-2">
+                      <FormLabel className="text-slate-800 flex items-center gap-2">
                         <Building className="w-4 h-4" />
                         Nom de l&apos;entreprise (optionnel)
                       </FormLabel>
@@ -260,7 +279,7 @@ export default function Book() {
                         <Input
                           {...field}
                           placeholder="Votre entreprise"
-                          className="bg-neutral-800 border-neutral-700 text-white"
+                          className="bg-white border-slate-300 text-slate-900"
                         />
                       </FormControl>
                       <FormMessage />
@@ -270,8 +289,8 @@ export default function Book() {
               </div>
 
               {/* Service et disponibilité */}
-              <div className="space-y-4 pt-6 border-t border-neutral-800">
-                <h2 className="text-xl font-semibold text-white flex items-center gap-2 mb-4">
+              <div className="space-y-4 pt-6 border-t border-slate-200">
+                <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-4">
                   <MessageSquare className="w-5 h-5 text-purple-400" />
                   Détails du rendez-vous
                 </h2>
@@ -281,14 +300,14 @@ export default function Book() {
                   name="service"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Service qui vous intéresse *</FormLabel>
+                      <FormLabel className="text-slate-800">Service qui vous intéresse *</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
+                          <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                             <SelectValue placeholder="Sélectionnez un service" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="bg-neutral-800 border-neutral-700">
+                        <SelectContent className="bg-white border-slate-300">
                           <SelectItem value="Développement de site web">Développement de site web</SelectItem>
                           <SelectItem value="Développement d'application mobile">Développement d&apos;application mobile</SelectItem>
                           <SelectItem value="SEO & Référencement">SEO & Référencement</SelectItem>
@@ -310,17 +329,17 @@ export default function Book() {
                     name="preferred_date"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white flex items-center gap-2">
+                        <FormLabel className="text-slate-800 flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
                           Date préférée *
                         </FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
+                            <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                               <SelectValue placeholder="Sélectionnez une date" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-neutral-800 border-neutral-700">
+                          <SelectContent className="bg-white border-slate-300">
                             {availableDates.map((date) => (
                               <SelectItem key={date.value} value={date.value}>
                                 {date.label}
@@ -338,17 +357,17 @@ export default function Book() {
                     name="preferred_time"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white flex items-center gap-2">
+                        <FormLabel className="text-slate-800 flex items-center gap-2">
                           <Clock className="w-4 h-4" />
                           Heure préférée *
                         </FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
+                            <SelectTrigger className="bg-white border-slate-300 text-slate-900">
                               <SelectValue placeholder="Sélectionnez une heure" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-neutral-800 border-neutral-700">
+                          <SelectContent className="bg-white border-slate-300">
                             <SelectItem value="09:00">09:00</SelectItem>
                             <SelectItem value="10:00">10:00</SelectItem>
                             <SelectItem value="11:00">11:00</SelectItem>
@@ -369,12 +388,12 @@ export default function Book() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Message (optionnel)</FormLabel>
+                      <FormLabel className="text-slate-800">Message (optionnel)</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
                           placeholder="Décrivez brièvement votre projet ou vos besoins..."
-                          className="bg-neutral-800 border-neutral-700 text-white min-h-[100px]"
+                          className="bg-white border-slate-300 text-slate-900 min-h-[100px]"
                         />
                       </FormControl>
                       <FormMessage />
@@ -404,19 +423,19 @@ export default function Book() {
             </form>
           </Form>
         ) : (
-          <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-10 md:p-16 text-center">
+          <div className="bg-white/90 border border-slate-200 rounded-2xl p-10 md:p-16 text-center shadow-sm">
             <div className="max-w-md mx-auto">
               <div className="bg-gradient-to-r from-green-500 to-emerald-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle2 className="w-10 h-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-white mb-4">
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">
                 Demande envoyée avec succès !
               </h2>
-              <p className="text-neutral-300 mb-8">
+              <p className="text-slate-600 mb-8">
                 Nous avons bien reçu votre demande de rendez-vous. Notre équipe vous contactera dans les plus brefs délais pour confirmer votre rendez-vous.
               </p>
               <div className="space-y-4">
-                <p className="text-sm text-neutral-400">
+                <p className="text-sm text-slate-500">
                   Vous recevrez un email de confirmation à l&apos;adresse que vous avez fournie.
                 </p>
                 <Button
