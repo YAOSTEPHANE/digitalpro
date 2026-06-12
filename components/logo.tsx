@@ -28,7 +28,7 @@ const Logo = ({
   if (imageError) {
     return (
       <div 
-        className={`flex items-center justify-center bg-gradient-to-br from-red-600 to-blue-600 rounded-full ${className}`}
+        className={`flex items-center justify-center bg-[var(--brand-blue)] rounded-full ${className}`}
         style={{ width: logoSize, height: logoSize }}
       >
         <span className="text-white font-bold text-sm">DP</span>

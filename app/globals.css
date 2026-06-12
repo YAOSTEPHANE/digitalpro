@@ -41,30 +41,60 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-light: var(--brand-blue-light);
+  --color-brand-blue-dark: var(--brand-blue-dark);
+  --color-brand-red: var(--brand-red);
+  --color-brand-red-light: var(--brand-red-light);
+  --color-brand-red-dark: var(--brand-red-dark);
+  --color-brand-white: var(--brand-white);
 }
 
 :root {
-  --radius: 0.625rem;
-  --font-geist-sans: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-geist-mono: "Cascadia Mono", "Fira Code", Consolas, "Courier New", monospace;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --radius: 0.875rem;
+  --font-geist-sans: var(--font-body), "Segoe UI", sans-serif;
+  --font-geist-mono: "Cascadia Mono", "Fira Code", Consolas, monospace;
+
+  /* Palette logo Digitalpro — bleu primaire, rouge accent (jamais mélangés) */
+  --brand-blue: #516699;
+  --brand-blue-light: #6b7eb5;
+  --brand-blue-dark: #3d4f7a;
+  --brand-red: #CC2628;
+  --brand-red-light: #e84547;
+  --brand-red-dark: #a31e20;
+  --brand-white: #F7F7F5;
+
+  --lux-ink: #0c0e14;
+  --lux-bg: #0a0b10;
+  --lux-bg-soft: #10121a;
+  --lux-surface: rgba(16, 18, 26, 0.78);
+  --lux-surface-elevated: rgba(22, 25, 36, 0.92);
+  --lux-border: rgba(81, 102, 153, 0.28);
+  --lux-border-strong: rgba(81, 102, 153, 0.48);
+  --lux-champagne: var(--brand-white);
+  --lux-text: var(--brand-white);
+  --lux-muted: #9ba3b4;
+  --lux-glow-blue: rgba(81, 102, 153, 0.22);
+  --lux-glow-red: rgba(204, 38, 40, 0.18);
+
+  --background: oklch(0.12 0.015 260);
+  --foreground: oklch(0.97 0.005 90);
+  --card: oklch(0.16 0.015 260);
+  --card-foreground: oklch(0.97 0.005 90);
+  --popover: oklch(0.16 0.015 260);
+  --popover-foreground: oklch(0.97 0.005 90);
+  --primary: #516699;
+  --primary-foreground: #F7F7F5;
+  --secondary: oklch(0.2 0.015 260);
+  --secondary-foreground: oklch(0.92 0.01 90);
+  --muted: oklch(0.2 0.012 260);
+  --muted-foreground: oklch(0.68 0.02 260);
+  --accent: #CC2628;
+  --accent-foreground: #F7F7F5;
+  --destructive: #CC2628;
+  --border: rgba(81, 102, 153, 0.28);
+  --input: oklch(0.24 0.02 260);
+  --ring: #516699;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -88,12 +118,439 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body), system-ui, sans-serif;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, var(--lux-glow-blue), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 100% 0%, var(--lux-glow-red), transparent 45%),
+      var(--lux-bg);
   }
   a {
     @apply no-underline;
   }
   a:focus {
     @apply outline-none ring-0;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display), Georgia, serif;
+  }
+
+  .font-body {
+    font-family: var(--font-body), system-ui, sans-serif;
+  }
+
+  .brand-gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #ffffff 0%, #c5cfe0 45%, var(--brand-blue-light) 100%);
+  }
+
+  .brand-accent-blue {
+    color: var(--brand-blue-light);
+  }
+
+  .brand-accent-red {
+    color: var(--brand-red-light);
+  }
+
+  .brand-bg-blue {
+    background-color: var(--brand-blue);
+    color: var(--brand-white);
+  }
+
+  .brand-bg-red {
+    background-color: var(--brand-red);
+    color: var(--brand-white);
+  }
+
+  .brand-border-blue {
+    border-color: rgba(81, 102, 153, 0.35);
+  }
+
+  .brand-border-red {
+    border-color: rgba(204, 38, 40, 0.35);
+  }
+
+  /* Alias conservés pour les composants existants */
+  .lux-gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #ffffff 0%, #c5cfe0 45%, var(--brand-blue-light) 100%);
+  }
+
+  .lux-gradient-gold {
+    background-color: var(--brand-blue);
+  }
+
+  .lux-section {
+    @apply rounded-[1.75rem] border p-6 md:p-10 backdrop-blur-2xl;
+    border-color: var(--lux-border);
+    background: linear-gradient(145deg, rgba(22, 25, 36, 0.92) 0%, rgba(12, 14, 20, 0.88) 100%);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+      0 24px 80px rgba(0, 0, 0, 0.45);
+  }
+
+  .lux-card {
+    @apply rounded-2xl border backdrop-blur-xl transition-all duration-500;
+    border-color: rgba(81, 102, 153, 0.2);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  }
+
+  .lux-card:hover {
+    border-color: rgba(81, 102, 153, 0.38);
+    box-shadow: 0 12px 40px var(--lux-glow-blue);
+  }
+
+  .lux-label {
+    @apply text-[11px] uppercase tracking-[0.32em] font-medium;
+    color: var(--brand-blue-light);
+  }
+
+  .lux-heading {
+    font-family: var(--font-display), Georgia, serif;
+    @apply font-semibold tracking-tight;
+    color: var(--lux-champagne);
+  }
+
+  .lux-muted {
+    color: var(--lux-muted);
+  }
+
+  .lux-btn-primary {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300;
+    color: var(--brand-white);
+    background-color: var(--brand-blue);
+    box-shadow: 0 8px 32px var(--lux-glow-blue);
+  }
+
+  .lux-btn-primary:hover {
+    transform: translateY(-1px);
+    background-color: var(--brand-blue-light);
+    box-shadow: 0 12px 40px var(--lux-glow-blue);
+  }
+
+  .lux-btn-accent {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300;
+    color: var(--brand-white);
+    background-color: var(--brand-red);
+    box-shadow: 0 8px 32px var(--lux-glow-red);
+  }
+
+  .lux-btn-accent:hover {
+    transform: translateY(-1px);
+    background-color: var(--brand-red-light);
+  }
+
+  .lux-btn-ghost {
+    @apply inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold transition-all duration-300;
+    border-color: rgba(81, 102, 153, 0.4);
+    color: var(--brand-white);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .lux-btn-ghost:hover {
+    border-color: var(--brand-blue-light);
+    background: rgba(81, 102, 153, 0.12);
+  }
+
+  .lux-chip {
+    @apply rounded-full border px-3 py-1 text-xs;
+    border-color: rgba(81, 102, 153, 0.28);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--brand-white);
+  }
+
+  .lux-chip-active {
+    border-color: transparent;
+    color: var(--brand-white);
+    background-color: var(--brand-blue);
+  }
+
+  .lux-chip-active-red {
+    border-color: transparent;
+    color: var(--brand-white);
+    background-color: var(--brand-red);
+  }
+
+  .lux-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(81, 102, 153, 0.45), transparent);
+  }
+
+  .lux-page-shell {
+    @apply relative overflow-hidden;
+    background:
+      radial-gradient(circle at 20% 10%, var(--lux-glow-blue), transparent 35%),
+      radial-gradient(circle at 80% 20%, var(--lux-glow-red), transparent 28%),
+      var(--lux-bg);
+  }
+
+  .lux-noise {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 0.5px, transparent 0.5px);
+    background-size: 4px 4px;
+    mix-blend-mode: soft-light;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  /* ——— Premium layer ——— */
+
+  .lux-accent-line {
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--brand-blue-light);
+    box-shadow: 0 0 12px var(--lux-glow-blue);
+  }
+
+  .lux-accent-line-red {
+    background: var(--brand-red-light);
+    box-shadow: 0 0 12px var(--lux-glow-red);
+  }
+
+  .lux-section-premium {
+    @apply rounded-[2rem] border p-6 md:p-10 lg:p-12 backdrop-blur-2xl relative overflow-hidden;
+    border-color: rgba(81, 102, 153, 0.32);
+    background:
+      linear-gradient(155deg, rgba(26, 30, 44, 0.95) 0%, rgba(10, 11, 16, 0.92) 55%, rgba(12, 14, 20, 0.98) 100%);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
+      0 32px 100px rgba(0, 0, 0, 0.55),
+      0 0 80px rgba(81, 102, 153, 0.06);
+  }
+
+  .lux-section-premium::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% -20%, rgba(81, 102, 153, 0.12), transparent 60%);
+    pointer-events: none;
+  }
+
+  .lux-section-spotlight {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lux-section-spotlight::after {
+    content: "";
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 55%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(204, 38, 40, 0.07), transparent 65%);
+    pointer-events: none;
+  }
+
+  .lux-card-interactive {
+    @apply rounded-2xl border backdrop-blur-xl transition-all duration-500 relative overflow-hidden;
+    border-color: rgba(81, 102, 153, 0.22);
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%);
+  }
+
+  .lux-card-interactive::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.06) 50%,
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+
+  .lux-card-interactive:hover {
+    transform: translateY(-4px);
+    border-color: rgba(81, 102, 153, 0.45);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+      0 20px 50px rgba(0, 0, 0, 0.4),
+      0 0 40px var(--lux-glow-blue);
+  }
+
+  .lux-card-interactive:hover::before {
+    opacity: 1;
+  }
+
+  .lux-step-badge {
+    @apply inline-flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold relative;
+    color: var(--brand-white);
+    background: var(--brand-blue);
+    box-shadow: 0 0 24px var(--lux-glow-blue);
+  }
+
+  .lux-step-badge-red {
+    background: var(--brand-red);
+    box-shadow: 0 0 24px var(--lux-glow-red);
+  }
+
+  .lux-process-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .lux-process-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  .lux-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    animation: lux-float 14s ease-in-out infinite;
+  }
+
+  .lux-orb-blue {
+    background: rgba(81, 102, 153, 0.35);
+  }
+
+  .lux-orb-red {
+    background: rgba(204, 38, 40, 0.22);
+    animation-delay: -5s;
+  }
+
+  .lux-btn-primary,
+  .lux-btn-accent {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lux-btn-primary::after,
+  .lux-btn-accent::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+    transition: transform 0.55s ease;
+  }
+
+  .lux-btn-primary:hover::after,
+  .lux-btn-accent:hover::after {
+    transform: translateX(120%);
+  }
+
+  .lux-browser-frame {
+    @apply rounded-2xl overflow-hidden border;
+    border-color: rgba(81, 102, 153, 0.35);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+      0 24px 70px rgba(0, 0, 0, 0.45);
+  }
+
+  .lux-browser-chrome {
+    @apply flex items-center gap-2 px-4 py-2.5 border-b;
+    border-color: rgba(81, 102, 153, 0.25);
+    background: linear-gradient(180deg, rgba(22, 25, 36, 0.98), rgba(14, 16, 24, 0.95));
+  }
+
+  .lux-browser-dot {
+    @apply h-2.5 w-2.5 rounded-full;
+  }
+
+  .lux-marquee-wrap {
+    @apply relative overflow-hidden border-y py-4;
+    border-color: rgba(81, 102, 153, 0.2);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .lux-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: lux-marquee 40s linear infinite;
+    gap: 2.5rem;
+    padding-left: 2.5rem;
+  }
+
+  .lux-marquee-item {
+    @apply flex items-center gap-3 whitespace-nowrap text-xs uppercase tracking-[0.22em] font-medium;
+    color: var(--lux-muted);
+  }
+
+  .lux-marquee-dot {
+    @apply h-1 w-1 rounded-full flex-shrink-0;
+    background: var(--brand-blue-light);
+  }
+
+  .lux-marquee-item:nth-child(even) .lux-marquee-dot {
+    background: var(--brand-red-light);
+  }
+
+  .lux-marquee-fade-left,
+  .lux-marquee-fade-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 5rem;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .lux-marquee-fade-left {
+    left: 0;
+    background: linear-gradient(90deg, var(--lux-bg), transparent);
+  }
+
+  .lux-marquee-fade-right {
+    right: 0;
+    background: linear-gradient(270deg, var(--lux-bg), transparent);
+  }
+
+  .lux-scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    z-index: 60;
+    background: var(--brand-blue-light);
+    box-shadow: 0 0 12px var(--lux-glow-blue);
+    transform-origin: left;
+  }
+
+  .lux-stat-number {
+    font-family: var(--font-display), Georgia, serif;
+    @apply text-3xl md:text-4xl font-semibold;
+    background: linear-gradient(180deg, #ffffff 0%, var(--brand-blue-light) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .lux-divider-glow {
+    height: 1px;
+    margin: 3rem 0;
+    background: linear-gradient(90deg, transparent, rgba(81, 102, 153, 0.5), transparent);
+  }
+
+  @keyframes lux-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(12px, -18px) scale(1.05); }
+    66% { transform: translate(-8px, 10px) scale(0.95); }
+  }
+
+  @keyframes lux-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes lux-pulse-glow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.85; }
+  }
+
+  .animate-lux-pulse {
+    animation: lux-pulse-glow 3s ease-in-out infinite;
   }
 }
 
@@ -106,30 +563,30 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #000000;
+    background: #0a0b10;
     border-radius: 10px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #dc2626 0%, #2563eb 100%);
+    background: var(--brand-blue);
     border-radius: 10px;
-    border: 2px solid #000000;
+    border: 2px solid #0a0b10;
     transition: all 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #ef4444 0%, #3b82f6 100%);
-    box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+    background: var(--brand-blue-light);
+    box-shadow: 0 0 12px var(--lux-glow-blue);
   }
 
   ::-webkit-scrollbar-corner {
-    background: #000000;
+    background: #0a0b10;
   }
 
   /* Pour Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #dc2626 #000000;
+    scrollbar-color: #516699 #0a0b10;
   }
 
   /* Animation smooth scroll */
@@ -140,7 +597,7 @@
   /* Style pour les éléments scrollables */
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: #dc2626 #000000;
+    scrollbar-color: #516699 #0a0b10;
   }
 
   .custom-scrollbar::-webkit-scrollbar {
@@ -153,12 +610,12 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #dc2626 0%, #2563eb 100%);
+    background: var(--brand-blue);
     border-radius: 10px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #ef4444 0%, #3b82f6 100%);
+    background: var(--brand-blue-light);
   }
 
   /* Animation pour la notification */
@@ -214,5 +671,57 @@
     mix-blend-mode: soft-light;
     opacity: 0.45;
     pointer-events: none;
+  }
+
+  /* Carousel portfolio — effet center mode premium */
+  .center-mode .slick-slide {
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.55s ease;
+    opacity: 0.45;
+    transform: scale(0.88);
+  }
+
+  .center-mode .slick-center {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .center-mode .slick-center .lux-card-interactive {
+    border-color: rgba(81, 102, 153, 0.45);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+      0 28px 60px rgba(0, 0, 0, 0.45),
+      0 0 50px var(--lux-glow-blue);
+  }
+
+  /* Formulaires — thème sombre luxe */
+  .lux-form-panel {
+    @apply rounded-2xl border p-6 md:p-10 backdrop-blur-xl;
+    border-color: rgba(81, 102, 153, 0.28);
+    background: linear-gradient(165deg, rgba(22, 25, 36, 0.92) 0%, rgba(12, 14, 20, 0.95) 100%);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03) inset, 0 24px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .lux-icon-badge {
+    @apply p-3 rounded-lg border;
+    border-color: rgba(81, 102, 153, 0.35);
+    background: rgba(81, 102, 153, 0.1);
+  }
+
+  .lux-icon-badge-red {
+    border-color: rgba(204, 38, 40, 0.35);
+    background: rgba(204, 38, 40, 0.1);
+  }
+
+  .lux-success-badge {
+    @apply w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6;
+    background: var(--brand-blue);
+    box-shadow: 0 0 32px var(--lux-glow-blue);
+  }
+
+  .lux-version-badge {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.18em];
+    border-color: rgba(81, 102, 153, 0.35);
+    color: var(--brand-blue-light);
+    background: rgba(81, 102, 153, 0.08);
   }
 }

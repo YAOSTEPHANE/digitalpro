@@ -88,12 +88,9 @@ const BlackFriday = () => {
   }, [])
 
   return (
-    <div className="relative w-full py-20 overflow-hidden">
-      {/* Background avec effet de particules */}
-      <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-white to-amber-50/40" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(239,68,68,0.08),transparent_50%)]" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-4">
+    <div className="relative w-full py-20 overflow-hidden px-2">
+      <div className="lux-section-premium lux-section-spotlight relative">
+      <div className="relative z-10 max-w-7xl mx-auto">
         {/* En-tête avec animation */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -102,20 +99,18 @@ const BlackFriday = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 bg-white border border-red-200 rounded-full px-4 py-2 mb-6">
-            <Sparkles className="w-4 h-4 text-red-400 animate-pulse" />
-            <span className="text-sm text-red-700 font-semibold">BLACK FRIDAY 2024</span>
+          <div className="inline-flex items-center gap-2 brand-bg-red rounded-full px-4 py-2 mb-6">
+            <Sparkles className="w-4 h-4 animate-pulse" />
+            <span className="text-sm font-semibold tracking-wide">BLACK FRIDAY 2024</span>
           </div>
 
-          <h2 className="text-5xl md:text-7xl font-bold mb-4">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500">
-              BLACK FRIDAY
-            </span>
+          <h2 className="lux-heading text-5xl md:text-6xl mb-4">
+            <span className="text-[var(--brand-red-light)]">BLACK FRIDAY</span>
             <br />
-            <span className="text-slate-900">Jusqu&apos;à 50% de Réduction</span>
+            <span className="lux-gradient-text">Jusqu&apos;à 50% de Réduction</span>
           </h2>
 
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto mt-4">
+          <p className="text-lg lux-muted max-w-2xl mx-auto mt-4">
             Profitez de nos offres exceptionnelles pour transformer votre présence digitale
           </p>
         </motion.div>
@@ -128,10 +123,10 @@ const BlackFriday = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="flex justify-center mb-12"
         >
-          <div className="bg-white border border-red-200 rounded-2xl p-6 backdrop-blur-sm shadow-sm">
+          <div className="lux-card-interactive p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Clock className="w-5 h-5 text-red-400" />
-              <span className="text-red-700 font-semibold">Temps restant</span>
+              <Clock className="w-5 h-5 text-[var(--brand-red-light)]" />
+              <span className="text-[var(--brand-red-light)] font-semibold">Temps restant</span>
             </div>
             <div className="flex gap-4 md:gap-6">
               {[
@@ -141,12 +136,12 @@ const BlackFriday = () => {
                 { label: 'Secondes', value: timeLeft.seconds }
               ].map((item, index) => (
                 <div key={index} className="text-center">
-                  <div className="bg-gradient-to-br from-red-600 to-orange-600 rounded-lg px-4 py-3 min-w-[70px]">
+                  <div className={`rounded-lg px-4 py-3 min-w-[70px] ${index % 2 === 0 ? 'brand-bg-red' : 'brand-bg-blue'}`}>
                     <div className="text-2xl md:text-3xl font-bold text-white">
                       {String(item.value).padStart(2, '0')}
                     </div>
                   </div>
-                  <div className="text-xs text-slate-500 mt-2 uppercase">
+                  <div className="text-xs lux-muted mt-2 uppercase">
                     {item.label}
                   </div>
                 </div>
@@ -166,9 +161,8 @@ const BlackFriday = () => {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="relative group"
             >
-              <div className="relative bg-white border border-red-200 rounded-2xl overflow-hidden h-full hover:border-red-400 transition-all duration-300 hover:shadow-xl hover:shadow-red-200/40 flex flex-col">
-                {/* Badge de réduction */}
-                <div className="absolute -top-4 -right-4 bg-gradient-to-br from-blue-600 to-blue-500 rounded-full w-20 h-20 flex items-center justify-center shadow-lg z-10 border-2 border-blue-400">
+              <div className="relative lux-card-interactive overflow-hidden h-full flex flex-col">
+                <div className="absolute -top-4 -right-4 brand-bg-blue rounded-full w-20 h-20 flex items-center justify-center shadow-lg z-10 border-2 border-[rgba(81,102,153,0.5)]">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-white">-50%</div>
                     <div className="text-xs text-white/90">OFF</div>
@@ -176,7 +170,7 @@ const BlackFriday = () => {
                 </div>
 
                 {/* Image 3D */}
-                <div className="relative h-64 w-full overflow-hidden bg-gradient-to-br from-slate-100 via-slate-50 to-white flex-shrink-0 rounded-t-2xl">
+                <div className="relative h-64 w-full overflow-hidden bg-[var(--lux-bg-soft)] flex-shrink-0 rounded-t-2xl">
                   <Image3D
                     src={offer.image}
                     alt={offer.title}
@@ -191,16 +185,16 @@ const BlackFriday = () => {
                 {/* Contenu */}
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-bold text-slate-900">{offer.title}</h3>
-                    <div className="bg-gradient-to-br from-orange-600 to-red-600 rounded-lg px-4 py-2 border border-red-400/50 shadow-lg">
+                    <h3 className="font-display text-xl font-semibold text-[var(--lux-champagne)]">{offer.title}</h3>
+                    <div className="brand-bg-red rounded-lg px-4 py-2">
                       <div className="text-white font-bold text-lg">{offer.price}</div>
                     </div>
                   </div>
-                  <p className="text-slate-600 text-sm mb-4 flex-grow">{offer.description}</p>
+                  <p className="lux-muted text-sm mb-4 flex-grow">{offer.description}</p>
 
                   <Link
                     href="/facture"
-                    className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 group-hover:scale-105 mt-auto"
+                    className="lux-btn-accent w-full !rounded-lg flex items-center justify-center gap-2 mt-auto"
                   >
                     Profiter de l&apos;offre
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -219,31 +213,26 @@ const BlackFriday = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center"
         >
-          <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-2xl p-8 md:p-12 max-w-4xl mx-auto">
-            <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+          <div className="lux-card-interactive p-8 md:p-12 max-w-4xl mx-auto">
+            <h3 className="lux-heading text-3xl md:text-4xl mb-4">
               Ne manquez pas cette opportunité unique !
             </h3>
-            <p className="text-slate-600 mb-8 text-lg">
+            <p className="lux-muted mb-8 text-lg">
               Contactez-nous dès maintenant pour profiter de ces offres exceptionnelles. 
               Les places sont limitées !
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contact"
-                className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold py-4 px-8 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105"
-              >
+              <Link href="/contact" className="lux-btn-accent flex items-center justify-center gap-2 !px-8 !py-4">
                 Demander un devis
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link
-                href="/book"
-                className="bg-transparent border-2 border-red-300 hover:border-red-500 text-slate-900 font-semibold py-4 px-8 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 hover:bg-red-50"
-              >
+              <Link href="/book" className="lux-btn-ghost flex items-center justify-center gap-2 !px-8 !py-4">
                 Prendre rendez-vous
               </Link>
             </div>
           </div>
         </motion.div>
+      </div>
       </div>
     </div>
   )

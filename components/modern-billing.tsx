@@ -19,6 +19,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import LuxSectionHeader from "@/components/lux-section-header";
+import LuxReveal from "@/components/lux-reveal";
+
+const luxFieldClass =
+  "bg-[rgba(255,255,255,0.04)] border-[rgba(81,102,153,0.35)] text-[var(--brand-white)] placeholder:text-[var(--lux-muted)]";
 
 interface InvoiceItem {
   description: string;
@@ -132,14 +137,14 @@ const ModernBilling = () => {
             padding: 20px;
           }
           .header {
-            border-bottom: 3px solid #8b5cf6;
+            border-bottom: 3px solid #516699;
             padding-bottom: 20px;
             margin-bottom: 30px;
           }
           .logo {
             font-size: 24px;
             font-weight: bold;
-            color: #8b5cf6;
+            color: #516699;
           }
           .invoice-info {
             display: flex;
@@ -184,8 +189,8 @@ const ModernBilling = () => {
           }
           .grand-total {
             font-size: 20px;
-            color: #8b5cf6;
-            border-top: 2px solid #8b5cf6;
+            color: #516699;
+            border-top: 2px solid #516699;
             padding-top: 10px;
           }
         </style>
@@ -434,30 +439,16 @@ const ModernBilling = () => {
   const { subtotal, taxAmount, discountAmount, total } = calculateTotals();
 
   return (
-    <div className="relative w-full min-h-screen py-20 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-white to-blue-50/50" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-4">
-        {/* En-tête */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-blue-500 to-blue-600">
-              Facturation
-            </span>
-          </h1>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Gérez vos tarifs et générez vos factures facilement
-          </p>
-        </motion.div>
+    <div className="relative w-full py-4 md:py-8 overflow-hidden">
+      <div className="lux-section-premium lux-section-spotlight relative z-10 max-w-7xl mx-auto">
+        <LuxSectionHeader
+          label="Facturation"
+          title="Gérez vos tarifs et factures"
+          description="Gérez vos tarifs et générez vos factures facilement"
+          align="center"
+        />
 
-        {/* Onglets */}
-        <div className="flex justify-center mb-8 gap-4">
+        <div className="flex justify-center mb-8 gap-3 flex-wrap">
           {[
             { id: "pricing", label: "Tarifs", icon: CreditCard },
             { id: "invoice", label: "Créer une facture", icon: FileText },
@@ -465,14 +456,13 @@ const ModernBilling = () => {
           ].map((tab) => (
             <button
               key={tab.id}
+              type="button"
               onClick={() => setActiveTab(tab.id as "pricing" | "invoice" | "history")}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
-                activeTab === tab.id
-                  ? "bg-gradient-to-r from-red-600 to-blue-600 text-white"
-                  : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50"
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
+                activeTab === tab.id ? "lux-chip-active" : "lux-chip hover:border-[var(--brand-blue-light)]"
               }`}
             >
-              <tab.icon className="w-5 h-5" />
+              <tab.icon className="w-4 h-4" />
               {tab.label}
             </button>
           ))}
@@ -487,40 +477,35 @@ const ModernBilling = () => {
           >
             <div className="grid md:grid-cols-3 gap-6">
               {plans.map((plan, index) => (
-                <motion.div
-                  key={plan.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`relative h-full flex flex-col border rounded-3xl px-6 ${
-                    plan.popular
-                      ? "border-purple-500 shadow-lg shadow-purple-500/20 scale-105"
-                      : "border-slate-200 bg-white"
+                <LuxReveal key={plan.name} delay={index * 0.1}>
+                <div
+                  className={`relative h-full flex flex-col lux-card-interactive px-6 ${
+                    plan.popular ? "brand-border-blue scale-[1.02]" : "brand-border-blue"
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-red-600 to-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[var(--brand-blue)] text-white px-4 py-1 rounded-full text-sm font-medium">
                       Populaire
                     </div>
                   )}
                   
                   <div className={plan.style}>
-                    <div className="text-4xl flex items-center font-medium mb-4">
+                    <div className="lux-heading text-3xl flex items-center font-medium mb-4">
                       {plan.name}
                       {plan.feature === "Contactez-nous" && (
-                        <div className="text-sm font-medium text-blue-700 bg-blue-100 px-2 py-1 rounded-full ml-4">
+                        <div className="text-sm font-medium text-[var(--brand-blue-light)] border border-[rgba(81,102,153,0.35)] bg-[rgba(81,102,153,0.12)] px-2 py-1 rounded-full ml-4">
                           {plan.feature}
                         </div>
                       )}
                     </div>
-                    <div className="text-3xl pt-6 text-slate-900">{plan.price}</div>
-                    <div className="py-6 text-slate-600">{plan.description}</div>
+                    <div className="text-3xl pt-6 text-[var(--brand-blue-light)]">{plan.price}</div>
+                    <div className="py-6 lux-muted">{plan.description}</div>
 
                     <ul className="space-y-3">
                       {plan.features.map((feature, idx) => (
-                        <li key={idx} className="text-lg py-2 flex items-center text-slate-700">
-                          <CheckCircle2 className={`mr-2 text-xl ${
-                            plan.feature === "Contactez-nous" ? "text-blue-400" : "text-green-500"
+                        <li key={idx} className="text-base py-2 flex items-center text-[var(--lux-champagne)]">
+                          <CheckCircle2 className={`mr-2 text-xl shrink-0 ${
+                            plan.feature === "Contactez-nous" ? "text-[var(--brand-blue-light)]" : "text-[var(--brand-red-light)]"
                           }`} />
                           {feature}
                         </li>
@@ -532,7 +517,7 @@ const ModernBilling = () => {
                     {index === 2 ? (
                       <Button
                         onClick={() => setActiveTab("invoice")}
-                        className="w-full bg-gradient-to-r from-red-500 to-blue-500 hover:from-red-600 hover:to-blue-600"
+                        className="w-full bg-[var(--brand-blue)] hover:bg-[var(--brand-blue-light)]"
                       >
                         {plan.button}
                       </Button>
@@ -549,13 +534,14 @@ const ModernBilling = () => {
                             total: priceValue
                           }]);
                         }}
-                        className="w-full bg-gradient-to-r from-emerald-500 to-blue-400 hover:from-emerald-600 hover:to-blue-500"
+                        className="w-full bg-[var(--brand-blue)] hover:bg-[var(--brand-blue-light)]"
                       >
                         {plan.button}
                       </Button>
                     )}
                   </div>
-                </motion.div>
+                </div>
+                </LuxReveal>
               ))}
             </div>
           </motion.div>
@@ -568,16 +554,15 @@ const ModernBilling = () => {
             transition={{ duration: 0.5 }}
             className="max-w-5xl mx-auto"
           >
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-                <FileText className="w-6 h-6 text-purple-400" />
+            <div className="lux-card-interactive p-6 md:p-8">
+              <h2 className="lux-heading text-2xl mb-6 flex items-center gap-2">
+                <FileText className="w-6 h-6 text-[var(--brand-blue-light)]" />
                 Créer une nouvelle facture
               </h2>
 
-              {/* Informations client */}
               <div className="mb-8">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                  <User className="w-5 h-5 text-purple-400" />
+                <h3 className="text-xl font-semibold text-[var(--lux-champagne)] mb-4 flex items-center gap-2">
+                  <User className="w-5 h-5 text-[var(--brand-blue-light)]" />
                   Informations client
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -585,27 +570,27 @@ const ModernBilling = () => {
                     placeholder="Nom complet *"
                     value={clientInfo.name}
                     onChange={(e) => setClientInfo({ ...clientInfo, name: e.target.value })}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className={luxFieldClass}
                   />
                   <Input
                     type="email"
                     placeholder="Email *"
                     value={clientInfo.email}
                     onChange={(e) => setClientInfo({ ...clientInfo, email: e.target.value })}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className={luxFieldClass}
                   />
                   <Input
                     type="tel"
                     placeholder="Téléphone"
                     value={clientInfo.phone}
                     onChange={(e) => setClientInfo({ ...clientInfo, phone: e.target.value })}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className={luxFieldClass}
                   />
                   <Input
                     placeholder="Adresse"
                     value={clientInfo.address}
                     onChange={(e) => setClientInfo({ ...clientInfo, address: e.target.value })}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className={luxFieldClass}
                   />
                 </div>
               </div>
@@ -613,8 +598,8 @@ const ModernBilling = () => {
               {/* Articles */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2">
-                    <Calculator className="w-5 h-5 text-purple-400" />
+                  <h3 className="text-xl font-semibold text-[var(--lux-champagne)] flex items-center gap-2">
+                    <Calculator className="w-5 h-5 text-[var(--brand-blue-light)]" />
                     Articles
                   </h3>
                   <Button onClick={addItem} variant="outline" size="sm">
@@ -625,13 +610,13 @@ const ModernBilling = () => {
                 
                 <div className="space-y-4">
                   {invoiceItems.map((item, index) => (
-                    <div key={index} className="grid md:grid-cols-12 gap-4 items-end bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div key={index} className="grid md:grid-cols-12 gap-4 items-end bg-[rgba(255,255,255,0.03)] p-4 rounded-lg border border-[rgba(81,102,153,0.22)]">
                       <div className="md:col-span-5">
                         <Input
                           placeholder="Description"
                           value={item.description}
                           onChange={(e) => updateItem(index, "description", e.target.value)}
-                          className="bg-white border-slate-300 text-slate-900"
+                          className={luxFieldClass}
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -640,7 +625,7 @@ const ModernBilling = () => {
                           placeholder="Quantité"
                           value={item.quantity}
                           onChange={(e) => updateItem(index, "quantity", parseInt(e.target.value) || 0)}
-                          className="bg-white border-slate-300 text-slate-900"
+                          className={luxFieldClass}
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -649,14 +634,14 @@ const ModernBilling = () => {
                           placeholder="Prix unitaire"
                           value={item.unitPrice}
                           onChange={(e) => updateItem(index, "unitPrice", parseFloat(e.target.value) || 0)}
-                          className="bg-white border-slate-300 text-slate-900"
+                          className={luxFieldClass}
                         />
                       </div>
                       <div className="md:col-span-2">
                         <Input
                           value={`${item.total.toLocaleString('fr-FR')} FCFA`}
                           disabled
-                          className="bg-white border-slate-300 text-slate-900"
+                          className={luxFieldClass}
                         />
                       </div>
                       <div className="md:col-span-1">
@@ -677,66 +662,66 @@ const ModernBilling = () => {
               {/* Paramètres */}
               <div className="mb-8 grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm text-slate-600 mb-2 block">TVA (%)</label>
+                  <label className="text-sm lux-muted mb-2 block">TVA (%)</label>
                   <Input
                     type="number"
                     value={invoiceSettings.tax}
                     onChange={(e) => setInvoiceSettings({ ...invoiceSettings, tax: parseFloat(e.target.value) || 0 })}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className={luxFieldClass}
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-slate-600 mb-2 block">Remise (%)</label>
+                  <label className="text-sm lux-muted mb-2 block">Remise (%)</label>
                   <Input
                     type="number"
                     value={invoiceSettings.discount}
                     onChange={(e) => setInvoiceSettings({ ...invoiceSettings, discount: parseFloat(e.target.value) || 0 })}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className={luxFieldClass}
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-slate-600 mb-2 block">Date d&apos;échéance</label>
+                  <label className="text-sm lux-muted mb-2 block">Date d&apos;échéance</label>
                   <Input
                     type="date"
                     value={invoiceSettings.dueDate}
                     onChange={(e) => setInvoiceSettings({ ...invoiceSettings, dueDate: e.target.value })}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className={luxFieldClass}
                   />
                 </div>
               </div>
 
               <div className="mb-8">
-                <label className="text-sm text-slate-600 mb-2 block">Notes</label>
+                <label className="text-sm lux-muted mb-2 block">Notes</label>
                 <Textarea
                   value={invoiceSettings.notes}
                   onChange={(e) => setInvoiceSettings({ ...invoiceSettings, notes: e.target.value })}
                   placeholder="Notes additionnelles..."
-                  className="bg-white border-slate-300 text-slate-900"
+                  className={luxFieldClass}
                   rows={3}
                 />
               </div>
 
               {/* Totaux */}
-              <div className="bg-slate-50 rounded-lg p-6 mb-6 border border-slate-200">
+              <div className="bg-[rgba(255,255,255,0.03)] rounded-lg p-6 mb-6 border border-[rgba(81,102,153,0.22)]">
                 <div className="flex justify-between mb-2">
-                  <span className="text-slate-600">Sous-total:</span>
-                  <span className="text-slate-900 font-medium">{subtotal.toLocaleString('fr-FR')} FCFA</span>
+                  <span className="lux-muted">Sous-total:</span>
+                  <span className="text-[var(--lux-champagne)] font-medium">{subtotal.toLocaleString('fr-FR')} FCFA</span>
                 </div>
                 {invoiceSettings.tax > 0 && (
                   <div className="flex justify-between mb-2">
-                    <span className="text-slate-600">TVA ({invoiceSettings.tax}%):</span>
-                    <span className="text-slate-900 font-medium">{taxAmount.toLocaleString('fr-FR')} FCFA</span>
+                    <span className="lux-muted">TVA ({invoiceSettings.tax}%):</span>
+                    <span className="text-[var(--lux-champagne)] font-medium">{taxAmount.toLocaleString('fr-FR')} FCFA</span>
                   </div>
                 )}
                 {invoiceSettings.discount > 0 && (
                   <div className="flex justify-between mb-2">
-                    <span className="text-slate-600">Remise ({invoiceSettings.discount}%):</span>
-                    <span className="text-slate-900 font-medium">-{discountAmount.toLocaleString('fr-FR')} FCFA</span>
+                    <span className="lux-muted">Remise ({invoiceSettings.discount}%):</span>
+                    <span className="text-[var(--lux-champagne)] font-medium">-{discountAmount.toLocaleString('fr-FR')} FCFA</span>
                   </div>
                 )}
-                <div className="flex justify-between pt-4 border-t border-slate-200">
-                  <span className="text-xl font-bold text-slate-900">TOTAL:</span>
-                  <span className="text-xl font-bold text-red-600">{total.toLocaleString('fr-FR')} FCFA</span>
+                <div className="flex justify-between pt-4 border-t border-[rgba(81,102,153,0.22)]">
+                  <span className="text-xl font-bold text-[var(--lux-champagne)]">TOTAL:</span>
+                  <span className="text-xl font-bold text-[var(--brand-red-light)]">{total.toLocaleString('fr-FR')} FCFA</span>
                 </div>
               </div>
 
@@ -745,7 +730,7 @@ const ModernBilling = () => {
                 <Button
                   onClick={generateInvoice}
                   disabled={isGenerating}
-                  className="flex-1 bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700"
+                  className="flex-1 bg-[var(--brand-blue)] hover:bg-[var(--brand-blue-light)]"
                 >
                   {isGenerating ? "Génération..." : "Générer et envoyer la facture"}
                 </Button>
@@ -761,32 +746,31 @@ const ModernBilling = () => {
             transition={{ duration: 0.5 }}
             className="max-w-5xl mx-auto"
           >
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
+            <div className="lux-card-interactive p-6 md:p-8">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-                <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                  <Calendar className="w-6 h-6 text-purple-400" />
+                <h2 className="lux-heading text-2xl flex items-center gap-2">
+                  <Calendar className="w-6 h-6 text-[var(--brand-blue-light)]" />
                   Historique des factures
                 </h2>
 
-                {/* Recherche et filtres */}
                 <div className="flex gap-3">
                   <div className="relative flex-1 max-w-xs">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[var(--lux-muted)]" />
                     <Input
                       placeholder="Rechercher..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="bg-white border-slate-300 text-slate-900 pl-10"
+                      className={`${luxFieldClass} pl-10`}
                     />
                   </div>
                   <div className="relative">
-                    <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[var(--lux-muted)]" />
                     <select
                       value={filterStatus}
                       onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
                       aria-label="Filtrer les factures par statut"
                       title="Filtrer les factures par statut"
-                      className="bg-white border border-slate-300 text-slate-900 rounded-md px-10 py-2 appearance-none cursor-pointer"
+                      className={`${luxFieldClass} rounded-md px-10 py-2 appearance-none cursor-pointer`}
                     >
                       <option value="all">Tous</option>
                       <option value="paid">Payées</option>
@@ -799,8 +783,8 @@ const ModernBilling = () => {
 
               {/* Liste des factures */}
               {invoices.length === 0 ? (
-                <div className="text-center py-12 text-slate-500">
-                  <FileText className="w-16 h-16 mx-auto mb-4 text-slate-400" />
+                <div className="text-center py-12 lux-muted">
+                  <FileText className="w-16 h-16 mx-auto mb-4 text-[var(--brand-blue-light)] opacity-60" />
                   <p>Aucune facture générée pour le moment</p>
                   <p className="text-sm mt-2">Les factures générées apparaîtront ici</p>
                 </div>
@@ -825,12 +809,12 @@ const ModernBilling = () => {
                       return (
                         <div
                           key={invoice.id}
-                          className="bg-slate-50 border border-slate-200 rounded-lg p-6 hover:border-blue-300 transition-colors"
+                          className="lux-card-interactive p-6 hover:border-[var(--brand-blue-light)] transition-colors"
                         >
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
-                                <h3 className="text-lg font-semibold text-slate-900">
+                                <h3 className="text-lg font-semibold text-[var(--lux-champagne)]">
                                   {invoice.invoiceNumber}
                                 </h3>
                                 <span
@@ -849,17 +833,17 @@ const ModernBilling = () => {
                                     : "En attente"}
                                 </span>
                               </div>
-                              <div className="text-sm text-slate-600 space-y-1">
+                              <div className="text-sm lux-muted space-y-1">
                                 <p>
-                                  <span className="text-slate-500">Client:</span>{" "}
+                                  <span className="text-[var(--brand-blue-light)]">Client:</span>{" "}
                                   {invoice.clientName}
                                 </p>
                                 <p>
-                                  <span className="text-slate-500">Email:</span>{" "}
+                                  <span className="text-[var(--brand-blue-light)]">Email:</span>{" "}
                                   {invoice.clientEmail}
                                 </p>
                                 <p>
-                                  <span className="text-slate-500">Date:</span>{" "}
+                                  <span className="text-[var(--brand-blue-light)]">Date:</span>{" "}
                                   {new Date(invoice.createdAt).toLocaleDateString("fr-FR", {
                                     year: "numeric",
                                     month: "long",
@@ -868,14 +852,14 @@ const ModernBilling = () => {
                                 </p>
                                 {invoice.dueDate && (
                                   <p>
-                                    <span className="text-slate-500">Échéance:</span>{" "}
+                                    <span className="text-[var(--brand-blue-light)]">Échéance:</span>{" "}
                                     {new Date(invoice.dueDate).toLocaleDateString("fr-FR")}
                                   </p>
                                 )}
                               </div>
                             </div>
                             <div className="flex flex-col items-end gap-2">
-                              <div className="text-2xl font-bold text-red-600">
+                              <div className="text-2xl font-bold text-[var(--brand-red-light)]">
                                 {invoice.total.toLocaleString("fr-FR")} FCFA
                               </div>
                               <div className="flex gap-2">
@@ -883,7 +867,7 @@ const ModernBilling = () => {
                                   onClick={() => downloadInvoice(invoice)}
                                   variant="outline"
                                   size="sm"
-                                  className="bg-white border-slate-300 text-slate-900 hover:bg-slate-100"
+                                  className="lux-btn-ghost !px-4 !py-2 text-sm"
                                 >
                                   <Download className="w-4 h-4 mr-2" />
                                   Télécharger

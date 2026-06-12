@@ -3,9 +3,11 @@
  */
 
 import type { Metadata } from 'next'
+import { siteVersionLabel } from './version'
 
 export const siteConfig = {
   name: "digitalpro solutions",
+  version: siteVersionLabel,
   title: "digitalpro solutions - Agence d'intelligence numérique",
   description: "Agence spécialisée en SEO, médias sociaux et développement web. Solutions sur mesure pour votre transformation digitale. Expertise en référencement, marketing digital et création de sites web.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://digitalprosolutions.com",

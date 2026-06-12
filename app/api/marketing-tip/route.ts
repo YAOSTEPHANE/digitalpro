@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import type { BrandAccent } from '@/lib/brand';
 
 // Interface pour le conseil généré
 interface MarketingTip {
@@ -7,7 +8,7 @@ interface MarketingTip {
   category: string;
   day: number;
   image: string;
-  color: string;
+  accent: BrandAccent;
 }
 
 export async function GET(request: NextRequest) {
@@ -257,7 +258,7 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
             ...aiTip,
             day: dayOfYear,
             image: generatedImage,
-            color: dayOfYear % 2 === 0 ? 'from-blue-500 to-red-500' : 'from-red-500 to-blue-500',
+            accent: dayOfYear % 2 === 0 ? "blue" : "red",
           };
         } else {
           throw new Error('No response from Gemini');
@@ -287,7 +288,7 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
       category: 'Stratégie',
       day: 1,
       image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop',
-      color: 'from-red-500 to-blue-500',
+      accent: "blue",
     };
 
     return NextResponse.json(fallbackTip);
@@ -439,6 +440,6 @@ function generateLocalTip(
     category,
     day: dayOfYear,
     image: categoryImages[category] || categoryImages['Contenu'],
-    color: dayOfYear % 2 === 0 ? 'from-blue-500 to-red-500' : 'from-red-500 to-blue-500',
+    accent: dayOfYear % 2 === 0 ? "blue" : "red",
   };
 }

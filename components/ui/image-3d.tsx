@@ -56,7 +56,7 @@ export default function Image3D({ className, containerClassName, ...imageProps }
       <div
         className={cn(
           'relative overflow-hidden rounded-lg shadow-2xl transition-all duration-300 w-full h-full',
-          isHovered && 'shadow-purple-500/50 shadow-2xl',
+          isHovered && 'shadow-[0_0_30px_rgba(81,102,153,0.35)] shadow-2xl',
           className
         )}
         style={{
@@ -75,7 +75,7 @@ export default function Image3D({ className, containerClassName, ...imageProps }
         />
         {isHovered && (
           <div
-            className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-blue-500/20 pointer-events-none transition-opacity duration-300"
+            className="absolute inset-0 bg-[rgba(81,102,153,0.18)] pointer-events-none transition-opacity duration-300"
             style={{
               transform: 'translateZ(30px)',
             }}

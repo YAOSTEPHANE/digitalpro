@@ -11,6 +11,13 @@
 ```env
 # URL du site web (utilisée pour le SEO et les métadonnées)
 NEXT_PUBLIC_SITE_URL=https://votre-domaine.com
+
+# URLs des démos SaaS hébergées sur Vercel (iframe intégrée sur la page d'accueil)
+NEXT_PUBLIC_DEMO_WEB_URL=https://www.nyimmobilier.com
+NEXT_PUBLIC_DEMO_MOBILE_URL=https://enregistreur-caisse.vercel.app
+
+# Activer l'iframe intégrée pour NY Immobilier (nécessite frame-ancestors côté nyimmobilier.com)
+# NEXT_PUBLIC_DEMO_WEB_EMBED=true
 ```
 
 3. **Remplacez `https://votre-domaine.com`** par votre URL réelle :
@@ -70,6 +77,35 @@ Dans votre plateforme d'hébergement, ajoutez la variable d'environnement :
 1. Allez dans votre projet Vercel
 2. Settings → Environment Variables
 3. Ajoutez `NEXT_PUBLIC_SITE_URL` avec votre URL de production
+4. Ajoutez aussi les URLs de démo :
+   - `NEXT_PUBLIC_DEMO_WEB_URL` → URL Vercel de l'app web (dashboard CRM)
+   - `NEXT_PUBLIC_DEMO_MOBILE_URL` → URL Vercel de l'app mobile (réservation)
+
+### Autoriser l'intégration iframe (apps Vercel)
+
+Pour que vos apps Next.js s'affichent dans une iframe sur digitalpro, ajoutez dans **chaque app démo** un fichier `next.config.ts` :
+
+```typescript
+const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self' https://digitalprosolutions.com https://*.digitalprosolutions.com http://localhost:3000",
+          },
+        ],
+      },
+    ];
+  },
+};
+
+export default nextConfig;
+```
+
+Remplacez `digitalprosolutions.com` par votre domaine vitrine si différent.
 
 ### Netlify
 1. Allez dans Site settings → Environment variables

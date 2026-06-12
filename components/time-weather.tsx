@@ -129,13 +129,13 @@ const TimeWeather = () => {
       <div className="flex items-baseline gap-1.5">
         <div
           suppressHydrationWarning
-          className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-red-500 to-blue-600 bg-clip-text text-transparent font-mono tabular-nums"
+          className="text-2xl md:text-3xl font-semibold lux-gradient-text font-mono tabular-nums"
         >
           {hours}:{minutes}
         </div>
         <div
           suppressHydrationWarning
-          className="text-sm md:text-base text-blue-600/80 font-mono tabular-nums"
+          className="text-sm md:text-base text-[var(--brand-red-light)] font-mono tabular-nums"
         >
           :{seconds}
         </div>
@@ -148,10 +148,10 @@ const TimeWeather = () => {
             {getWeatherIcon(weather.condition)}
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="text-base font-semibold text-red-600">
+            <div className="text-base font-semibold text-[var(--brand-blue-light)]">
               {weather.temperature}°C
             </div>
-            <div className="text-sm text-slate-600 hidden xl:inline">
+            <div className="text-sm lux-muted hidden xl:inline">
               {weather.condition}
             </div>
           </div>
@@ -160,7 +160,7 @@ const TimeWeather = () => {
 
       {isMounted && loading && (
         <div>
-          <div className="w-5 h-5 border-2 border-slate-300 border-t-blue-500 rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-[rgba(81,102,153,0.3)] border-t-[var(--brand-blue-light)] rounded-full animate-spin" />
         </div>
       )}
     </div>
