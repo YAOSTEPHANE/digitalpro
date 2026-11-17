@@ -60,9 +60,8 @@ const ModernBrands = () => {
                 <CardBody className="lux-card-interactive relative group/card w-full h-full p-6 flex flex-col text-center">
                   <CardItem translateZ="45" className="mb-4 mx-auto">
                     <div
-                      className={`w-16 h-16 rounded-2xl mx-auto flex items-center justify-center font-display text-2xl font-bold text-white shadow-md ${
-                        brand.accent === "red" ? "brand-bg-red" : "brand-bg-blue"
-                      }`}
+                      className={`w-16 h-16 rounded-2xl mx-auto flex items-center justify-center font-display text-2xl font-bold text-white shadow-md ${brand.accent === "red" ? "brand-bg-red" : "brand-bg-blue"
+                        }`}
                     >
                       {brand.monogram}
                     </div>
@@ -86,18 +85,16 @@ const ModernBrands = () => {
                     className="w-full pt-3 border-t border-slate-100 flex items-center justify-center gap-1.5"
                   >
                     <TrendingUp
-                      className={`w-3.5 h-3.5 ${
-                        brand.accent === "red"
-                          ? "text-[var(--brand-red)]"
-                          : "text-[var(--brand-blue)]"
-                      }`}
+                      className={`w-3.5 h-3.5 ${brand.accent === "red"
+                        ? "text-[var(--brand-red)]"
+                        : "text-[var(--brand-blue)]"
+                        }`}
                     />
                     <span
-                      className={`text-xs font-semibold ${
-                        brand.accent === "red"
-                          ? "text-[var(--brand-red)]"
-                          : "text-[var(--brand-blue)]"
-                      }`}
+                      className={`text-xs font-semibold ${brand.accent === "red"
+                        ? "text-[var(--brand-red)]"
+                        : "text-[var(--brand-blue)]"
+                        }`}
                     >
                       {brand.stat}
                     </span>
@@ -117,19 +114,16 @@ const ModernBrands = () => {
           ].map((stat, index) => (
             <LuxReveal key={stat.label} delay={0.15 + index * 0.06}>
               <div
-                className={`lux-card-interactive p-5 text-center ${
-                  index % 2 === 0 ? "brand-border-blue" : "brand-border-red"
-                }`}
+                className={`lux-card-interactive p-5 text-center ${index % 2 === 0 ? "brand-border-blue" : "brand-border-red"
+                  }`}
               >
                 <stat.icon
-                  className={`w-6 h-6 mx-auto mb-2.5 ${
-                    index % 2 === 0 ? "text-[var(--brand-blue)]" : "text-[var(--brand-red)]"
-                  }`}
+                  className={`w-6 h-6 mx-auto mb-2.5 ${index % 2 === 0 ? "text-[var(--brand-blue)]" : "text-[var(--brand-red)]"
+                    }`}
                 />
                 <div
-                  className={`font-display text-3xl font-bold mb-1 tabular-nums ${
-                    index % 2 === 0 ? "text-[var(--brand-blue)]" : "text-[var(--brand-red)]"
-                  }`}
+                  className={`font-display text-3xl font-bold mb-1 tabular-nums ${index % 2 === 0 ? "text-[var(--brand-blue)]" : "text-[var(--brand-red)]"
+                    }`}
                 >
                   {stat.number}
                 </div>

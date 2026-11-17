@@ -279,6 +279,16 @@ export default function ModernFooter() {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => window.dispatchEvent(new CustomEvent("digitalpro:open-search"))}
+                    className="text-slate-600 hover:text-[var(--brand-blue)] transition-colors text-sm flex items-center gap-2 group"
+                  >
+                    <span className="w-0 h-px bg-[var(--brand-blue)] group-hover:w-3 transition-all duration-300" />
+                    Recherche rapide (⌘K)
+                  </button>
+                </li>
               </ul>
             </motion.div>
 
@@ -455,7 +465,7 @@ export default function ModernFooter() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.7 }}
               onClick={scrollToTop}
-              className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-800 shadow-[0_10px_28px_rgba(15,23,42,0.12)] backdrop-blur-xl hover:scale-105 transition-transform z-40"
+              className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-800 shadow-[0_10px_28px_rgba(15,23,42,0.12)] backdrop-blur-xl hover:scale-105 transition-transform z-40"
               aria-label="Retour en haut"
             >
               <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 48 48" aria-hidden>

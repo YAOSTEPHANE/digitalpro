@@ -178,7 +178,7 @@ export default function TechnologiesPage() {
                     className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition-all ${
                       active
                         ? "lux-chip-active"
-                        : "lux-chip hover:border-[rgba(124,144,201,0.45)]"
+                        : "lux-chip hover:border-[var(--brand-blue)]"
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5" />

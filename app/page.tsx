@@ -25,7 +25,11 @@ import {
   Clock3,
   ExternalLink,
   Layers,
+  Copy,
+  Gauge,
+  CheckCircle2,
 } from "lucide-react";
+import { toast } from "sonner";
 
 const demoEnvHints: Record<string, string> = {
   "ny-immobilier": "NEXT_PUBLIC_DEMO_WEB_URL",
@@ -34,6 +38,7 @@ const demoEnvHints: Record<string, string> = {
 
 type PlatformKey = "vitrine" | "ecommerce" | "saas" | "mobile";
 type TimelineKey = "express" | "standard" | "premium";
+type BenchmarkMode = "digitalpro" | "classique";
 
 const PLATFORM_BASE: Record<PlatformKey, { price: number; weeks: string; label: string }> = {
   vitrine: { price: 180_000, weeks: "2 à 3 semaines", label: "Site vitrine" },
@@ -55,10 +60,59 @@ const ADDON_OPTIONS = [
   { id: "ai-bot", label: "Assistant IA intégré", cost: 120_000 },
 ] as const;
 
+const BENCHMARK_ROWS: Record<
+  BenchmarkMode,
+  { metric: string; value: string; note: string; score: number }[]
+> = {
+  digitalpro: [
+    {
+      metric: "Vitesse mobile (4G)",
+      value: "< 1.3s",
+      note: "Pré-rendu statique & images optimisées",
+      score: 96,
+    },
+    {
+      metric: "Clarté en 5 secondes",
+      value: "95 / 100",
+      note: "Positionnement visible dès le premier écran",
+      score: 95,
+    },
+    {
+      metric: "Parcours vers devis / RDV",
+      value: "2 à 3 clics",
+      note: "Simulateur, WhatsApp & tunnel pré-rempli",
+      score: 92,
+    },
+  ],
+  classique: [
+    {
+      metric: "Vitesse mobile (4G)",
+      value: "4.8s+",
+      note: "Scripts lourds et médias non compressés",
+      score: 38,
+    },
+    {
+      metric: "Clarté en 5 secondes",
+      value: "42 / 100",
+      note: "Discours générique noyé sans hiérarchie",
+      score: 42,
+    },
+    {
+      metric: "Parcours vers devis / RDV",
+      value: "Formulaire caché",
+      note: "Abandon élevé avant même la prise de contact",
+      score: 35,
+    },
+  ],
+};
+
 export default function Home() {
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformKey>("vitrine");
   const [selectedTimeline, setSelectedTimeline] = useState<TimelineKey>("standard");
   const [selectedAddons, setSelectedAddons] = useState<string[]>(["seo"]);
+  const [activeProcessIndex, setActiveProcessIndex] = useState(0);
+  const [benchmarkMode, setBenchmarkMode] = useState<BenchmarkMode>("digitalpro");
+  const [copiedEstimate, setCopiedEstimate] = useState(false);
   const [selectedDemoId, setSelectedDemoId] = useState(
     demoApps.find((d) => d.embedAllowed)?.id ?? demoApps[0]?.id ?? ""
   );
@@ -77,6 +131,9 @@ export default function Home() {
     return () => window.removeEventListener("pointermove", handlePointerMove);
   }, []);
 
+  const baseCost = PLATFORM_BASE[selectedPlatform].price;
+  const acceleratedBase = Math.round(baseCost * TIMELINE_MULTIPLIER[selectedTimeline].mult);
+
   const addonsCost = useMemo(
     () =>
       ADDON_OPTIONS.reduce(
@@ -86,19 +143,39 @@ export default function Home() {
     [selectedAddons]
   );
 
-  const quoteEstimate = useMemo(
+  const quoteEstimate = acceleratedBase + addonsCost;
+  const depositAmount = Math.round(quoteEstimate * 0.4);
+
+  const selectedAddonLabels = useMemo(
     () =>
-      Math.round(
-        PLATFORM_BASE[selectedPlatform].price * TIMELINE_MULTIPLIER[selectedTimeline].mult +
-          addonsCost
-      ),
-    [selectedPlatform, selectedTimeline, addonsCost]
+      ADDON_OPTIONS.filter((addon) => selectedAddons.includes(addon.id)).map((a) => a.label),
+    [selectedAddons]
   );
 
   const toggleAddon = (id: string) => {
     setSelectedAddons((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
+  };
+
+  const handleCopyEstimate = async () => {
+    const summary = [
+      `Estimation Digitalpro Solutions`,
+      `• Solution : ${PLATFORM_BASE[selectedPlatform].label}`,
+      `• Rythme : ${TIMELINE_MULTIPLIER[selectedTimeline].label} (${PLATFORM_BASE[selectedPlatform].weeks})`,
+      `• Options : ${selectedAddonLabels.length > 0 ? selectedAddonLabels.join(", ") : "Aucune"}`,
+      `• Total indicatif : ${quoteEstimate.toLocaleString("fr-FR")} FCFA`,
+      `• Acompte 40% au lancement : ${depositAmount.toLocaleString("fr-FR")} FCFA`,
+    ].join("\n");
+
+    try {
+      await navigator.clipboard.writeText(summary);
+      setCopiedEstimate(true);
+      toast.success("Estimation copiée dans le presse-papier !");
+      setTimeout(() => setCopiedEstimate(false), 2000);
+    } catch {
+      toast.error("Copie automatique impossible.");
+    }
   };
 
   const processSteps = [
@@ -108,6 +185,8 @@ export default function Home() {
       title: "Audit & positionnement",
       text: "Analyse de votre marché, des frictions actuelles et des leviers d'acquisition prioritaires.",
       deliverables: ["Diagnostic UX/SEO", "Architecture cible"],
+      clientEffort: "1 atelier de 45 min",
+      outcome: "Feuille de route claire + arborescence validée avant de coder.",
       accent: "blue" as const,
     },
     {
@@ -116,6 +195,8 @@ export default function Home() {
       title: "Direction créative",
       text: "Maquettes Figma orientées conversion, hiérarchie éditoriale et identité visuelle mémorable.",
       deliverables: ["Prototype interactif", "Design System"],
+      clientEffort: "Revue interactive sur lien Figma",
+      outcome: "Validation écran par écran avec zéro surprise au rendu final.",
       accent: "red" as const,
     },
     {
@@ -124,6 +205,8 @@ export default function Home() {
       title: "Ingénierie & performance",
       text: "Développement Next.js / React rapide, animations fluides, sécurité et SEO technique natif.",
       deliverables: ["Core Web Vitals 95+", "Responsive total"],
+      clientEffort: "Prévisualisation live privée",
+      outcome: "Plateforme rapide sur 4G mobile, sécurisée et prête pour Google.",
       accent: "blue" as const,
     },
     {
@@ -132,6 +215,8 @@ export default function Home() {
       title: "Pilotage & croissance",
       text: "Mise en ligne supervisée, tracking des conversions et itérations mensuelles mesurées.",
       deliverables: ["Tableau KPI", "Support dédié"],
+      clientEffort: "Formation équipe de 30 min",
+      outcome: "Autonomie complète et suivi continu des résultats business.",
       accent: "red" as const,
     },
   ];
@@ -164,12 +249,13 @@ export default function Home() {
   ];
 
   const activeDemo = demoApps.find((demo) => demo.id === selectedDemoId) ?? demoApps[0];
+  const activeStep = processSteps[activeProcessIndex] ?? processSteps[0];
 
   const devisHref = `/devis?type=${encodeURIComponent(
     PLATFORM_BASE[selectedPlatform].label
   )}&tier=${encodeURIComponent(
     TIMELINE_MULTIPLIER[selectedTimeline].label
-  )}&estimate=${quoteEstimate}`;
+  )}&estimate=${quoteEstimate}&addons=${encodeURIComponent(selectedAddonLabels.join(", "))}`;
 
   return (
     <div className="lux-page-shell w-full md:items-center md:justify-center relative overflow-hidden">
@@ -183,14 +269,14 @@ export default function Home() {
       <main className="mx-auto relative z-10 w-full px-3 md:px-6 max-w-7xl">
         <ModernSlider />
 
-        {/* Section 02 : Approche */}
-        <section className="my-12 px-2">
+        {/* Section 02 : Approche interactive */}
+        <section id="methode" className="my-12 px-2 scroll-mt-28">
           <div className="lux-section-premium lux-section-spotlight">
             <LuxSectionHeader
               indexLabel="02"
               label="Notre méthode"
               title="Une ingénierie claire pour un site qui marque les esprits"
-              description="Quatre jalons transparents, de l'audit stratégique à l'optimisation continue."
+              description="Cliquez sur chaque jalon pour consulter son livrable concret et votre implication."
               rightSlot={
                 <Link href="/services" className="lux-btn-ghost !px-5 !py-2.5 text-xs gap-1.5">
                   Voir nos services
@@ -199,49 +285,168 @@ export default function Home() {
               }
             />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {processSteps.map((step, index) => (
-                <LuxReveal key={step.title} delay={index * 0.07}>
-                  <article className="lux-card-interactive p-5 md:p-6 h-full flex flex-col">
-                    <div className="flex items-center justify-between mb-5">
-                      <span
-                        className={`lux-step-badge ${
-                          step.accent === "red" ? "lux-step-badge-red" : ""
-                        }`}
-                      >
-                        {step.num}
-                      </span>
-                      <span className="text-[11px] font-mono text-slate-500">{step.duration}</span>
-                    </div>
-                    <h3 className="font-display text-xl font-semibold text-slate-900 mb-2">
-                      {step.title}
-                    </h3>
-                    <p className="text-slate-600 text-sm leading-relaxed mb-5 flex-grow">
-                      {step.text}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-100">
-                      {step.deliverables.map((del) => (
-                        <span key={del} className="lux-chip !text-[10px] !px-2.5 !py-0.5">
-                          {del}
+              {processSteps.map((step, index) => {
+                const isActive = activeProcessIndex === index;
+                return (
+                  <LuxReveal key={step.title} delay={index * 0.07}>
+                    <button
+                      type="button"
+                      onClick={() => setActiveProcessIndex(index)}
+                      onMouseEnter={() => setActiveProcessIndex(index)}
+                      className={`lux-card-interactive p-5 md:p-6 h-full w-full text-left flex flex-col transition-all ${
+                        isActive
+                          ? step.accent === "red"
+                            ? "ring-2 ring-[var(--brand-red)]/35 border-[var(--brand-red)]"
+                            : "ring-2 ring-[var(--brand-blue)]/35 border-[var(--brand-blue)]"
+                          : ""
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-5 w-full">
+                        <span
+                          className={`lux-step-badge ${
+                            step.accent === "red" ? "lux-step-badge-red" : ""
+                          }`}
+                        >
+                          {step.num}
                         </span>
-                      ))}
-                    </div>
-                  </article>
-                </LuxReveal>
-              ))}
+                        <span className="text-[11px] font-mono text-slate-500">{step.duration}</span>
+                      </div>
+                      <h3 className="font-display text-xl font-semibold text-slate-900 mb-2">
+                        {step.title}
+                      </h3>
+                      <p className="text-slate-600 text-sm leading-relaxed mb-5 flex-grow">
+                        {step.text}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-100 w-full">
+                        {step.deliverables.map((del) => (
+                          <span key={del} className="lux-chip !text-[10px] !px-2.5 !py-0.5">
+                            {del}
+                          </span>
+                        ))}
+                      </div>
+                    </button>
+                  </LuxReveal>
+                );
+              })}
+            </div>
+
+            {/* Détail du jalon actif */}
+            <div className="mt-5 rounded-2xl border border-slate-200 bg-white/95 p-4 md:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-2xs">
+              <div className="flex items-start gap-3">
+                <CheckCircle2
+                  className={`w-5 h-5 shrink-0 mt-0.5 ${
+                    activeStep.accent === "red"
+                      ? "text-[var(--brand-red)]"
+                      : "text-[var(--brand-blue)]"
+                  }`}
+                />
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-900">
+                      Phase {activeStep.num} · {activeStep.title}
+                    </span>
+                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-medium text-slate-600">
+                      Implication : {activeStep.clientEffort}
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">{activeStep.outcome}</p>
+                </div>
+              </div>
+              <Link
+                href="/book"
+                className="lux-btn-primary !px-4 !py-2 text-xs gap-1.5 shrink-0 self-start md:self-center"
+              >
+                Démarrer par la phase 01
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* Section 03 : Comprendre pour décider */}
-        <section className="my-12 px-2">
+        {/* Section 03 : Comprendre pour décider + comparatif */}
+        <section id="comparatif" className="my-12 px-2 scroll-mt-28">
           <div className="lux-section-premium">
             <LuxSectionHeader
               indexLabel="03"
               label="Vision stratégique"
               title="Un site utile informe, rassure et fait agir"
-              description="Chaque interface est conçue autour des mécanismes réels de confiance et de décision."
+              description="Comparez l'impact d'une architecture conçue sur mesure face à un site vitrine standard."
               accent="red"
+              rightSlot={
+                <div
+                  className="inline-flex rounded-full border border-slate-200 bg-white p-1 shadow-xs"
+                  role="group"
+                  aria-label="Comparatif approche"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setBenchmarkMode("digitalpro")}
+                    className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                      benchmarkMode === "digitalpro"
+                        ? "bg-[var(--brand-blue)] text-white"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    Standard Digitalpro
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBenchmarkMode("classique")}
+                    className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                      benchmarkMode === "classique"
+                        ? "bg-[var(--brand-red)] text-white"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    Site classique
+                  </button>
+                </div>
+              }
             />
+
+            {/* Barre de benchmark interactive */}
+            <div className="grid md:grid-cols-3 gap-4 mb-6">
+              {BENCHMARK_ROWS[benchmarkMode].map((row) => (
+                <div
+                  key={row.metric}
+                  className="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs"
+                >
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
+                      <Gauge
+                        className={`w-3.5 h-3.5 ${
+                          benchmarkMode === "digitalpro"
+                            ? "text-[var(--brand-blue)]"
+                            : "text-[var(--brand-red)]"
+                        }`}
+                      />
+                      {row.metric}
+                    </span>
+                    <span
+                      className={`text-sm font-bold tabular-nums ${
+                        benchmarkMode === "digitalpro"
+                          ? "text-[var(--brand-blue)]"
+                          : "text-[var(--brand-red)]"
+                      }`}
+                    >
+                      {row.value}
+                    </span>
+                  </div>
+                  <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden mb-2">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        benchmarkMode === "digitalpro"
+                          ? "bg-[var(--brand-blue)]"
+                          : "bg-[var(--brand-red)]"
+                      }`}
+                      style={{ width: `${row.score}%` }}
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-500">{row.note}</p>
+                </div>
+              ))}
+            </div>
+
             <div className="grid md:grid-cols-3 gap-5">
               {learningBlocks.map((item, index) => {
                 const Icon = item.icon;
@@ -527,11 +732,48 @@ export default function Home() {
                         {PLATFORM_BASE[selectedPlatform].weeks}
                       </span>
                     </div>
-                    <p className="mt-2 lux-stat-number text-3xl md:text-4xl tabular-nums">
-                      {quoteEstimate.toLocaleString("fr-FR")}{" "}
-                      <span className="text-base font-normal text-slate-500">FCFA</span>
-                    </p>
-                    <p className="mt-1 text-[11px] text-slate-600">
+
+                    <div className="mt-2 flex items-baseline justify-between gap-2">
+                      <p className="lux-stat-number text-3xl md:text-4xl tabular-nums">
+                        {quoteEstimate.toLocaleString("fr-FR")}{" "}
+                        <span className="text-base font-normal text-slate-500">FCFA</span>
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleCopyEstimate}
+                        className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-700 hover:border-[var(--brand-blue)] hover:text-[var(--brand-blue)] transition-colors"
+                        title="Copier le détail de l'estimation"
+                      >
+                        {copiedEstimate ? (
+                          <>
+                            <Check className="w-3 h-3 text-emerald-600" />
+                            Copié
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" />
+                            Copier
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] rounded-xl border border-slate-200 bg-white p-2.5">
+                      <div>
+                        <span className="text-slate-500 block">Socle &amp; rythme</span>
+                        <span className="font-semibold text-slate-900 tabular-nums">
+                          {acceleratedBase.toLocaleString("fr-FR")} F
+                        </span>
+                      </div>
+                      <div className="border-l border-slate-100 pl-2.5">
+                        <span className="text-slate-500 block">Acompte lancement (40%)</span>
+                        <span className="font-semibold text-[var(--brand-blue)] tabular-nums">
+                          {depositAmount.toLocaleString("fr-FR")} F
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="mt-2.5 text-[11px] text-slate-600">
                       Inclut hébergement guidé, tests multi-écrans &amp; prise en main.
                     </p>
                     <Link

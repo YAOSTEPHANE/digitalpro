@@ -147,7 +147,9 @@ function QuoteStudioInner() {
   useEffect(() => {
     const serviceParam = searchParams.get("service");
     const typeParam = searchParams.get("type");
+    const tierParam = searchParams.get("tier");
     const estimateParam = searchParams.get("estimate");
+    const addonsParam = searchParams.get("addons");
     const offreParam = searchParams.get("offre");
 
     if (serviceParam && SERVICE_VALUES.includes(serviceParam as (typeof SERVICE_VALUES)[number])) {
@@ -167,13 +169,18 @@ function QuoteStudioInner() {
       form.setValue("budget_range", mappedBudget);
     }
 
+    if (addonsParam) {
+      form.setValue("features", addonsParam);
+    }
+
     if (offreParam) {
       form.setValue("additional_info", `Offre sélectionnée : ${offreParam}`);
     } else if (estimateParam && typeParam) {
       const formatted = Number(estimateParam).toLocaleString("fr-FR");
+      const tierSuffix = tierParam ? ` · Accompagnement ${tierParam}` : "";
       form.setValue(
         "additional_info",
-        `Simulation accueil : ${typeParam} (estimation indicative ${formatted} FCFA)`
+        `Simulation accueil : ${typeParam}${tierSuffix} (estimation indicative ${formatted} FCFA)`
       );
     }
   }, [searchParams, form]);

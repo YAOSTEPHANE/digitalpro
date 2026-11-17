@@ -115,7 +115,7 @@ const ModernSlider = () => {
   };
 
   return (
-    <div className="relative py-8 md:py-12">
+    <section id="realisations" className="relative py-8 md:py-12 scroll-mt-28">
       <div className="lux-section-premium mb-8 md:mb-10 !p-6 md:!p-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <LuxSectionHeader
@@ -126,6 +126,10 @@ const ModernSlider = () => {
             className="!mb-0"
           />
           <div className="flex items-center gap-2 shrink-0">
+            <span className="hidden sm:inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 font-mono text-xs font-semibold text-slate-700 tabular-nums mr-1">
+              {String((activeSlide % slides.length) + 1).padStart(2, "0")} /{" "}
+              {String(slides.length).padStart(2, "0")}
+            </span>
             <button
               type="button"
               onClick={() => sliderRef.current?.slickPrev()}
@@ -229,7 +233,7 @@ const ModernSlider = () => {
           ))}
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

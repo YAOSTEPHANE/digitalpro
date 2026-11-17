@@ -88,7 +88,7 @@ export default function ServicesPage() {
                   </div>
                   <h2 className="text-xl font-semibold lux-heading mb-2">{track.title}</h2>
                   <p className="lux-muted text-sm leading-relaxed flex-grow">{track.points}</p>
-                  <div className="mt-4 pt-3 border-t border-[rgba(124,144,201,0.14)] text-[11px] font-medium text-[var(--brand-blue-light)]">
+                  <div className="mt-4 pt-3 border-t border-slate-200 text-[11px] font-medium text-[var(--brand-blue)]">
                     {track.metric}
                   </div>
                 </article>

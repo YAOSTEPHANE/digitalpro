@@ -11,6 +11,8 @@ import {
   Smartphone,
   TrendingUp,
   ArrowRight,
+  RotateCcw,
+  Maximize2,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -24,6 +26,13 @@ interface ServicesVideoProps {
   description?: string;
 }
 
+function formatTime(seconds: number): string {
+  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${String(secs).padStart(2, "0")}`;
+}
+
 const ServicesVideo = ({
   videoId,
   videoUrl,
@@ -33,8 +42,12 @@ const ServicesVideo = ({
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
 
   const hasCustomYouTubeId =
     Boolean(videoId) && videoId !== "VOTRE_ID_YOUTUBE" && !videoUrl;
@@ -71,6 +84,33 @@ const ServicesVideo = ({
     }
   };
 
+  const handleRestart = () => {
+    if (!videoRef.current) return;
+    videoRef.current.currentTime = 0;
+    void videoRef.current.play();
+    setIsPlaying(true);
+  };
+
+  const handleSeek = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!videoRef.current || !duration) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+    videoRef.current.currentTime = ratio * duration;
+    setCurrentTime(ratio * duration);
+  };
+
+  const handleFullscreen = () => {
+    const target = videoRef.current ?? playerContainerRef.current;
+    if (!target) return;
+    if (document.fullscreenElement) {
+      void document.exitFullscreen();
+    } else if (target.requestFullscreen) {
+      void target.requestFullscreen();
+    }
+  };
+
+  const progressPct = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
+
   const serviceCards = [
     {
       icon: Globe,
@@ -99,7 +139,7 @@ const ServicesVideo = ({
   ];
 
   return (
-    <section className="relative w-full py-12 md:py-16 overflow-hidden px-2">
+    <section id="showreel" className="relative w-full py-12 md:py-16 overflow-hidden px-2 scroll-mt-28">
       <div className="lux-section-premium lux-section-spotlight relative">
         <LuxSectionHeader
           indexLabel="06"
@@ -119,13 +159,20 @@ const ServicesVideo = ({
               <span className="lux-browser-dot bg-[rgba(81,102,153,0.45)]" />
               <span className="lux-browser-dot bg-slate-300" />
               <span className="ml-2 text-[11px] font-mono text-slate-600">
-                digitalpro-studio-showcase.mp4
+                digitalpro-showreel.mp4
               </span>
             </div>
-            <span className="lux-chip !py-0.5 !px-2.5 text-[10px]">HD Showcase</span>
+            <div className="flex items-center gap-2">
+              {!youtubeUrl && duration > 0 ? (
+                <span className="hidden sm:inline font-mono text-[11px] text-slate-500 tabular-nums">
+                  {formatTime(currentTime)} / {formatTime(duration)}
+                </span>
+              ) : null}
+              <span className="lux-chip !py-0.5 !px-2.5 text-[10px]">Showreel HD</span>
+            </div>
           </div>
 
-          <div className="relative w-full bg-slate-900" style={{ paddingBottom: "52%" }}>
+          <div ref={playerContainerRef} className="relative w-full aspect-video bg-slate-950">
             {youtubeUrl ? (
               <>
                 <iframe
@@ -147,30 +194,65 @@ const ServicesVideo = ({
                 )}
               </>
             ) : (
-              <video
-                ref={videoRef}
-                className="absolute inset-0 w-full h-full object-cover"
-                src="/demos/video-demos.mp4"
-                autoPlay
-                loop
-                muted={isMuted}
-                playsInline
-                onLoadedData={() => setVideoLoaded(true)}
-              />
+              <>
+                <video
+                  ref={videoRef}
+                  className="absolute inset-0 w-full h-full object-contain bg-slate-950"
+                  src="/demos/showreel-digitalpro.mp4"
+                  autoPlay
+                  loop
+                  muted={isMuted}
+                  playsInline
+                  preload="metadata"
+                  onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+                  onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+                  onLoadedData={() => setVideoLoaded(true)}
+                />
+
+                {/* Barre de progression interactive */}
+                <div
+                  onClick={handleSeek}
+                  role="slider"
+                  aria-label="Progression du showreel"
+                  aria-valuemin={0}
+                  aria-valuemax={Math.round(duration)}
+                  aria-valuenow={Math.round(currentTime)}
+                  tabIndex={0}
+                  className="absolute bottom-0 left-0 right-0 h-2 bg-white/20 cursor-pointer z-10 hover:h-2.5 transition-all"
+                >
+                  <div
+                    className="h-full bg-[var(--brand-red)] transition-all duration-150"
+                    style={{ width: `${progressPct}%` }}
+                  />
+                </div>
+              </>
             )}
 
             <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
               {!youtubeUrl ? (
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.06 }}
-                  whileTap={{ scale: 0.94 }}
-                  onClick={togglePlay}
-                  className="rounded-full border border-slate-200 bg-white/95 p-2.5 text-slate-900 shadow-md backdrop-blur-md transition hover:border-[var(--brand-blue)]"
-                  aria-label={isPlaying ? "Mettre en pause" : "Lire la vidéo"}
-                >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                </motion.button>
+                <>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.94 }}
+                    onClick={handleRestart}
+                    className="rounded-full border border-slate-200 bg-white/95 p-2.5 text-slate-900 shadow-md backdrop-blur-md transition hover:border-[var(--brand-blue)]"
+                    aria-label="Rejouer depuis le début"
+                    title="Rejouer"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.94 }}
+                    onClick={togglePlay}
+                    className="rounded-full border border-slate-200 bg-white/95 p-2.5 text-slate-900 shadow-md backdrop-blur-md transition hover:border-[var(--brand-blue)]"
+                    aria-label={isPlaying ? "Mettre en pause" : "Lire la vidéo"}
+                  >
+                    {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                  </motion.button>
+                </>
               ) : null}
 
               <motion.button
@@ -183,6 +265,20 @@ const ServicesVideo = ({
               >
                 {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
               </motion.button>
+
+              {!youtubeUrl ? (
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.94 }}
+                  onClick={handleFullscreen}
+                  className="rounded-full border border-slate-200 bg-white/95 p-2.5 text-slate-900 shadow-md backdrop-blur-md transition hover:border-[var(--brand-blue)]"
+                  aria-label="Afficher en plein écran"
+                  title="Plein écran"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                </motion.button>
+              ) : null}
             </div>
           </div>
         </LuxReveal>

@@ -10,6 +10,7 @@ import {
   Tablet,
   Smartphone,
   ShieldCheck,
+  RotateCw,
 } from "lucide-react";
 
 type ViewportMode = "desktop" | "tablet" | "mobile";
@@ -44,6 +45,12 @@ export default function DemoIframe({
   const [loaded, setLoaded] = useState(false);
   const [showLiveEmbed, setShowLiveEmbed] = useState(embedAllowed);
   const [viewport, setViewport] = useState<ViewportMode>("desktop");
+  const [reloadKey, setReloadKey] = useState(0);
+
+  const handleReload = () => {
+    setLoaded(false);
+    setReloadKey((k) => k + 1);
+  };
 
   if (!url) {
     return (
@@ -124,6 +131,7 @@ export default function DemoIframe({
         title={title}
         live
         onBack={embedAllowed ? () => setShowLiveEmbed(false) : undefined}
+        onReload={handleReload}
         viewport={showViewportControls ? viewport : undefined}
         onViewportChange={showViewportControls ? setViewport : undefined}
       />
@@ -146,6 +154,7 @@ export default function DemoIframe({
             </div>
           )}
           <iframe
+            key={reloadKey}
             src={url}
             title={title}
             className="h-full w-full border-0 bg-white"
@@ -205,14 +214,22 @@ type BrowserChromeProps = {
   title: string;
   live?: boolean;
   onBack?: () => void;
+  onReload?: () => void;
   viewport?: ViewportMode;
   onViewportChange?: (mode: ViewportMode) => void;
+};
+
+const VIEWPORT_SIZE_LABELS: Record<ViewportMode, string> = {
+  desktop: "100%",
+  tablet: "768px",
+  mobile: "390px",
 };
 
 function BrowserChrome({
   title,
   live = false,
   onBack,
+  onReload,
   viewport,
   onViewportChange,
 }: BrowserChromeProps) {
@@ -262,7 +279,22 @@ function BrowserChrome({
                 </button>
               );
             })}
+            <span className="px-1.5 text-[10px] font-mono text-slate-500 border-l border-slate-100">
+              {VIEWPORT_SIZE_LABELS[viewport]}
+            </span>
           </div>
+        ) : null}
+
+        {onReload ? (
+          <button
+            type="button"
+            onClick={onReload}
+            aria-label="Recharger l'aperçu"
+            title="Recharger"
+            className="rounded-md border border-slate-200 bg-white p-1 text-slate-500 hover:text-[var(--brand-blue)] transition-colors"
+          >
+            <RotateCw className="h-3.5 w-3.5" />
+          </button>
         ) : null}
 
         {live ? (

@@ -58,7 +58,7 @@ export default function ECommercePage() {
       {/* Bandeau paiements & capacités */}
       <LuxReveal className="mb-10">
         <section className="lux-section-premium">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-6 border-b border-[rgba(124,144,201,0.16)]">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-6 border-b border-slate-200">
             <div className="max-w-xl">
               <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-blue-light)] mb-2">
                 <ShoppingBag className="w-4 h-4" />

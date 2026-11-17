@@ -26,6 +26,7 @@ const craftPillars = [
     tag: "Web & SaaS",
     metric: "99/100 Perf",
     title: "Sites haute performance",
+    subtitle: "Next.js · SEO sémantique",
     href: "/sites-web",
     icon: Globe,
     accent: "blue" as const,
@@ -36,6 +37,7 @@ const craftPillars = [
     tag: "Mobile & POS",
     metric: "iOS · Android",
     title: "Apps & solutions métier",
+    subtitle: "Temps réel · Multi-caisses",
     href: "/services",
     icon: Smartphone,
     accent: "red" as const,
@@ -46,6 +48,7 @@ const craftPillars = [
     tag: "SEO & Growth",
     metric: "+240% Portée",
     title: "Acquisition mesurable",
+    subtitle: "Google, Meta Ads & GA4",
     href: "/e-commerce",
     icon: BarChart3,
     accent: "blue" as const,
@@ -56,6 +59,7 @@ const craftPillars = [
     tag: "UI/UX Studio",
     metric: "100% Sur mesure",
     title: "Identité mémorable",
+    subtitle: "Figma Systems & Branding",
     href: "/design",
     icon: Layers,
     accent: "red" as const,
@@ -147,7 +151,7 @@ const ModernHero = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.28 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-7"
         >
           <Link
             href="/book"
@@ -170,6 +174,31 @@ const ModernHero = () => {
             <ArrowUpRight className="w-3.5 h-3.5" />
           </a>
         </motion.div>
+
+        <motion.nav
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.32 }}
+          aria-label="Accès rapide aux sections"
+          className="flex flex-wrap items-center justify-center gap-2 mb-12"
+        >
+          {[
+            { label: "01 Réalisations", href: "#realisations" },
+            { label: "02 Méthode", href: "#methode" },
+            { label: "03 Comparatif", href: "#comparatif" },
+            { label: "04 Simulateur", href: "#simulateur" },
+            { label: "05 Offres -50%", href: "#offres" },
+            { label: "06 Showreel", href: "#showreel" },
+          ].map((anchor) => (
+            <a
+              key={anchor.href}
+              href={anchor.href}
+              className="rounded-full border border-slate-200/90 bg-white/80 px-3 py-1 text-[11px] font-medium text-slate-600 hover:border-[var(--brand-blue)] hover:bg-white hover:text-[var(--brand-blue)] transition-all shadow-2xs backdrop-blur-md"
+            >
+              {anchor.label}
+            </a>
+          ))}
+        </motion.nav>
 
         {/* Studio Craft Bento */}
         <motion.div
@@ -202,24 +231,28 @@ const ModernHero = () => {
                       {card.tag}
                     </span>
                     <span
-                      className={`rounded-full px-2.5 py-1 text-[10px] font-semibold shadow-xs ${
-                        card.accent === "red"
-                          ? "bg-[var(--brand-red)] text-white"
-                          : "bg-[var(--brand-blue)] text-white"
-                      }`}
+                      className={`rounded-full px-2.5 py-1 text-[10px] font-semibold shadow-xs ${card.accent === "red"
+                        ? "bg-[var(--brand-red)] text-white"
+                        : "bg-[var(--brand-blue)] text-white"
+                        }`}
                     >
                       {card.metric}
                     </span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between px-2 pt-3 pb-1.5">
-                  <div className="flex items-center gap-2">
-                    <Icon className="w-4 h-4 text-[var(--brand-blue)]" />
-                    <span className="text-sm font-semibold text-slate-900 group-hover:text-[var(--brand-blue)] transition-colors">
-                      {card.title}
-                    </span>
+                  <div className="flex items-start gap-2.5">
+                    <Icon className="w-4 h-4 text-[var(--brand-blue)] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="text-sm font-semibold text-slate-900 group-hover:text-[var(--brand-blue)] transition-colors block leading-snug">
+                        {card.title}
+                      </span>
+                      <span className="text-[11px] text-slate-500 block mt-0.5">
+                        {card.subtitle}
+                      </span>
+                    </div>
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                  <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
                 </div>
               </Link>
             );

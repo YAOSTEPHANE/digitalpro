@@ -15,6 +15,7 @@ import {
   Copy,
   Check,
   CheckCircle2,
+  Circle,
 } from "lucide-react";
 import Link from "next/link";
 import Image3D from "@/components/ui/image-3d";
@@ -112,6 +113,7 @@ const categoryActionsMap: Record<string, string[]> = {
 
 const DailyMarketingTips = () => {
   const [tipIndex, setTipIndex] = useState(0);
+  const [checkedActions, setCheckedActions] = useState<Record<string, boolean>>({});
   const [aiTip, setAiTip] = useState<{
     title: string;
     content: string;
@@ -186,14 +188,30 @@ const DailyMarketingTips = () => {
   }, []);
 
   const allTips = aiTip ? [aiTip, ...marketingTips] : marketingTips;
-  const currentTip = allTips[tipIndex % allTips.length];
+  const currentIdx = tipIndex % allTips.length;
+  const currentTip = allTips[currentIdx];
   const IconComponent = currentTip.icon || Lightbulb;
+
+  const toggleActionCheck = (actionIdx: number) => {
+    const key = `${currentIdx}-${actionIdx}`;
+    setCheckedActions((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
+  const completedCount = currentTip.actions.filter(
+    (_, idx) => checkedActions[`${currentIdx}-${idx}`]
+  ).length;
 
   const handleCopyTip = async () => {
     try {
-      await navigator.clipboard.writeText(`${currentTip.title}\n\n${currentTip.content}`);
+      const checklistText = currentTip.actions.map((a) => `• ${a}`).join("\n");
+      await navigator.clipboard.writeText(
+        `${currentTip.title}\n\n${currentTip.content}\n\nActions clés :\n${checklistText}`
+      );
       setCopied(true);
-      toast.success("Conseil copié dans le presse-papier !");
+      toast.success("Plan d'action copié dans le presse-papier !");
       setTimeout(() => setCopied(false), 2000);
     } catch {
       toast.error("Copie impossible.");
@@ -201,13 +219,13 @@ const DailyMarketingTips = () => {
   };
 
   return (
-    <section className="relative w-full py-12 md:py-16 overflow-hidden px-2">
+    <section id="conseil" className="relative w-full py-12 md:py-16 overflow-hidden px-2 scroll-mt-28">
       <div className="lux-section-premium lux-section-spotlight relative">
         <LuxSectionHeader
           indexLabel="05"
           label="Briefing quotidien"
           title={`Marketing Digital — Jour ${dayOfYear}/365`}
-          description="Des recommandations concrètes et immédiatement actionnables pour accélérer votre acquisition."
+          description="Des recommandations concrètes et une checklist actionnable pour accélérer votre acquisition."
           align="center"
           accent={currentTip.accent}
         />
@@ -223,7 +241,7 @@ const DailyMarketingTips = () => {
             </div>
           </div>
         ) : (
-          <LuxReveal key={`${currentTip.day}-${tipIndex}`} className="max-w-5xl mx-auto">
+          <LuxReveal key={`${currentTip.day}-${currentIdx}`} className="max-w-5xl mx-auto">
             <div className="lux-card-interactive overflow-hidden relative group">
               <div className="relative z-10 grid md:grid-cols-12 gap-0">
                 <div className="md:col-span-5 relative h-64 md:h-auto min-h-[340px] overflow-hidden">
@@ -248,7 +266,7 @@ const DailyMarketingTips = () => {
 
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
                     <span className="rounded-full bg-white/95 px-3 py-1 text-[11px] font-mono font-semibold text-slate-900 shadow-xs">
-                      {tipIndex === 0 ? `Édition Jour ${dayOfYear}` : `Playbook #${tipIndex}`}
+                      {currentIdx === 0 ? `Édition Jour ${dayOfYear}` : `Playbook #${currentIdx}`}
                     </span>
                     <div
                       className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-lg ${accentSolidBgClass(
@@ -260,17 +278,20 @@ const DailyMarketingTips = () => {
                   </div>
                 </div>
 
-                <div className="md:col-span-7 p-7 md:p-10 flex flex-col justify-between bg-white">
+                <div className="md:col-span-7 p-6 md:p-9 flex flex-col justify-between bg-white">
                   <div>
-                    <div className="flex items-center justify-between gap-3 mb-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                       <span className="lux-label !tracking-[0.2em]">Plan d&apos;action rapide</span>
                       <div className="flex items-center gap-1.5">
+                        <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold text-slate-700 tabular-nums mr-1">
+                          {completedCount}/{currentTip.actions.length} validées
+                        </span>
                         <button
                           type="button"
                           onClick={handleCopyTip}
                           className="rounded-lg border border-slate-200 bg-slate-50 p-1.5 text-slate-600 hover:text-slate-900 transition-colors"
                           aria-label="Copier le conseil"
-                          title="Copier le conseil"
+                          title="Copier le plan"
                         >
                           {copied ? (
                             <Check className="w-3.5 h-3.5 text-emerald-600" />
@@ -299,23 +320,55 @@ const DailyMarketingTips = () => {
                       </div>
                     </div>
 
-                    <h3 className="font-display text-2xl md:text-3xl font-semibold text-slate-900 mb-4 leading-tight">
+                    <h3 className="font-display text-2xl md:text-3xl font-semibold text-slate-900 mb-3 leading-tight">
                       {currentTip.title}
                     </h3>
 
-                    <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-6">
+                    <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-5">
                       {currentTip.content}
                     </p>
 
-                    <div className="space-y-2 mb-7 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                      {currentTip.actions.map((action) => (
-                        <div
-                          key={action}
-                          className="flex items-start gap-2.5 text-xs md:text-sm text-slate-800"
+                    <div className="space-y-2 mb-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                      {currentTip.actions.map((action, actionIdx) => {
+                        const checked = Boolean(checkedActions[`${currentIdx}-${actionIdx}`]);
+                        return (
+                          <button
+                            key={action}
+                            type="button"
+                            onClick={() => toggleActionCheck(actionIdx)}
+                            className="w-full flex items-start gap-2.5 text-left text-xs md:text-sm transition-colors rounded-lg p-1 -mx-1 hover:bg-white"
+                          >
+                            {checked ? (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                            ) : (
+                              <Circle className="w-4 h-4 text-[var(--brand-blue)] shrink-0 mt-0.5" />
+                            )}
+                            <span
+                              className={
+                                checked ? "line-through text-slate-400" : "text-slate-800"
+                              }
+                            >
+                              {action}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-1.5 mb-6">
+                      {allTips.map((tip, idx) => (
+                        <button
+                          key={`${tip.title}-${idx}`}
+                          type="button"
+                          onClick={() => setTipIndex(idx)}
+                          className={`rounded-full px-2.5 py-1 text-[10px] font-semibold transition-all ${
+                            currentIdx === idx
+                              ? "bg-[var(--brand-blue)] text-white"
+                              : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                          }`}
                         >
-                          <CheckCircle2 className="w-4 h-4 text-[var(--brand-blue)] shrink-0 mt-0.5" />
-                          <span>{action}</span>
-                        </div>
+                          {idx === 0 ? "Aujourd'hui" : tip.category}
+                        </button>
                       ))}
                     </div>
                   </div>

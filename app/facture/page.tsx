@@ -5,7 +5,7 @@ import ModernBilling from "@/components/modern-billing";
 
 const Facture = () => {
   return (
-    <LuxPageLayout>
+    <LuxPageLayout breadcrumb="Tarifs & Facturation">
       <ModernBilling />
     </LuxPageLayout>
   );

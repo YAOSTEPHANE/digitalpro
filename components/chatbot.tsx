@@ -8,7 +8,6 @@ import {
   Bot,
   User,
   Bell,
-  Sparkles,
   ShieldCheck,
   RotateCcw,
 } from "lucide-react";
@@ -59,6 +58,15 @@ export default function Chatbot() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [isOpen]);
 
   const sendMessageWithText = async (text: string) => {
     if (!text.trim() || isLoading) return;
@@ -181,20 +189,16 @@ export default function Chatbot() {
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="group fixed bottom-6 left-6 z-40 rounded-full border border-slate-200 bg-white/95 px-4 py-3 text-slate-900 shadow-[0_14px_36px_rgba(15,23,42,0.14)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--brand-blue)]"
+          className="group fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-slate-900 shadow-[0_14px_36px_rgba(15,23,42,0.14)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--brand-blue)]"
           aria-label="Ouvrir le chatbot"
         >
-          <div className="flex items-center gap-2.5">
-            <span className="relative flex h-2.5 w-2.5">
+          <span className="relative flex items-center justify-center">
+            <MessageCircle className="h-5 w-5 text-[var(--brand-blue)] transition-transform duration-300 group-hover:scale-105" />
+            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--brand-red)] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[var(--brand-red)]" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[var(--brand-red)] ring-2 ring-white" />
             </span>
-            <MessageCircle className="h-5 w-5 text-[var(--brand-blue)]" />
-            <span className="hidden sm:inline text-xs font-semibold tracking-wide text-slate-800">
-              Assistant IA
-            </span>
-            <Sparkles className="hidden sm:inline h-3.5 w-3.5 text-[var(--brand-red)]" />
-          </div>
+          </span>
         </button>
       )}
 
