@@ -6,11 +6,12 @@ import FAQS from "@/app/faq";
 
 export default function FAQPage() {
   return (
-    <LuxPageLayout>
+    <LuxPageLayout breadcrumb="FAQ">
       <LuxSectionHeader
-        label="FAQ"
+        indexLabel="01"
+        label="Centre d'aide"
         title="Les réponses utiles pour avancer rapidement sur votre projet"
-        description="Délais, budget, méthodes, maintenance : retrouvez ici les questions les plus fréquentes avant le lancement."
+        description="Délais, budget, méthodes, intégrations de paiement et maintenance : retrouvez ici l'essentiel avant de lancer votre projet."
       />
       <FAQS />
     </LuxPageLayout>

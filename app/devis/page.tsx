@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -17,6 +18,9 @@ import {
   Target,
   FileText,
   CheckCircle,
+  ArrowRight,
+  ArrowLeft,
+  ShieldCheck,
 } from "lucide-react";
 import LuxPageLayout from "@/components/lux-page-layout";
 import LuxSectionHeader from "@/components/lux-section-header";
@@ -43,8 +47,45 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 
 const luxInput =
-  "bg-[rgba(255,255,255,0.04)] border-[rgba(81,102,153,0.35)] text-[var(--lux-champagne)] placeholder:text-[var(--lux-muted)]";
-const luxSelectContent = "bg-[rgba(22,25,36,0.98)] border-[rgba(81,102,153,0.35)]";
+  "bg-white border-slate-200 text-slate-900 placeholder:text-slate-400";
+const luxSelectContent = "bg-white border-slate-200";
+
+const SERVICE_VALUES = [
+  "Développement de site web",
+  "Développement d'application mobile",
+  "SEO & Référencement",
+  "Marketing sur les médias sociaux",
+  "Conception UI/UX",
+  "Conception d'identité visuelle",
+  "Maintenance informatique",
+  "E-commerce",
+  "Autre",
+] as const;
+
+const PROJECT_TYPES = [
+  "Nouveau projet",
+  "Refonte / Amélioration",
+  "Maintenance",
+  "Consultation",
+] as const;
+
+const BUDGET_RANGES = [
+  "Moins de 500.000 F",
+  "500.000 F - 1.000.000 F",
+  "1.000.000 F - 2.500.000 F",
+  "2.500.000 F - 5.000.000 F",
+  "Plus de 5.000.000 F",
+  "À discuter",
+] as const;
+
+const TIMELINES = [
+  "Urgent (moins de 1 mois)",
+  "1-3 mois",
+  "3-6 mois",
+  "6-12 mois",
+  "Plus de 12 mois",
+  "Flexible",
+] as const;
 
 const QuoteSchema = z.object({
   first_name: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
@@ -53,39 +94,10 @@ const QuoteSchema = z.object({
   phone: z.string().min(8, "Numéro de téléphone invalide"),
   company_name: z.string().optional(),
   job_title: z.string().optional(),
-  service: z.enum([
-    "Développement de site web",
-    "Développement d'application mobile",
-    "SEO & Référencement",
-    "Marketing sur les médias sociaux",
-    "Conception UI/UX",
-    "Conception d'identité visuelle",
-    "Maintenance informatique",
-    "E-commerce",
-    "Autre",
-  ]),
-  project_type: z.enum([
-    "Nouveau projet",
-    "Refonte / Amélioration",
-    "Maintenance",
-    "Consultation",
-  ]),
-  budget_range: z.enum([
-    "Moins de 500.000 F",
-    "500.000 F - 1.000.000 F",
-    "1.000.000 F - 2.500.000 F",
-    "2.500.000 F - 5.000.000 F",
-    "Plus de 5.000.000 F",
-    "À discuter",
-  ]),
-  timeline: z.enum([
-    "Urgent (moins de 1 mois)",
-    "1-3 mois",
-    "3-6 mois",
-    "6-12 mois",
-    "Plus de 12 mois",
-    "Flexible",
-  ]),
+  service: z.enum(SERVICE_VALUES),
+  project_type: z.enum(PROJECT_TYPES),
+  budget_range: z.enum(BUDGET_RANGES),
+  timeline: z.enum(TIMELINES),
   features: z.string().optional(),
   project_description: z.string().min(20, "Veuillez décrire votre projet en au moins 20 caractères"),
   additional_info: z.string().optional(),
@@ -96,7 +108,19 @@ const QuoteSchema = z.object({
 
 type QuoteValues = z.infer<typeof QuoteSchema>;
 
-export default function QuoteForm() {
+function mapEstimateToBudget(estimateStr: string | null): (typeof BUDGET_RANGES)[number] | undefined {
+  const num = Number(estimateStr);
+  if (!num || Number.isNaN(num)) return undefined;
+  if (num < 500_000) return "Moins de 500.000 F";
+  if (num <= 1_000_000) return "500.000 F - 1.000.000 F";
+  if (num <= 2_500_000) return "1.000.000 F - 2.500.000 F";
+  if (num <= 5_000_000) return "2.500.000 F - 5.000.000 F";
+  return "Plus de 5.000.000 F";
+}
+
+function QuoteStudioInner() {
+  const searchParams = useSearchParams();
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -119,6 +143,55 @@ export default function QuoteForm() {
       terms: false,
     },
   });
+
+  useEffect(() => {
+    const serviceParam = searchParams.get("service");
+    const typeParam = searchParams.get("type");
+    const estimateParam = searchParams.get("estimate");
+    const offreParam = searchParams.get("offre");
+
+    if (serviceParam && SERVICE_VALUES.includes(serviceParam as (typeof SERVICE_VALUES)[number])) {
+      form.setValue("service", serviceParam as QuoteValues["service"]);
+    } else if (typeParam) {
+      if (typeParam.toLowerCase().includes("commerce")) {
+        form.setValue("service", "E-commerce");
+      } else if (typeParam.toLowerCase().includes("mobile")) {
+        form.setValue("service", "Développement d'application mobile");
+      } else {
+        form.setValue("service", "Développement de site web");
+      }
+    }
+
+    const mappedBudget = mapEstimateToBudget(estimateParam);
+    if (mappedBudget) {
+      form.setValue("budget_range", mappedBudget);
+    }
+
+    if (offreParam) {
+      form.setValue("additional_info", `Offre sélectionnée : ${offreParam}`);
+    } else if (estimateParam && typeParam) {
+      const formatted = Number(estimateParam).toLocaleString("fr-FR");
+      form.setValue(
+        "additional_info",
+        `Simulation accueil : ${typeParam} (estimation indicative ${formatted} FCFA)`
+      );
+    }
+  }, [searchParams, form]);
+
+  const watchedService = form.watch("service");
+  const watchedType = form.watch("project_type");
+  const watchedBudget = form.watch("budget_range");
+  const watchedTimeline = form.watch("timeline");
+
+  const goNextStep = async () => {
+    if (step === 1) {
+      const ok = await form.trigger(["first_name", "last_name", "email", "phone"]);
+      if (ok) setStep(2);
+    } else if (step === 2) {
+      const ok = await form.trigger(["service", "project_type", "budget_range", "timeline"]);
+      if (ok) setStep(3);
+    }
+  };
 
   async function onSubmit(data: QuoteValues) {
     try {
@@ -144,405 +217,545 @@ export default function QuoteForm() {
   }
 
   return (
-    <LuxPageLayout maxWidth="5xl">
+    <LuxPageLayout breadcrumb="Demander un devis">
       <LuxSectionHeader
+        indexLabel="01"
         label="Demande de devis"
-        title="Obtenez votre devis gratuit"
-        description="Remplissez ce formulaire détaillé et recevez un devis personnalisé dans les 24 heures. Notre équipe analysera votre projet et vous proposera la meilleure solution."
+        title="Obtenez votre devis personnalisé sous 24h"
+        description="Un parcours guidé en 3 étapes pour chiffrer précisément votre plateforme, les délais et les livrables."
         align="center"
       />
 
       <LuxReveal>
-        <section className="mb-10 lux-section-premium">
-          <h2 className="text-2xl font-semibold lux-heading mb-3">
-            Comment nous construisons votre devis
-          </h2>
+        <section className="mb-10 lux-section-premium !p-6 md:!p-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               "Analyse de vos objectifs business et de vos priorités",
-              "Estimation par lots : conception, développement, contenu, optimisation",
-              "Feuille de route avec délais, livrables et options d'évolution",
-            ].map((step, index) => (
-              <p key={step} className="text-sm lux-muted lux-card-interactive p-4">
-                <span className="font-semibold text-[var(--lux-champagne)]">Étape {index + 1} :</span>{" "}
-                {step}
-              </p>
+              "Découpage clair : UI/UX, développement, SEO & tests",
+              "Feuille de route avec jalons, livrables et options d'évolution",
+            ].map((text, index) => (
+              <div key={text} className="text-sm lux-card-interactive p-4">
+                <span className="font-mono text-[11px] font-semibold text-[var(--brand-blue)] block mb-1">
+                  ÉTAPE 0{index + 1}
+                </span>
+                <p className="text-slate-700">{text}</p>
+              </div>
             ))}
           </div>
         </section>
       </LuxReveal>
 
       {!submitted ? (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 lux-form-panel"
-          >
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold lux-heading flex items-center gap-2 mb-4">
-                <span className="lux-icon-badge">
-                  <User className="w-5 h-5 text-[var(--brand-blue-light)]" />
-                </span>
-                Informations personnelles
-              </h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="first_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[var(--lux-champagne)]">Prénom *</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Votre prénom" className={luxInput} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="last_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[var(--lux-champagne)]">Nom *</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Votre nom" className={luxInput} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[var(--lux-champagne)] flex items-center gap-2">
-                        <Mail className="w-4 h-4" />
-                        Email *
-                      </FormLabel>
-                      <FormControl>
-                        <Input {...field} type="email" placeholder="votre@email.com" className={luxInput} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[var(--lux-champagne)] flex items-center gap-2">
-                        <Phone className="w-4 h-4" />
-                        Téléphone *
-                      </FormLabel>
-                      <FormControl>
-                        <Input {...field} type="tel" placeholder="+225 XX XX XX XX XX" className={luxInput} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="company_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[var(--lux-champagne)] flex items-center gap-2">
-                        <Building className="w-4 h-4" />
-                        Entreprise
-                      </FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Nom de votre entreprise" className={luxInput} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="job_title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[var(--lux-champagne)]">Poste</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Votre poste" className={luxInput} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="lg:col-span-8">
+            <div className="mb-6 grid grid-cols-3 gap-2">
+              {[
+                { id: 1 as const, label: "Coordonnées" },
+                { id: 2 as const, label: "Périmètre" },
+                { id: 3 as const, label: "Cahier & Envoi" },
+              ].map((item) => {
+                const active = step === item.id;
+                const done = step > item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setStep(item.id)}
+                    className={`rounded-2xl border px-3 py-3 text-left transition-all ${
+                      active
+                        ? "border-[var(--brand-blue)] bg-[var(--brand-blue)] text-white shadow-sm"
+                        : done
+                          ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                          : "border-slate-200 bg-white text-slate-600"
+                    }`}
+                  >
+                    <div className="font-mono text-[10px] opacity-80">0{item.id}</div>
+                    <div className="text-xs sm:text-sm font-semibold truncate">{item.label}</div>
+                  </button>
+                );
+              })}
             </div>
 
-            <div className="space-y-4 pt-6 border-t border-[rgba(81,102,153,0.28)]">
-              <h2 className="text-xl font-semibold lux-heading flex items-center gap-2 mb-4">
-                <span className="lux-icon-badge">
-                  <Target className="w-5 h-5 text-[var(--brand-blue-light)]" />
-                </span>
-                Détails du projet
-              </h2>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 lux-form-panel">
+                {step === 1 && (
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-semibold lux-heading flex items-center gap-2.5 mb-2">
+                      <span className="lux-icon-badge">
+                        <User className="w-5 h-5 text-[var(--brand-blue)]" />
+                      </span>
+                      Informations personnelles
+                    </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="service"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[var(--lux-champagne)]">Service demandé *</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className={luxInput}>
-                            <SelectValue placeholder="Sélectionnez un service" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className={luxSelectContent}>
-                          <SelectItem value="Développement de site web">Développement de site web</SelectItem>
-                          <SelectItem value="Développement d'application mobile">Développement d&apos;application mobile</SelectItem>
-                          <SelectItem value="SEO & Référencement">SEO & Référencement</SelectItem>
-                          <SelectItem value="Marketing sur les médias sociaux">Marketing sur les médias sociaux</SelectItem>
-                          <SelectItem value="Conception UI/UX">Conception UI/UX</SelectItem>
-                          <SelectItem value="Conception d'identité visuelle">Conception d&apos;identité visuelle</SelectItem>
-                          <SelectItem value="Maintenance informatique">Maintenance informatique</SelectItem>
-                          <SelectItem value="E-commerce">E-commerce</SelectItem>
-                          <SelectItem value="Autre">Autre</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="project_type"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[var(--lux-champagne)]">Type de projet *</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className={luxInput}>
-                            <SelectValue placeholder="Sélectionnez un type" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className={luxSelectContent}>
-                          <SelectItem value="Nouveau projet">Nouveau projet</SelectItem>
-                          <SelectItem value="Refonte / Amélioration">Refonte / Amélioration</SelectItem>
-                          <SelectItem value="Maintenance">Maintenance</SelectItem>
-                          <SelectItem value="Consultation">Consultation</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="budget_range"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[var(--lux-champagne)] flex items-center gap-2">
-                        <DollarSign className="w-4 h-4" />
-                        Budget estimé *
-                      </FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className={luxInput}>
-                            <SelectValue placeholder="Sélectionnez une fourchette" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className={luxSelectContent}>
-                          <SelectItem value="Moins de 500.000 F">Moins de 500.000 F</SelectItem>
-                          <SelectItem value="500.000 F - 1.000.000 F">500.000 F - 1.000.000 F</SelectItem>
-                          <SelectItem value="1.000.000 F - 2.500.000 F">1.000.000 F - 2.500.000 F</SelectItem>
-                          <SelectItem value="2.500.000 F - 5.000.000 F">2.500.000 F - 5.000.000 F</SelectItem>
-                          <SelectItem value="Plus de 5.000.000 F">Plus de 5.000.000 F</SelectItem>
-                          <SelectItem value="À discuter">À discuter</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="timeline"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[var(--lux-champagne)] flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        Délai souhaité *
-                      </FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className={luxInput}>
-                            <SelectValue placeholder="Sélectionnez un délai" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className={luxSelectContent}>
-                          <SelectItem value="Urgent (moins de 1 mois)">Urgent (moins de 1 mois)</SelectItem>
-                          <SelectItem value="1-3 mois">1-3 mois</SelectItem>
-                          <SelectItem value="3-6 mois">3-6 mois</SelectItem>
-                          <SelectItem value="6-12 mois">6-12 mois</SelectItem>
-                          <SelectItem value="Plus de 12 mois">Plus de 12 mois</SelectItem>
-                          <SelectItem value="Flexible">Flexible</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="project_description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[var(--lux-champagne)] flex items-center gap-2">
-                      <FileText className="w-4 h-4" />
-                      Description du projet *
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Décrivez votre projet en détail : objectifs, fonctionnalités souhaitées, public cible, etc."
-                        className={`${luxInput} min-h-[120px]`}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="first_name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-800">Prénom *</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="Votre prénom" className={luxInput} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
-              <FormField
-                control={form.control}
-                name="features"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[var(--lux-champagne)]">Fonctionnalités spécifiques</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Listez les fonctionnalités importantes pour votre projet (ex: paiement en ligne, authentification utilisateur, tableau de bord admin, etc.)"
-                        className={`${luxInput} min-h-[100px]`}
+                      <FormField
+                        control={form.control}
+                        name="last_name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-800">Nom *</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="Votre nom" className={luxInput} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                    </div>
 
-              <FormField
-                control={form.control}
-                name="additional_info"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[var(--lux-champagne)] flex items-center gap-2">
-                      <MessageSquare className="w-4 h-4" />
-                      Informations complémentaires
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Toute autre information que vous souhaitez partager (références, contraintes techniques, préférences, etc.)"
-                        className={`${luxInput} min-h-[100px]`}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-800 flex items-center gap-2">
+                              <Mail className="w-4 h-4" />
+                              Email *
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="email"
+                                placeholder="votre@email.com"
+                                className={luxInput}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
 
-            <FormField
-              control={form.control}
-              name="terms"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      className="mt-1 border-[rgba(81,102,153,0.45)] data-[state=checked]:bg-[var(--brand-blue)] data-[state=checked]:border-[var(--brand-blue)] bg-[rgba(255,255,255,0.04)]"
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel className="text-[var(--lux-champagne)] cursor-pointer">
-                      J&apos;accepte que digitalpro solutions traite mes données personnelles
-                      conformément à la politique de confidentialité. *
-                    </FormLabel>
-                    <FormMessage />
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-800 flex items-center gap-2">
+                              <Phone className="w-4 h-4" />
+                              Téléphone *
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="tel"
+                                placeholder="+225 XX XX XX XX XX"
+                                className={luxInput}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="company_name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-800 flex items-center gap-2">
+                              <Building className="w-4 h-4" />
+                              Entreprise
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder="Nom de votre entreprise"
+                                className={luxInput}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="job_title"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-800">Poste</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="Votre poste" className={luxInput} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="pt-4 flex justify-end">
+                      <Button
+                        type="button"
+                        onClick={goNextStep}
+                        className="lux-btn-primary !px-7 !py-3 gap-2"
+                      >
+                        Continuer vers le périmètre
+                        <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
-                </FormItem>
-              )}
-            />
+                )}
 
-            <Button type="submit" disabled={loading} className="w-full lux-btn-primary !py-6 text-lg">
-              {loading ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                  Envoi en cours...
-                </>
-              ) : (
-                <>
-                  Demander mon devis gratuit
-                  <Send className="w-5 h-5 ml-2" />
-                </>
-              )}
-            </Button>
-          </form>
-        </Form>
+                {step === 2 && (
+                  <div className="space-y-5">
+                    <h2 className="text-xl font-semibold lux-heading flex items-center gap-2.5 mb-2">
+                      <span className="lux-icon-badge">
+                        <Target className="w-5 h-5 text-[var(--brand-blue)]" />
+                      </span>
+                      Détails du projet &amp; enveloppe
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="service"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-800">Service demandé *</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger className={luxInput}>
+                                  <SelectValue placeholder="Sélectionnez un service" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent className={luxSelectContent}>
+                                {SERVICE_VALUES.map((val) => (
+                                  <SelectItem key={val} value={val}>
+                                    {val}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="project_type"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-800">Type de projet *</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger className={luxInput}>
+                                  <SelectValue placeholder="Sélectionnez un type" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent className={luxSelectContent}>
+                                {PROJECT_TYPES.map((val) => (
+                                  <SelectItem key={val} value={val}>
+                                    {val}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="budget_range"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-800 flex items-center gap-2">
+                              <DollarSign className="w-4 h-4" />
+                              Budget estimé *
+                            </FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger className={luxInput}>
+                                  <SelectValue placeholder="Sélectionnez une fourchette" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent className={luxSelectContent}>
+                                {BUDGET_RANGES.map((val) => (
+                                  <SelectItem key={val} value={val}>
+                                    {val}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="timeline"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-slate-800 flex items-center gap-2">
+                              <Calendar className="w-4 h-4" />
+                              Délai souhaité *
+                            </FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger className={luxInput}>
+                                  <SelectValue placeholder="Sélectionnez un délai" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent className={luxSelectContent}>
+                                {TIMELINES.map((val) => (
+                                  <SelectItem key={val} value={val}>
+                                    {val}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="pt-4 flex items-center justify-between gap-3">
+                      <Button
+                        type="button"
+                        onClick={() => setStep(1)}
+                        className="lux-btn-ghost !px-5 !py-2.5 gap-2"
+                      >
+                        <ArrowLeft className="w-4 h-4" />
+                        Retour
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={goNextStep}
+                        className="lux-btn-primary !px-7 !py-3 gap-2"
+                      >
+                        Cahier des charges
+                        <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {step === 3 && (
+                  <div className="space-y-5">
+                    <h2 className="text-xl font-semibold lux-heading flex items-center gap-2.5 mb-2">
+                      <span className="lux-icon-badge">
+                        <FileText className="w-5 h-5 text-[var(--brand-blue)]" />
+                      </span>
+                      Description &amp; fonctionnalités
+                    </h2>
+
+                    <FormField
+                      control={form.control}
+                      name="project_description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-slate-800 flex items-center gap-2">
+                            Description du projet *
+                          </FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Décrivez vos objectifs, votre activité, votre public cible et le résultat attendu..."
+                              className={`${luxInput} min-h-[120px]`}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="features"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-slate-800">
+                            Fonctionnalités spécifiques (optionnel)
+                          </FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Ex : paiement Wave / Orange Money / Stripe, espace membre, prise de RDV, multilingue..."
+                              className={`${luxInput} min-h-[90px]`}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="additional_info"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-slate-800 flex items-center gap-2">
+                            <MessageSquare className="w-4 h-4" />
+                            Informations complémentaires
+                          </FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Sites de référence, contraintes techniques ou précisions utiles..."
+                              className={`${luxInput} min-h-[80px]`}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="terms"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-xl border border-slate-200 bg-slate-50 p-3.5">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="mt-0.5 border-slate-300 data-[state=checked]:bg-[var(--brand-blue)] data-[state=checked]:border-[var(--brand-blue)] bg-white"
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-snug">
+                            <FormLabel className="text-xs md:text-sm text-slate-700 cursor-pointer font-normal">
+                              J&apos;accepte que digitalpro solutions traite mes données personnelles
+                              pour établir ce devis confidentiel. *
+                            </FormLabel>
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                      <Button
+                        type="button"
+                        onClick={() => setStep(2)}
+                        className="lux-btn-ghost !px-5 !py-3 gap-2"
+                      >
+                        <ArrowLeft className="w-4 h-4" />
+                        Retour
+                      </Button>
+                      <Button
+                        type="submit"
+                        disabled={loading}
+                        className="flex-1 lux-btn-primary !py-6 text-base"
+                      >
+                        {loading ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                            Envoi en cours...
+                          </>
+                        ) : (
+                          <>
+                            Envoyer ma demande de devis
+                            <Send className="w-4 h-4 ml-2" />
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </form>
+            </Form>
+          </div>
+
+          <aside className="lg:col-span-4 lg:sticky lg:top-28 space-y-5">
+            <div className="lux-section-premium !p-6 space-y-5">
+              <div>
+                <p className="lux-label mb-1">Synthèse live</p>
+                <h3 className="lux-heading text-2xl">Votre configuration</h3>
+              </div>
+
+              <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 text-xs md:text-sm">
+                <div className="flex justify-between gap-2">
+                  <span className="text-slate-500">Service</span>
+                  <span className="font-semibold text-slate-900 text-right">{watchedService}</span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-slate-500">Nature</span>
+                  <span className="text-slate-900 text-right">{watchedType}</span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-slate-500">Enveloppe</span>
+                  <span className="font-semibold text-[var(--brand-blue)] text-right">
+                    {watchedBudget}
+                  </span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-slate-500">Échéance</span>
+                  <span className="text-slate-900 text-right">{watchedTimeline}</span>
+                </div>
+              </div>
+
+              <div className="space-y-2 text-xs text-slate-600">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
+                  <span>Devis chiffré par lots envoyé sous 24h</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
+                  <span>Sans engagement ni frais cachés</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
       ) : (
-        <div className="lux-form-panel p-10 md:p-16 text-center">
+        <div className="lux-form-panel p-10 md:p-16 text-center max-w-2xl mx-auto">
           <div className="max-w-md mx-auto">
             <div className="lux-success-badge">
               <CheckCircle2 className="w-10 h-10 text-white" />
             </div>
             <h2 className="text-3xl font-bold lux-heading mb-4">Demande de devis envoyée !</h2>
-            <p className="lux-muted mb-8">
-              Merci pour votre demande de devis. Notre équipe va analyser votre projet
-              et vous enverra un devis personnalisé dans les 24 heures.
+            <p className="text-slate-600 mb-8 text-sm md:text-base">
+              Merci pour votre confiance. Notre équipe analyse votre cahier des charges et vous
+              enverra un devis structuré dans les 24 heures.
             </p>
             <div className="space-y-4">
-              <div className="rounded-lg lux-card-interactive p-4 text-left">
-                <h3 className="lux-heading font-semibold mb-2 flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-[var(--brand-blue-light)]" />
+              <div className="rounded-2xl lux-card-interactive p-5 text-left">
+                <h3 className="lux-heading font-semibold mb-2.5 flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-[var(--brand-blue)]" />
                   Prochaines étapes
                 </h3>
-                <ul className="space-y-2 text-sm lux-muted">
+                <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-start gap-2">
-                    <span className="text-[var(--brand-blue-light)]">•</span>
-                    <span>Vous recevrez une confirmation par email</span>
+                    <span className="text-[var(--brand-blue)]">•</span>
+                    <span>Accusé de réception et revue technique de vos besoins</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-[var(--brand-blue-light)]">•</span>
-                    <span>Notre équipe analysera votre projet</span>
+                    <span className="text-[var(--brand-blue)]">•</span>
+                    <span>Proposition détaillée par lots + planning sous 24h</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-[var(--brand-blue-light)]">•</span>
-                    <span>Un devis détaillé vous sera envoyé sous 24h</span>
+                    <span className="text-[var(--brand-blue)]">•</span>
+                    <span>Session de validation rapide avant démarrage</span>
                   </li>
                 </ul>
               </div>
               <Button
                 onClick={() => {
                   setSubmitted(false);
+                  setStep(1);
                   form.reset();
                 }}
                 className="lux-btn-primary"
@@ -554,5 +767,21 @@ export default function QuoteForm() {
         </div>
       )}
     </LuxPageLayout>
+  );
+}
+
+export default function QuoteForm() {
+  return (
+    <Suspense
+      fallback={
+        <LuxPageLayout breadcrumb="Demander un devis">
+          <div className="lux-section-premium p-12 text-center text-slate-600">
+            Chargement du configurateur de devis...
+          </div>
+        </LuxPageLayout>
+      }
+    >
+      <QuoteStudioInner />
+    </Suspense>
   );
 }

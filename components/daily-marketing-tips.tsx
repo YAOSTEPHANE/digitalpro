@@ -10,6 +10,11 @@ import {
   ArrowRight,
   Sparkles,
   ShoppingCart,
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  Check,
+  CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
 import Image3D from "@/components/ui/image-3d";
@@ -17,138 +22,124 @@ import type { BrandAccent } from "@/lib/brand";
 import { accentBadgeClass, accentSolidBgClass, accentTextClass } from "@/lib/brand-styles";
 import LuxSectionHeader from "@/components/lux-section-header";
 import LuxReveal from "@/components/lux-reveal";
+import { toast } from "sonner";
 
-// Base de conseils en marketing digital (365 conseils pour chaque jour de l'année)
 const marketingTips = [
   {
     day: 1,
     title: "Optimisez votre présence sur les réseaux sociaux",
-    content: "Publiez du contenu de qualité régulièrement. La cohérence est la clé pour construire une communauté engagée. Utilisez les meilleurs moments de publication pour maximiser votre portée.",
+    content:
+      "Publiez du contenu de qualité régulièrement. La cohérence est la clé pour construire une communauté engagée et capter les meilleurs créneaux d'audience.",
     category: "Réseaux Sociaux",
     icon: Share2,
     accent: "blue" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop"
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop",
+    actions: [
+      "Planifier 3 publications piliers par semaine",
+      "Répondre aux commentaires dans les 2 premières heures",
+      "Adapter chaque format au canal (Reels, Carrousels)",
+    ],
   },
   {
     day: 2,
-    title: "Créez du contenu à valeur ajoutée",
-    content: "Ne vendez pas directement, éduquez votre audience. Le contenu éducatif génère plus d'engagement et établit votre expertise dans votre domaine.",
+    title: "Créez du contenu à forte valeur ajoutée",
+    content:
+      "Ne vendez pas directement, éduquez votre audience. Le contenu pédagogique génère davantage d'engagement et positionne votre entreprise comme référence.",
     category: "Contenu",
     icon: Lightbulb,
     accent: "red" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1432888622747-4eb9a8f2d70a?w=800&h=600&fit=crop"
+    image: "https://images.unsplash.com/photo-1432888622747-4eb9a8f2d70a?w=800&h=600&fit=crop",
+    actions: [
+      "Transformer vos questions clients fréquentes en guides",
+      "Illustrer chaque conseil par un cas concret local",
+      "Ajouter un appel à l'action clair en fin de lecture",
+    ],
   },
   {
     day: 3,
-    title: "Analysez vos données régulièrement",
-    content: "Les données sont votre meilleur allié. Analysez vos métriques chaque semaine pour comprendre ce qui fonctionne et ajuster votre stratégie en conséquence.",
+    title: "Analysez vos métriques de conversion",
+    content:
+      "Les données sont votre meilleur levier de marge. Analysez vos tunnels chaque semaine pour supprimer les frictions et doubler sur les pages rentables.",
     category: "Analytics",
     icon: BarChart3,
     accent: "blue" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop"
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+    actions: [
+      "Vérifier le taux de conversion mobile vs desktop",
+      "Identifier les pages à fort rebond",
+      "Suivre le coût d'acquisition par canal",
+    ],
   },
   {
     day: 4,
-    title: "Définissez vos objectifs SMART",
-    content: "Spécifiques, Mesurables, Atteignables, Réalistes et Temporels. Des objectifs clairs vous guident vers le succès et permettent de mesurer vos progrès.",
+    title: "Structurez vos objectifs SMART",
+    content:
+      "Spécifiques, Mesurables, Atteignables, Réalistes et Temporels. Des jalons trimestriels précis alignent votre site et vos campagnes sur votre chiffre d'affaires.",
     category: "Stratégie",
     icon: Target,
     accent: "red" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop"
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop",
+    actions: [
+      "Fixer un objectif mensuel de leads qualifiés",
+      "Allouer le budget selon le ROI observé",
+      "Faire une revue bimensuelle des performances",
+    ],
   },
   {
     day: 5,
-    title: "Investissez dans le SEO",
-    content: "Le référencement naturel est un investissement à long terme. Optimisez vos mots-clés, créez du contenu de qualité et obtenez des backlinks de qualité pour améliorer votre visibilité.",
+    title: "Investissez durablement dans le SEO",
+    content:
+      "Le référencement naturel capte une demande intentionniste à coût marginal décroissant. Optimisez vitesse mobile, structure sémantique et pages locales.",
     category: "SEO",
     icon: TrendingUp,
     accent: "blue" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop"
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+    actions: [
+      "Viser un LCP mobile sous les 1.5 secondes",
+      "Structurer H1/H2 autour des requêtes clients",
+      "Optimiser votre fiche Google Business Abidjan",
+    ],
   },
-  {
-    day: 6,
-    title: "Personnalisez votre communication",
-    content: "Chaque client est unique. Utilisez les données pour personnaliser vos messages et offres. La personnalisation augmente significativement les taux de conversion.",
-    category: "Personnalisation",
-    icon: Target,
-    accent: "red" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop"
-  },
-  {
-    day: 7,
-    title: "Utilisez l'email marketing stratégiquement",
-    content: "L'email reste l'un des canaux les plus rentables. Segmentez votre liste, testez vos sujets et créez des emails qui apportent de la valeur à vos abonnés.",
-    category: "Email Marketing",
-    icon: Share2,
-    accent: "blue" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1593642532400-2682810df47a?w=800&h=600&fit=crop"
-  },
-  {
-    day: 8,
-    title: "Créez des campagnes vidéo engageantes",
-    content: "La vidéo domine le marketing digital. Créez des vidéos courtes, captivantes et qui racontent une histoire. Les vidéos génèrent plus d'engagement que tout autre format.",
-    category: "Vidéo",
-    icon: Sparkles,
-    accent: "red" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=800&h=600&fit=crop"
-  },
-  {
-    day: 9,
-    title: "Optimisez pour mobile d'abord",
-    content: "Plus de 60% du trafic web vient du mobile. Assurez-vous que votre site et vos campagnes sont optimisés pour mobile avant tout autre appareil.",
-    category: "Mobile",
-    icon: Target,
-    accent: "blue" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop"
-  },
-  {
-    day: 10,
-    title: "Construisez votre liste d'emails",
-    content: "Votre liste d'emails est un actif précieux. Offrez quelque chose de valeur en échange d'un email : un ebook, un webinar, ou un guide gratuit.",
-    category: "Email Marketing",
-    icon: Share2,
-    accent: "red" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=600&fit=crop"
-  },
-  // Ajoutez plus de conseils selon vos besoins...
 ];
 
+const categoryActionsMap: Record<string, string[]> = {
+  "Réseaux Sociaux": marketingTips[0].actions,
+  Contenu: marketingTips[1].actions,
+  Analytics: marketingTips[2].actions,
+  Stratégie: marketingTips[3].actions,
+  SEO: marketingTips[4].actions,
+};
+
 const DailyMarketingTips = () => {
-  const [currentTip, setCurrentTip] = useState<{
+  const [tipIndex, setTipIndex] = useState(0);
+  const [aiTip, setAiTip] = useState<{
     title: string;
     content: string;
     category: string;
     day: number;
     image: string;
     accent: BrandAccent;
+    actions: string[];
     icon?: React.ElementType;
-  }>({
-    title: 'Chargement...',
-    content: 'Génération de votre conseil du jour...',
-    category: 'Marketing Digital',
-    day: 1,
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop',
-    accent: "blue",
-  });
+  } | null>(null);
   const [dayOfYear, setDayOfYear] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    // Calculer le jour de l'année (1-365)
     const now = new Date();
     const start = new Date(now.getFullYear(), 0, 0);
     const diff = now.getTime() - start.getTime();
     const oneDay = 1000 * 60 * 60 * 24;
-    const day = Math.floor(diff / oneDay);
+    const day = Math.max(1, Math.floor(diff / oneDay));
     setDayOfYear(day);
 
-    // Récupérer le conseil depuis l'API IA
     const fetchTip = async () => {
       try {
         setLoading(true);
         const response = await fetch(`/api/marketing-tip?day=${day}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch tip');
+          throw new Error("Failed to fetch tip");
         }
         const data = await response.json();
         const accent: BrandAccent =
@@ -157,31 +148,35 @@ const DailyMarketingTips = () => {
             : day % 2 === 0
               ? "blue"
               : "red";
-        const tip = { ...data, accent };
-        
-        // Mapper l'icône selon la catégorie
+
         const categoryIcons: Record<string, React.ElementType> = {
-          'Réseaux Sociaux': Share2,
-          'SEO': TrendingUp,
-          'Email Marketing': Share2,
-          'Contenu': Lightbulb,
-          'Publicité': Target,
-          'Analytics': BarChart3,
-          'Stratégie': Target,
-          'Mobile': Target,
-          'E-commerce': ShoppingCart,
-          'Vidéo': Sparkles,
-          'Influence Marketing': Share2,
-          'Marketing Automation': Sparkles,
+          "Réseaux Sociaux": Share2,
+          SEO: TrendingUp,
+          "Email Marketing": Share2,
+          Contenu: Lightbulb,
+          Publicité: Target,
+          Analytics: BarChart3,
+          Stratégie: Target,
+          Mobile: Target,
+          "E-commerce": ShoppingCart,
+          Vidéo: Sparkles,
+          "Influence Marketing": Share2,
+          "Marketing Automation": Sparkles,
         };
-        
-        tip.icon = categoryIcons[tip.category] || Lightbulb;
-        setCurrentTip(tip);
-      } catch (error) {
-        console.error('Error fetching tip:', error);
-        // Fallback vers un conseil local
-        const tipIndex = (day - 1) % marketingTips.length;
-        setCurrentTip(marketingTips[tipIndex]);
+
+        setAiTip({
+          ...data,
+          accent,
+          icon: categoryIcons[data.category] || Lightbulb,
+          actions:
+            categoryActionsMap[data.category] || [
+              "Auditer le point de friction prioritaire",
+              "Déployer une amélioration mesurable cette semaine",
+              "Suivre l'impact sur les conversions à 14 jours",
+            ],
+        });
+      } catch {
+        setAiTip(null);
       } finally {
         setLoading(false);
       }
@@ -190,115 +185,175 @@ const DailyMarketingTips = () => {
     fetchTip();
   }, []);
 
+  const allTips = aiTip ? [aiTip, ...marketingTips] : marketingTips;
+  const currentTip = allTips[tipIndex % allTips.length];
   const IconComponent = currentTip.icon || Lightbulb;
 
+  const handleCopyTip = async () => {
+    try {
+      await navigator.clipboard.writeText(`${currentTip.title}\n\n${currentTip.content}`);
+      setCopied(true);
+      toast.success("Conseil copié dans le presse-papier !");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Copie impossible.");
+    }
+  };
+
   return (
-    <div className="relative w-full py-20 overflow-hidden px-2">
+    <section className="relative w-full py-12 md:py-16 overflow-hidden px-2">
       <div className="lux-section-premium lux-section-spotlight relative">
         <LuxSectionHeader
-          label="Conseil du jour"
+          indexLabel="05"
+          label="Briefing quotidien"
           title={`Marketing Digital — Jour ${dayOfYear}/365`}
-          description="Chaque jour, découvrez un nouveau conseil pour améliorer votre stratégie digitale"
+          description="Des recommandations concrètes et immédiatement actionnables pour accélérer votre acquisition."
           align="center"
           accent={currentTip.accent}
         />
 
-        {/* Carte du conseil */}
         {loading ? (
           <div className="max-w-5xl mx-auto">
             <div className="lux-card-interactive p-12 text-center">
-              <div className="animate-pulse">
-                <div className="w-20 h-20 brand-bg-blue rounded-2xl mx-auto mb-6" />
-                <div className="h-8 bg-[rgba(81,102,153,0.25)] rounded-lg w-3/4 mx-auto mb-4" />
-                <div className="h-4 bg-[rgba(81,102,153,0.18)] rounded-lg w-full mb-2" />
-                <div className="h-4 bg-[rgba(81,102,153,0.18)] rounded-lg w-5/6 mx-auto" />
+              <div className="animate-pulse space-y-4">
+                <div className="w-16 h-16 brand-bg-blue rounded-2xl mx-auto" />
+                <div className="h-7 bg-slate-200 rounded-lg w-2/3 mx-auto" />
+                <div className="h-4 bg-slate-100 rounded-lg w-5/6 mx-auto" />
               </div>
             </div>
           </div>
         ) : (
-          <LuxReveal key={currentTip.day} className="max-w-5xl mx-auto">
-            <div className="lux-card-interactive overflow-hidden relative group transition-all duration-300">
-            <div className="relative z-10 grid md:grid-cols-2 gap-0">
-              {/* Colonne gauche - Image */}
-              <div className="relative h-64 md:h-[500px] overflow-hidden">
-                <Image3D
-                  src={currentTip.image}
-                  alt={currentTip.title}
-                  width={800}
-                  height={600}
-                  className="!w-full !h-full !object-cover !rounded-none"
-                  containerClassName="!w-full !h-full !absolute !inset-0 !rounded-none"
-                />
-                {/* Overlay avec gradient */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/10 to-transparent md:bg-gradient-to-b md:from-black/25 md:via-black/10 md:to-transparent" />
-                
-                {/* Badge de catégorie sur l'image */}
-                <div className={`absolute top-4 left-4 inline-flex items-center gap-2 rounded-full px-4 py-2 backdrop-blur-sm ${accentBadgeClass(currentTip.accent)}`}>
-                  <IconComponent className="w-4 h-4 text-white" />
-                  <span className="text-sm text-white font-medium">{currentTip.category}</span>
+          <LuxReveal key={`${currentTip.day}-${tipIndex}`} className="max-w-5xl mx-auto">
+            <div className="lux-card-interactive overflow-hidden relative group">
+              <div className="relative z-10 grid md:grid-cols-12 gap-0">
+                <div className="md:col-span-5 relative h-64 md:h-auto min-h-[340px] overflow-hidden">
+                  <Image3D
+                    src={currentTip.image}
+                    alt={currentTip.title}
+                    width={800}
+                    height={600}
+                    className="!w-full !h-full !object-cover !rounded-none"
+                    containerClassName="!w-full !h-full !absolute !inset-0 !rounded-none"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/65 via-black/15 to-transparent" />
+
+                  <div
+                    className={`absolute top-4 left-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 backdrop-blur-md ${accentBadgeClass(
+                      currentTip.accent
+                    )}`}
+                  >
+                    <IconComponent className="w-3.5 h-3.5 text-white" />
+                    <span className="text-xs text-white font-semibold">{currentTip.category}</span>
+                  </div>
+
+                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                    <span className="rounded-full bg-white/95 px-3 py-1 text-[11px] font-mono font-semibold text-slate-900 shadow-xs">
+                      {tipIndex === 0 ? `Édition Jour ${dayOfYear}` : `Playbook #${tipIndex}`}
+                    </span>
+                    <div
+                      className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-lg ${accentSolidBgClass(
+                        currentTip.accent
+                      )}`}
+                    >
+                      <IconComponent className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
                 </div>
 
-                {/* Icône principale sur l'image */}
-                <div className={`absolute bottom-4 left-4 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg ${accentSolidBgClass(currentTip.accent)}`}>
-                  <IconComponent className="w-8 h-8 text-white" />
-                </div>
-              </div>
+                <div className="md:col-span-7 p-7 md:p-10 flex flex-col justify-between bg-white">
+                  <div>
+                    <div className="flex items-center justify-between gap-3 mb-4">
+                      <span className="lux-label !tracking-[0.2em]">Plan d&apos;action rapide</span>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={handleCopyTip}
+                          className="rounded-lg border border-slate-200 bg-slate-50 p-1.5 text-slate-600 hover:text-slate-900 transition-colors"
+                          aria-label="Copier le conseil"
+                          title="Copier le conseil"
+                        >
+                          {copied ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setTipIndex((prev) => (prev - 1 + allTips.length) % allTips.length)
+                          }
+                          className="rounded-lg border border-slate-200 bg-slate-50 p-1.5 text-slate-600 hover:text-slate-900 transition-colors"
+                          aria-label="Conseil précédent"
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setTipIndex((prev) => (prev + 1) % allTips.length)}
+                          className="rounded-lg border border-slate-200 bg-slate-50 p-1.5 text-slate-600 hover:text-slate-900 transition-colors"
+                          aria-label="Conseil suivant"
+                        >
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
 
-              {/* Colonne droite - Contenu */}
-              <div className="p-8 md:p-12 flex flex-col justify-center">
-                {/* Titre */}
-                <h3 className="font-display text-2xl md:text-4xl font-semibold text-[var(--lux-champagne)] mb-4 md:mb-6 leading-tight">
-                  {currentTip.title}
-                </h3>
+                    <h3 className="font-display text-2xl md:text-3xl font-semibold text-slate-900 mb-4 leading-tight">
+                      {currentTip.title}
+                    </h3>
 
-                {/* Contenu */}
-                <p className="text-base md:text-lg lux-muted leading-relaxed mb-6 md:mb-8">
-                  {currentTip.content}
-                </p>
+                    <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-6">
+                      {currentTip.content}
+                    </p>
 
-                {/* CTA */}
-                <div className="flex flex-col sm:flex-row gap-4 items-start">
-                  <Link
-                    href="/contact"
-                    className={`group flex items-center gap-2 font-semibold py-3 px-6 rounded-full transition-all duration-300 hover:scale-105 ${accentSolidBgClass(currentTip.accent)} text-white`}
-                  >
-                    Besoin d&apos;aide ?
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                  <Link
-                    href="/devis"
-                    className="group flex items-center gap-2 lux-btn-ghost !px-6 !py-3"
-                  >
-                    Demander un devis
-                  </Link>
+                    <div className="space-y-2 mb-7 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                      {currentTip.actions.map((action) => (
+                        <div
+                          key={action}
+                          className="flex items-start gap-2.5 text-xs md:text-sm text-slate-800"
+                        >
+                          <CheckCircle2 className="w-4 h-4 text-[var(--brand-blue)] shrink-0 mt-0.5" />
+                          <span>{action}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3">
+                    <Link
+                      href="/contact"
+                      className={`group inline-flex items-center gap-2 font-semibold py-2.5 px-5 rounded-full text-sm transition-all duration-300 hover:scale-[1.02] ${accentSolidBgClass(
+                        currentTip.accent
+                      )} text-white`}
+                    >
+                      Appliquer avec nos experts
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                    <Link href="/devis" className="lux-btn-ghost !px-5 !py-2.5 text-sm">
+                      Demander un audit
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* Indicateur de jour */}
-            <div className="absolute top-4 right-4 md:top-6 md:right-6 text-sm font-medium lux-chip z-20">
-              Jour {dayOfYear}/365
-            </div>
-          </div>
           </LuxReveal>
         )}
 
-        <LuxReveal delay={0.2} className="mt-12 text-center">
-          <p className="lux-muted mb-4">
-            Retrouvez tous nos conseils et guides complets
-          </p>
+        <LuxReveal delay={0.15} className="mt-8 text-center">
           <Link
-            href="/contact"
-            className={`inline-flex items-center gap-2 transition-colors font-medium ${accentTextClass(currentTip.accent)}`}
+            href="/services"
+            className={`inline-flex items-center gap-2 transition-colors text-sm font-semibold ${accentTextClass(
+              currentTip.accent
+            )}`}
           >
-            Consulter nos ressources
+            Découvrir tous nos leviers d&apos;acquisition
             <ArrowRight className="w-4 h-4" />
           </Link>
         </LuxReveal>
       </div>
-    </div>
+    </section>
   );
 };
 
 export default DailyMarketingTips;
-

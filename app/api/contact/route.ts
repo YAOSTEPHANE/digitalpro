@@ -7,17 +7,24 @@ export async function POST(req: Request) {
 
     try {
 
+    const body = await req.json();
     const {
       first_name,
       last_name,
       email,
+      phone,
       job_title,
       company_name,
       help,
       services,
+      service,
       info,
+      message,
       terms,
-    } = await req.json();
+    } = body;
+
+    const resolvedServices = service ?? services;
+    const resolvedInfo = message ?? info;
 
 
       const transporter = nodemailer.createTransport({
@@ -39,11 +46,12 @@ export async function POST(req: Request) {
                     <p>First Name: ${first_name}</p>
                     <p>Last Name: ${last_name}</p>
                     <p>Email: ${email}</p>
-                    <p>Job Title: ${job_title}</p>
-                    <p>Company Name: ${company_name}</p>
-                    <p>Services: ${services}</p>
-                    <p>Help: ${help}</p>
-                    <p>Info: ${info}</p>
+                    ${phone ? `<p>Phone: ${phone}</p>` : ""}
+                    <p>Job Title: ${job_title ?? ""}</p>
+                    <p>Company Name: ${company_name ?? ""}</p>
+                    <p>Services: ${resolvedServices ?? ""}</p>
+                    <p>Help: ${help ?? ""}</p>
+                    <p>Info: ${resolvedInfo ?? ""}</p>
                     <p>Terms Accepted: ${terms}</p>
                 `,
       };

@@ -15,6 +15,9 @@ import {
   MapPin,
   Clock,
   Facebook,
+  Copy,
+  Check,
+  MessageCircle,
 } from "lucide-react";
 import LuxPageLayout from "@/components/lux-page-layout";
 import LuxSectionHeader from "@/components/lux-section-header";
@@ -41,14 +44,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 
 const luxInput =
-  "bg-[rgba(255,255,255,0.04)] border-[rgba(81,102,153,0.35)] text-[var(--lux-champagne)] placeholder:text-[var(--lux-muted)]";
-const luxSelectContent = "bg-[rgba(22,25,36,0.98)] border-[rgba(81,102,153,0.35)]";
+  "bg-white border-slate-200 text-slate-900 placeholder:text-slate-400";
+const luxSelectContent = "bg-white border-slate-200";
 
 const FormSchema = z.object({
   first_name: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
   last_name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
   email: z.string().email("Adresse email invalide"),
-  phone: z.string().min(8, "Numéro de téléphone invalide").optional(),
+  phone: z.string().min(8, "Numéro de téléphone invalide").optional().or(z.literal("")),
   company_name: z.string().optional(),
   job_title: z.string().optional(),
   service: z.enum([
@@ -80,6 +83,7 @@ type FormValues = z.infer<typeof FormSchema>;
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -96,6 +100,17 @@ export default function ContactForm() {
       terms: false,
     },
   });
+
+  const handleCopy = async (key: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedKey(key);
+      toast.success("Copié dans le presse-papier !");
+      setTimeout(() => setCopiedKey(null), 2000);
+    } catch {
+      toast.error("Copie impossible");
+    }
+  };
 
   async function onSubmit(data: FormValues) {
     try {
@@ -121,11 +136,12 @@ export default function ContactForm() {
   }
 
   return (
-    <LuxPageLayout>
+    <LuxPageLayout breadcrumb="Contact">
       <LuxSectionHeader
+        indexLabel="01"
         label="Contact"
         title="Parlons de votre projet"
-        description="Remplissez le formulaire ci-dessous et notre équipe vous contactera dans les 24 heures. Nous sommes là pour transformer vos idées en réalité digitale."
+        description="Décrivez vos objectifs ci-dessous : notre équipe vous répond sous 24 heures ouvrées avec une première orientation concrète."
         align="center"
       />
 
@@ -134,21 +150,24 @@ export default function ContactForm() {
           {[
             {
               title: "Ce que vous obtenez",
-              text: "Un premier échange structuré, un cadrage clair de vos besoins et un plan d'action réaliste.",
+              text: "Un échange structuré, un cadrage clair de vos besoins et un plan d'action réaliste.",
             },
             {
               title: "Délai de réponse",
-              text: "Réponse initiale sous 24h ouvrées, puis proposition de créneau de travail selon votre urgence.",
+              text: "Réponse initiale sous 24h ouvrées, puis proposition de créneau selon votre urgence.",
             },
             {
-              title: "Comment préparer votre demande",
-              text: "Partagez vos objectifs, votre audience, vos contraintes et des exemples de sites que vous aimez.",
+              title: "Préparer votre message",
+              text: "Indiquez vos objectifs, votre audience, vos échéances et des références que vous appréciez.",
             },
           ].map((item, index) => (
-            <LuxReveal key={item.title} delay={index * 0.08}>
+            <LuxReveal key={item.title} delay={index * 0.06}>
               <article className="lux-card-interactive p-5 h-full">
-                <h2 className="text-lg font-semibold lux-heading mb-2">{item.title}</h2>
-                <p className="text-sm lux-muted leading-relaxed">{item.text}</p>
+                <span className="font-mono text-[10px] font-semibold text-[var(--brand-blue)] block mb-1.5">
+                  0{index + 1}
+                </span>
+                <h2 className="text-lg font-semibold lux-heading mb-1.5">{item.title}</h2>
+                <p className="text-sm text-slate-600 leading-relaxed">{item.text}</p>
               </article>
             </LuxReveal>
           ))}
@@ -156,100 +175,136 @@ export default function ContactForm() {
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1 space-y-6">
+        <div className="lg:col-span-1 space-y-5">
           <div className="lux-card-interactive p-6">
-            <h2 className="text-xl font-semibold lux-heading mb-6">Nos coordonnées</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold lux-heading">Nos coordonnées</h2>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Studio actif
+              </span>
+            </div>
 
-            <div className="space-y-6">
-              {[
-                {
-                  icon: Mail,
-                  title: "Email",
-                  content: (
+            <div className="space-y-3.5">
+              <div className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
+                <div className="flex items-start gap-3 min-w-0">
+                  <div className="lux-icon-badge p-2.5 shrink-0">
+                    <Mail className="w-4 h-4 text-[var(--brand-blue)]" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-xs font-semibold text-slate-900 mb-0.5">Email</h3>
                     <a
                       href="mailto:digitalprosolutions27@gmail.com"
-                      className="lux-muted hover:text-[var(--brand-blue-light)] transition-colors"
+                      className="text-xs text-slate-600 hover:text-[var(--brand-blue)] transition-colors block truncate"
                     >
                       digitalprosolutions27@gmail.com
                     </a>
-                  ),
-                },
-                {
-                  icon: Phone,
-                  title: "Téléphone",
-                  content: (
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleCopy("email", "digitalprosolutions27@gmail.com")}
+                  className="p-1.5 rounded-lg hover:bg-slate-200/70 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
+                  aria-label="Copier l'adresse email"
+                >
+                  {copiedKey === "email" ? (
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5" />
+                  )}
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
+                <div className="flex items-start gap-3">
+                  <div className="lux-icon-badge p-2.5 shrink-0">
+                    <Phone className="w-4 h-4 text-[var(--brand-blue)]" />
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-semibold text-slate-900 mb-0.5">Téléphone</h3>
                     <a
                       href="tel:+2250748976031"
-                      className="lux-muted hover:text-[var(--brand-blue-light)] transition-colors"
+                      className="text-xs text-slate-600 hover:text-[var(--brand-blue)] transition-colors"
                     >
                       +225 07 48 97 60 31
                     </a>
-                  ),
-                },
-                {
-                  icon: MapPin,
-                  title: "Adresse",
-                  content: (
-                    <p className="lux-muted">
-                      Bvd Koffi Gadaud, Cocody
-                      <br />
-                      Abidjan, Côte d&apos;Ivoire
-                    </p>
-                  ),
-                },
-                {
-                  icon: Clock,
-                  title: "Horaires",
-                  content: (
-                    <p className="lux-muted">
-                      Lundi - Vendredi : 9h - 18h
-                      <br />
-                      Samedi : 9h - 13h
-                    </p>
-                  ),
-                },
-                {
-                  icon: Facebook,
-                  title: "Facebook",
-                  content: (
-                    <a
-                      href="https://www.facebook.com/profile.php?id=61574110564242"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="lux-muted hover:text-[var(--brand-blue-light)] transition-colors"
-                    >
-                      Digitalpro solutions
-                    </a>
-                  ),
-                },
-              ].map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div key={item.title} className="flex items-start gap-4">
-                    <div className="lux-icon-badge">
-                      <Icon className="w-5 h-5 text-[var(--brand-blue-light)]" />
-                    </div>
-                    <div>
-                      <h3 className="text-[var(--lux-champagne)] font-medium mb-1">{item.title}</h3>
-                      {item.content}
-                    </div>
                   </div>
-                );
-              })}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleCopy("phone", "+2250748976031")}
+                  className="p-1.5 rounded-lg hover:bg-slate-200/70 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
+                  aria-label="Copier le téléphone"
+                >
+                  {copiedKey === "phone" ? (
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5" />
+                  )}
+                </button>
+              </div>
+
+              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
+                <div className="lux-icon-badge p-2.5 shrink-0">
+                  <MapPin className="w-4 h-4 text-[var(--brand-blue)]" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-semibold text-slate-900 mb-0.5">Adresse</h3>
+                  <p className="text-xs text-slate-600">
+                    Bvd Koffi Gadaud, Cocody
+                    <br />
+                    Abidjan, Côte d&apos;Ivoire
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
+                <div className="lux-icon-badge p-2.5 shrink-0">
+                  <Clock className="w-4 h-4 text-[var(--brand-blue)]" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-semibold text-slate-900 mb-0.5">Horaires</h3>
+                  <p className="text-xs text-slate-600">Lun - Ven : 9h - 18h · Sam : 9h - 13h</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-5 pt-4 border-t border-slate-100 grid grid-cols-2 gap-2.5">
+              <a
+                href="https://wa.me/2250748976031"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lux-btn-ghost !px-3 !py-2 text-xs gap-1.5"
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                WhatsApp
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=61574110564242"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lux-btn-ghost !px-3 !py-2 text-xs gap-1.5"
+              >
+                <Facebook className="w-3.5 h-3.5 text-[var(--brand-blue)]" />
+                Facebook
+              </a>
             </div>
           </div>
 
-          <div className="lux-section-premium p-6">
+          <div className="lux-section-premium !p-6">
             <h3 className="text-lg font-semibold lux-heading mb-4">Pourquoi nous choisir ?</h3>
-            <ul className="space-y-3">
-              {["Réponse sous 24h", "Consultation gratuite", "Solutions sur mesure", "Support dédié"].map(
-                (label) => (
-                  <li key={label} className="flex items-start gap-2 lux-muted text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--brand-blue-light)] mt-0.5 flex-shrink-0" />
-                    <span>{label}</span>
-                  </li>
-                )
-              )}
+            <ul className="space-y-2.5">
+              {[
+                "Réponse garantie sous 24h",
+                "Consultation stratégique offerte",
+                "Architecture & design sur mesure",
+                "Support dédié & maintenance",
+              ].map((label) => (
+                <li key={label} className="flex items-start gap-2.5 text-slate-600 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-[var(--brand-blue)] mt-0.5 flex-shrink-0" />
+                  <span>{label}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -259,11 +314,11 @@ export default function ContactForm() {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 lux-form-panel">
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold lux-heading flex items-center gap-2 mb-4">
+                  <h2 className="text-xl font-semibold lux-heading flex items-center gap-2.5 mb-4">
                     <span className="lux-icon-badge">
-                      <User className="w-5 h-5 text-[var(--brand-blue-light)]" />
+                      <User className="w-5 h-5 text-[var(--brand-blue)]" />
                     </span>
-                    Informations personnelles
+                    Vos coordonnées
                   </h2>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -272,7 +327,7 @@ export default function ContactForm() {
                       name="first_name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-[var(--lux-champagne)]">Prénom *</FormLabel>
+                          <FormLabel className="text-slate-800">Prénom *</FormLabel>
                           <FormControl>
                             <Input {...field} placeholder="Votre prénom" className={luxInput} />
                           </FormControl>
@@ -286,7 +341,7 @@ export default function ContactForm() {
                       name="last_name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-[var(--lux-champagne)]">Nom *</FormLabel>
+                          <FormLabel className="text-slate-800">Nom *</FormLabel>
                           <FormControl>
                             <Input {...field} placeholder="Votre nom" className={luxInput} />
                           </FormControl>
@@ -302,12 +357,17 @@ export default function ContactForm() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-[var(--lux-champagne)] flex items-center gap-2">
+                          <FormLabel className="text-slate-800 flex items-center gap-2">
                             <Mail className="w-4 h-4" />
                             Email *
                           </FormLabel>
                           <FormControl>
-                            <Input {...field} type="email" placeholder="votre@email.com" className={luxInput} />
+                            <Input
+                              {...field}
+                              type="email"
+                              placeholder="votre@email.com"
+                              className={luxInput}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -319,12 +379,17 @@ export default function ContactForm() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-[var(--lux-champagne)] flex items-center gap-2">
+                          <FormLabel className="text-slate-800 flex items-center gap-2">
                             <Phone className="w-4 h-4" />
                             Téléphone
                           </FormLabel>
                           <FormControl>
-                            <Input {...field} type="tel" placeholder="+225 XX XX XX XX XX" className={luxInput} />
+                            <Input
+                              {...field}
+                              type="tel"
+                              placeholder="+225 XX XX XX XX XX"
+                              className={luxInput}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -338,12 +403,16 @@ export default function ContactForm() {
                       name="company_name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-[var(--lux-champagne)] flex items-center gap-2">
+                          <FormLabel className="text-slate-800 flex items-center gap-2">
                             <Building className="w-4 h-4" />
                             Entreprise
                           </FormLabel>
                           <FormControl>
-                            <Input {...field} placeholder="Nom de votre entreprise" className={luxInput} />
+                            <Input
+                              {...field}
+                              placeholder="Nom de votre entreprise"
+                              className={luxInput}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -355,7 +424,7 @@ export default function ContactForm() {
                       name="job_title"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-[var(--lux-champagne)]">Poste</FormLabel>
+                          <FormLabel className="text-slate-800">Poste</FormLabel>
                           <FormControl>
                             <Input {...field} placeholder="Votre poste" className={luxInput} />
                           </FormControl>
@@ -366,83 +435,97 @@ export default function ContactForm() {
                   </div>
                 </div>
 
-                <div className="space-y-4 pt-6 border-t border-[rgba(81,102,153,0.28)]">
-                  <h2 className="text-xl font-semibold lux-heading flex items-center gap-2 mb-4">
+                <div className="space-y-4 pt-6 border-t border-slate-200">
+                  <h2 className="text-xl font-semibold lux-heading flex items-center gap-2.5 mb-4">
                     <span className="lux-icon-badge">
-                      <MessageSquare className="w-5 h-5 text-[var(--brand-blue-light)]" />
+                      <MessageSquare className="w-5 h-5 text-[var(--brand-blue)]" />
                     </span>
-                    Détails du projet
+                    Objet de votre demande
                   </h2>
 
-                  <FormField
-                    control={form.control}
-                    name="service"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-[var(--lux-champagne)]">Service qui vous intéresse *</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger className={luxInput}>
-                              <SelectValue placeholder="Sélectionnez un service" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent className={luxSelectContent}>
-                            <SelectItem value="Développement de site web">Développement de site web</SelectItem>
-                            <SelectItem value="Développement d'application mobile">Développement d&apos;application mobile</SelectItem>
-                            <SelectItem value="SEO & Référencement">SEO & Référencement</SelectItem>
-                            <SelectItem value="Marketing sur les médias sociaux">Marketing sur les médias sociaux</SelectItem>
-                            <SelectItem value="Conception UI/UX">Conception UI/UX</SelectItem>
-                            <SelectItem value="Conception d'identité visuelle">Conception d&apos;identité visuelle</SelectItem>
-                            <SelectItem value="Maintenance informatique">Maintenance informatique</SelectItem>
-                            <SelectItem value="E-commerce">E-commerce</SelectItem>
-                            <SelectItem value="Autre">Autre</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="service"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-slate-800">Service concerné *</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger className={luxInput}>
+                                <SelectValue placeholder="Sélectionnez un service" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className={luxSelectContent}>
+                              <SelectItem value="Développement de site web">
+                                Développement de site web
+                              </SelectItem>
+                              <SelectItem value="Développement d'application mobile">
+                                Développement d&apos;application mobile
+                              </SelectItem>
+                              <SelectItem value="SEO & Référencement">SEO &amp; Référencement</SelectItem>
+                              <SelectItem value="Marketing sur les médias sociaux">
+                                Marketing sur les médias sociaux
+                              </SelectItem>
+                              <SelectItem value="Conception UI/UX">Conception UI/UX</SelectItem>
+                              <SelectItem value="Conception d'identité visuelle">
+                                Conception d&apos;identité visuelle
+                              </SelectItem>
+                              <SelectItem value="Maintenance informatique">
+                                Maintenance informatique
+                              </SelectItem>
+                              <SelectItem value="E-commerce">E-commerce</SelectItem>
+                              <SelectItem value="Autre">Autre</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <FormField
-                    control={form.control}
-                    name="help"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-[var(--lux-champagne)]">Comment pouvons-nous vous aider ? *</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger className={luxInput}>
-                              <SelectValue placeholder="Sélectionnez une option" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent className={luxSelectContent}>
-                            <SelectItem value="Évaluer digitalpro solutions pour mon entreprise">
-                              Évaluer digitalpro solutions pour mon entreprise
-                            </SelectItem>
-                            <SelectItem value="En savoir plus sur nos services">
-                              En savoir plus sur nos services
-                            </SelectItem>
-                            <SelectItem value="Obtenir un devis">Obtenir un devis</SelectItem>
-                            <SelectItem value="Demander une consultation">Demander une consultation</SelectItem>
-                            <SelectItem value="Autre">Autre</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    <FormField
+                      control={form.control}
+                      name="help"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-slate-800">Nature de la demande *</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger className={luxInput}>
+                                <SelectValue placeholder="Sélectionnez une option" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className={luxSelectContent}>
+                              <SelectItem value="Évaluer digitalpro solutions pour mon entreprise">
+                                Évaluer digitalpro solutions
+                              </SelectItem>
+                              <SelectItem value="En savoir plus sur nos services">
+                                En savoir plus sur nos services
+                              </SelectItem>
+                              <SelectItem value="Obtenir un devis">Obtenir un devis</SelectItem>
+                              <SelectItem value="Demander une consultation">
+                                Demander une consultation
+                              </SelectItem>
+                              <SelectItem value="Autre">Autre</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
                   <FormField
                     control={form.control}
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-[var(--lux-champagne)]">Message *</FormLabel>
+                        <FormLabel className="text-slate-800">Message *</FormLabel>
                         <FormControl>
                           <Textarea
                             {...field}
                             placeholder="Décrivez votre projet, vos besoins ou posez-nous vos questions..."
-                            className={`${luxInput} min-h-[120px]`}
+                            className={`${luxInput} min-h-[130px]`}
                           />
                         </FormControl>
                         <FormMessage />
@@ -455,18 +538,18 @@ export default function ContactForm() {
                   control={form.control}
                   name="terms"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-xl border border-slate-200 bg-slate-50 p-3.5">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-1 border-[rgba(81,102,153,0.45)] data-[state=checked]:bg-[var(--brand-blue)] data-[state=checked]:border-[var(--brand-blue)] bg-[rgba(255,255,255,0.04)]"
+                          className="mt-0.5 border-slate-300 data-[state=checked]:bg-[var(--brand-blue)] data-[state=checked]:border-[var(--brand-blue)] bg-white"
                         />
                       </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel className="text-[var(--lux-champagne)] cursor-pointer">
+                      <div className="space-y-1 leading-snug">
+                        <FormLabel className="text-xs md:text-sm text-slate-700 cursor-pointer font-normal">
                           J&apos;accepte que digitalpro solutions traite mes données personnelles
-                          conformément à la politique de confidentialité. *
+                          uniquement pour répondre à ma demande. *
                         </FormLabel>
                         <FormMessage />
                       </div>
@@ -474,7 +557,7 @@ export default function ContactForm() {
                   )}
                 />
 
-                <Button type="submit" disabled={loading} className="w-full lux-btn-primary !py-6 text-lg">
+                <Button type="submit" disabled={loading} className="w-full lux-btn-primary !py-6 text-base">
                   {loading ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
@@ -483,37 +566,31 @@ export default function ContactForm() {
                   ) : (
                     <>
                       Envoyer le message
-                      <Send className="w-5 h-5 ml-2" />
+                      <Send className="w-4 h-4 ml-2" />
                     </>
                   )}
                 </Button>
               </form>
             </Form>
           ) : (
-            <div className="lux-form-panel p-10 md:p-16 text-center">
+            <div className="lux-form-panel p-10 md:p-14 text-center">
               <div className="max-w-md mx-auto">
                 <div className="lux-success-badge">
                   <CheckCircle2 className="w-10 h-10 text-white" />
                 </div>
-                <h2 className="text-3xl font-bold lux-heading mb-4">Message envoyé avec succès !</h2>
-                <p className="lux-muted mb-8">
-                  Merci pour votre message. Notre équipe vous contactera dans les plus brefs délais,
-                  généralement sous 24 heures.
+                <h2 className="text-3xl font-bold lux-heading mb-3">Message envoyé avec succès !</h2>
+                <p className="text-slate-600 mb-7 text-sm md:text-base">
+                  Merci pour votre message. Notre équipe vous répondra sous 24 heures ouvrées.
                 </p>
-                <div className="space-y-4">
-                  <p className="text-sm lux-muted">
-                    Vous recevrez une confirmation par email à l&apos;adresse que vous avez fournie.
-                  </p>
-                  <Button
-                    onClick={() => {
-                      setSubmitted(false);
-                      form.reset();
-                    }}
-                    className="lux-btn-primary"
-                  >
-                    Envoyer un autre message
-                  </Button>
-                </div>
+                <Button
+                  onClick={() => {
+                    setSubmitted(false);
+                    form.reset();
+                  }}
+                  className="lux-btn-primary"
+                >
+                  Envoyer un autre message
+                </Button>
               </div>
             </div>
           )}

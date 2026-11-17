@@ -1,6 +1,5 @@
 "use client";
 
-import Image3D from "@/components/ui/image-3d";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { Award, TrendingUp, Users, Star } from "lucide-react";
 import LuxSectionHeader from "@/components/lux-section-header";
@@ -8,77 +7,97 @@ import LuxReveal from "@/components/lux-reveal";
 
 const brands = [
   {
-    name: "TechCorp",
-    logo: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=200&h=200&fit=crop",
-    description: "Leader en solutions technologiques",
+    name: "TechCorp CI",
+    monogram: "TC",
+    sector: "Solutions B2B",
+    description: "Refonte portail corporate et tunnel d'acquisition automatisé",
     stat: "+250% de croissance",
+    accent: "blue" as const,
   },
   {
     name: "DigitalStore",
-    logo: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=200&h=200&fit=crop",
-    description: "E-commerce innovant",
-    stat: "1M+ de clients",
+    monogram: "DS",
+    sector: "Retail & E-commerce",
+    description: "Boutique omnicanale avec paiement Mobile Money instantané",
+    stat: "1M+ de sessions",
+    accent: "red" as const,
   },
   {
     name: "CreativeAgency",
-    logo: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=200&fit=crop",
-    description: "Agence créative de renom",
-    stat: "500+ projets",
+    monogram: "CA",
+    sector: "Studio & Production",
+    description: "Design system complet et vitrine éditoriale haute performance",
+    stat: "500+ livrables",
+    accent: "blue" as const,
   },
   {
     name: "StartupHub",
-    logo: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=200&h=200&fit=crop",
-    description: "Accélérateur de startups",
+    monogram: "SH",
+    sector: "Accélérateur Tech",
+    description: "Plateforme SaaS et accompagnement de lancement multi-marques",
     stat: "50+ entreprises",
+    accent: "red" as const,
   },
 ];
 
 const ModernBrands = () => {
   return (
-    <div className="relative w-full py-20 overflow-hidden px-2">
+    <div className="relative w-full py-6 md:py-10 overflow-hidden">
       <div className="lux-section-premium lux-section-spotlight relative">
         <LuxSectionHeader
-          label="Nos Partenaires"
-          title="Des marques qui nous font confiance"
-          description="Rejoignez les entreprises qui ont choisi digitalpro solutions pour leur transformation digitale"
+          indexLabel="03"
+          label="Confiance & Impact"
+          title="Des partenaires qui accélèrent avec nous"
+          description="Des organisations exigeantes qui s'appuient sur notre ingénierie pour leur croissance digitale."
           align="center"
           accent="red"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {brands.map((brand, index) => (
-            <LuxReveal key={brand.name} delay={index * 0.1}>
-              <CardContainer className="inter-var h-full">
-                <CardBody className="lux-card-interactive relative group/card w-full h-full p-6 brand-border-blue">
-                  <CardItem translateZ="50" className="mb-4">
-                    <div className="relative w-24 h-24 mx-auto mb-4">
-                      <Image3D
-                        src={brand.logo}
-                        alt={brand.name}
-                        width={96}
-                        height={96}
-                        className="rounded-full w-full h-full object-cover"
-                      />
+            <LuxReveal key={brand.name} delay={index * 0.08} className="h-full flex">
+              <CardContainer className="inter-var h-full w-full" containerClassName="w-full h-full">
+                <CardBody className="lux-card-interactive relative group/card w-full h-full p-6 flex flex-col text-center">
+                  <CardItem translateZ="45" className="mb-4 mx-auto">
+                    <div
+                      className={`w-16 h-16 rounded-2xl mx-auto flex items-center justify-center font-display text-2xl font-bold text-white shadow-md ${
+                        brand.accent === "red" ? "brand-bg-red" : "brand-bg-blue"
+                      }`}
+                    >
+                      {brand.monogram}
                     </div>
+                  </CardItem>
+
+                  <CardItem translateZ="50" className="w-full mb-1">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 block mb-1 font-medium">
+                      {brand.sector}
+                    </span>
+                    <h3 className="font-display text-xl font-semibold text-slate-900">
+                      {brand.name}
+                    </h3>
+                  </CardItem>
+
+                  <CardItem as="p" translateZ="45" className="text-slate-600 text-xs leading-relaxed mb-4 flex-grow w-full">
+                    {brand.description}
                   </CardItem>
 
                   <CardItem
                     translateZ="60"
-                    className="text-xl font-bold text-[var(--lux-champagne)] mb-2 text-center"
+                    className="w-full pt-3 border-t border-slate-100 flex items-center justify-center gap-1.5"
                   >
-                    {brand.name}
-                  </CardItem>
-
-                  <CardItem as="p" translateZ="60" className="lux-muted text-sm mb-4 text-center">
-                    {brand.description}
-                  </CardItem>
-
-                  <CardItem translateZ="80" className="flex items-center justify-center gap-2">
                     <TrendingUp
-                      className={`w-4 h-4 ${index % 2 === 0 ? "text-[var(--brand-blue-light)]" : "text-[var(--brand-red-light)]"}`}
+                      className={`w-3.5 h-3.5 ${
+                        brand.accent === "red"
+                          ? "text-[var(--brand-red)]"
+                          : "text-[var(--brand-blue)]"
+                      }`}
                     />
                     <span
-                      className={`text-sm font-medium ${index % 2 === 0 ? "text-[var(--brand-blue-light)]" : "text-[var(--brand-red-light)]"}`}
+                      className={`text-xs font-semibold ${
+                        brand.accent === "red"
+                          ? "text-[var(--brand-red)]"
+                          : "text-[var(--brand-blue)]"
+                      }`}
                     >
                       {brand.stat}
                     </span>
@@ -89,26 +108,32 @@ const ModernBrands = () => {
           ))}
         </div>
 
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { icon: Users, number: "500+", label: "Clients satisfaits" },
-            { icon: Award, number: "1000+", label: "Projets réalisés" },
-            { icon: Star, number: "98%", label: "Taux de satisfaction" },
-            { icon: TrendingUp, number: "10+", label: "Années d'expérience" },
+            { icon: Users, number: "500+", label: "Clients accompagnés" },
+            { icon: Award, number: "1000+", label: "Projets livrés" },
+            { icon: Star, number: "98%", label: "Satisfaction client" },
+            { icon: TrendingUp, number: "10+", label: "Années d'expertise" },
           ].map((stat, index) => (
-            <LuxReveal key={stat.label} delay={0.4 + index * 0.1}>
+            <LuxReveal key={stat.label} delay={0.15 + index * 0.06}>
               <div
-                className={`lux-card-interactive p-6 text-center ${index % 2 === 0 ? "brand-border-blue" : "brand-border-red"}`}
+                className={`lux-card-interactive p-5 text-center ${
+                  index % 2 === 0 ? "brand-border-blue" : "brand-border-red"
+                }`}
               >
                 <stat.icon
-                  className={`w-8 h-8 mx-auto mb-3 ${index % 2 === 0 ? "text-[var(--brand-blue-light)]" : "text-[var(--brand-red-light)]"}`}
+                  className={`w-6 h-6 mx-auto mb-2.5 ${
+                    index % 2 === 0 ? "text-[var(--brand-blue)]" : "text-[var(--brand-red)]"
+                  }`}
                 />
                 <div
-                  className={`text-3xl font-bold mb-2 ${index % 2 === 0 ? "text-[var(--brand-blue-light)]" : "text-[var(--brand-red-light)]"}`}
+                  className={`font-display text-3xl font-bold mb-1 tabular-nums ${
+                    index % 2 === 0 ? "text-[var(--brand-blue)]" : "text-[var(--brand-red)]"
+                  }`}
                 >
                   {stat.number}
                 </div>
-                <div className="text-sm lux-muted">{stat.label}</div>
+                <div className="text-xs text-slate-600">{stat.label}</div>
               </div>
             </LuxReveal>
           ))}

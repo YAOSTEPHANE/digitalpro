@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Guide commercial — Digitalpro Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  :root {
+    --blue: #516699; --blue-light: #6b7eb5; --blue-dark: #3d4f7a;
+    --red: #CC2628; --red-light: #e84547; --red-dark: #a31e20;
+    --white: #F7F7F5; --ink: #0c0e14; --muted: #6b7385; --line: #e3e6ee;
+    --soft-blue: #eef1f8; --soft-red: #fbeeee;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: "Manrope", "Segoe UI", Arial, sans-serif; color: var(--ink); background: #888; font-size: 10.5pt; line-height: 1.5; }
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; background: #fff; page-break-after: always; margin: 0 auto; }
+  .page:last-child { page-break-after: auto; }
+  .inner { padding: 18mm 17mm 20mm; height: 100%; display: flex; flex-direction: column; }
+  h1, h2, h3, .serif { font-family: "Cormorant Garamond", Georgia, serif; }
+  h2 { font-size: 30pt; line-height: 1.05; font-weight: 700; color: var(--ink); }
+  h3 { font-size: 16pt; font-weight: 700; line-height: 1.15; }
+  p { margin-bottom: 2.5mm; }
+  .eyebrow { font-size: 8pt; letter-spacing: .22em; text-transform: uppercase; font-weight: 800; color: var(--blue); margin-bottom: 3mm; display: flex; align-items: center; gap: 3mm; }
+  .eyebrow::before { content: ""; width: 10mm; height: 2px; background: var(--red); display: inline-block; }
+  .lead { font-size: 11.5pt; color: #3a4152; margin-top: 4mm; max-width: 150mm; }
+  .muted { color: var(--muted); }
+  .red { color: var(--red); } .blue { color: var(--blue); }
+  .footer { position: absolute; left: 17mm; right: 17mm; bottom: 9mm; display: flex; justify-content: space-between; font-size: 7.5pt; color: var(--muted); border-top: 1px solid var(--line); padding-top: 2.5mm; }
+  .footer b { color: var(--blue); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
+  .card { border: 1px solid var(--line); border-radius: 4mm; padding: 5mm; background: #fff; }
+  .card.soft { background: var(--soft-blue); border-color: transparent; }
+  .card.softred { background: var(--soft-red); border-color: transparent; }
+  .pill { font-family: "Manrope", "Segoe UI", Arial, sans-serif; display: inline-block; font-size: 7.5pt; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 1mm 3mm; border-radius: 10mm; background: var(--blue); color: #fff; }
+  .pill.red { background: var(--red); }
+  ul.check { list-style: none; }
+  ul.check li { position: relative; padding-left: 6mm; margin-bottom: 1.8mm; }
+  ul.check li::before { content: ""; position: absolute; left: 0; top: 1.6mm; width: 3mm; height: 3mm; border-radius: 50%; background: var(--blue); box-shadow: inset 0 0 0 .8mm #fff, 0 0 0 .3mm var(--blue); }
+  ul.check.redc li::before { background: var(--red); box-shadow: inset 0 0 0 .8mm #fff, 0 0 0 .3mm var(--red); }
+  .quote { border-left: 1.2mm solid var(--red); background: var(--soft-red); padding: 3.5mm 4.5mm; border-radius: 0 3mm 3mm 0; font-style: italic; color: #2c313d; }
+  .quote.blueq { border-left-color: var(--blue); background: var(--soft-blue); }
+  .img { width: 100%; object-fit: cover; border-radius: 3.5mm; display: block; }
+  .shot { border-radius: 3mm; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 3mm 8mm rgba(12,14,20,.14); background: #111; }
+  .shot .bar { height: 6mm; background: #1c2130; display: flex; align-items: center; gap: 1.5mm; padding: 0 3mm; }
+  .shot .bar i { width: 2mm; height: 2mm; border-radius: 50%; background: #3a4258; display: block; }
+  .shot .bar span { margin-left: 3mm; font-size: 6.5pt; color: #9ba3b4; background: #262c3d; padding: .6mm 3mm; border-radius: 2mm; }
+  .shot img { width: 100%; display: block; }
+  .num { font-family: "Cormorant Garamond", Georgia, serif; font-size: 34pt; font-weight: 700; line-height: 1; color: var(--blue); }
+  .num.red { color: var(--red); }
+
+  /* Couverture */
+  .cover { background: var(--ink); color: #fff; }
+  .cover .bg { position: absolute; inset: 0; background: url("assets/cover-team.jpg") center/cover; opacity: .4; }
+  .cover .veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(12,14,20,.55) 0%, rgba(12,14,20,.9) 60%, rgba(12,14,20,1) 100%); }
+  .cover .content { position: relative; height: 100%; padding: 22mm 20mm; display: flex; flex-direction: column; }
+  .cover .logo { width: 48mm; height: 48mm; border-radius: 6mm; background: #fff; padding: 3mm; box-shadow: 0 0 0 1.2mm rgba(81,102,153,.55); }
+  .cover .logo img { width: 100%; height: 100%; object-fit: contain; }
+  .cover h1 { font-size: 58pt; line-height: .95; font-weight: 700; margin-top: auto; }
+  .cover h1 em { font-style: italic; color: var(--blue-light); }
+  .cover .sub { font-size: 13pt; color: #c9cedb; margin-top: 6mm; max-width: 140mm; }
+  .cover .meta { margin-top: 14mm; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(255,255,255,.18); padding-top: 5mm; font-size: 9pt; color: #9ba3b4; }
+  .cover .meta b { color: #fff; display: block; font-size: 10pt; }
+  .cover .stripe { position: absolute; right: 0; top: 0; width: 4mm; height: 100%; background: var(--red); }
+
+  .promises { margin-top: auto; margin-bottom: 5mm; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--ink); border-radius: 4mm; overflow: hidden; }
+  .promises div { padding: 5mm 4mm; border-right: 1px solid rgba(255,255,255,.1); }
+  .promises div:last-child { border-right: 0; }
+  .promises b { display: block; font-family: "Cormorant Garamond", Georgia, serif; font-size: 22pt; line-height: 1; color: #fff; }
+  .promises div:nth-child(even) b { color: var(--red-light); }
+  .promises span { font-size: 8pt; color: #9ba3b4; }
+
+  /* Réalisations */
+  .work { display: grid; grid-template-columns: 108mm 1fr; gap: 6mm; align-items: center; padding: 5mm 0; border-bottom: 1px solid var(--line); }
+  .work:last-child { border-bottom: 0; }
+  .work h3 { margin-bottom: 1.5mm; }
+  .work p { font-size: 9pt; }
+  .work ul.check { font-size: 8.8pt; margin-top: 1mm; }
+
+  /* Sommaire */
+  .toc { margin-top: 8mm; }
+  .toc-row { display: grid; grid-template-columns: 14mm 1fr auto; align-items: baseline; padding: 3.2mm 0; border-bottom: 1px solid var(--line); }
+  .toc-row .n { font-family: "Cormorant Garamond", Georgia, serif; font-size: 18pt; font-weight: 700; color: var(--red); }
+  .toc-row .t { font-weight: 700; font-size: 11pt; }
+  .toc-row .t small { display: block; font-weight: 500; color: var(--muted); font-size: 8.5pt; }
+  .toc-row .p { font-weight: 700; color: var(--blue); }
+
+  /* Services */
+  .svc { display: grid; grid-template-columns: 62mm 1fr; gap: 6mm; padding: 5mm 0; border-bottom: 1px solid var(--line); }
+  .svc:last-child { border-bottom: 0; }
+  .svc img { height: 50mm; }
+  .svc h3 { display: flex; align-items: center; gap: 3mm; margin-bottom: 1.5mm; }
+  .svc .who { font-size: 8.5pt; color: var(--muted); margin-bottom: 2mm; }
+  .svc .who b { color: var(--blue); }
+  .svc ul.check li { font-size: 9.3pt; margin-bottom: 1mm; }
+  .svc .say { margin-top: 2mm; font-size: 9pt; }
+
+  /* Méthode */
+  .steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5mm; margin-top: 7mm; }
+  .step { border-radius: 4mm; padding: 6mm; background: var(--soft-blue); position: relative; }
+  .step:nth-child(2), .step:nth-child(3) { background: var(--soft-red); }
+  .step:nth-child(2) .num, .step:nth-child(3) .num { color: var(--red); }
+  .step h3 { margin: 2mm 0 1.5mm; }
+  .step p { font-size: 9.5pt; color: #3a4152; margin: 0; }
+  .step .client { margin-top: 3mm; font-size: 8.5pt; font-weight: 700; color: var(--ink); }
+  .tracks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin-top: 6mm; }
+  .track { border: 1px solid var(--line); border-radius: 3mm; padding: 4mm; text-align: center; }
+  .track b { display: block; font-size: 10pt; color: var(--blue); }
+  .track span { font-size: 8pt; color: var(--muted); }
+
+  /* Tarifs */
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-top: 6mm; align-items: stretch; }
+  .plan { border: 1px solid var(--line); border-radius: 4mm; padding: 6mm 5mm; display: flex; flex-direction: column; position: relative; }
+  .plan.pop { border: .6mm solid var(--blue); box-shadow: 0 3mm 10mm rgba(81,102,153,.18); }
+  .plan .badge { position: absolute; top: -3.2mm; left: 50%; transform: translateX(-50%); }
+  .plan h3 { font-size: 20pt; }
+  .plan .price { font-size: 17pt; font-weight: 800; color: var(--blue); margin: 2mm 0 1mm; }
+  .plan .delay { font-size: 8.5pt; color: var(--red); font-weight: 700; margin-bottom: 3mm; }
+  .plan .desc { font-size: 8.5pt; color: var(--muted); margin-bottom: 2mm; min-height: 17mm; }
+  .plan ul.check li { font-size: 8.8pt; margin-bottom: 1.2mm; }
+  .plan .fit { margin-top: auto; padding-top: 3mm; border-top: 1px dashed var(--line); font-size: 8.5pt; }
+  table.budget { width: 100%; border-collapse: collapse; font-size: 9pt; margin-top: 3mm; }
+  table.budget th { text-align: left; background: var(--ink); color: #fff; padding: 1.8mm 3mm; font-weight: 700; }
+  table.budget td:first-child { white-space: nowrap; }
+  table.budget td { padding: 1.8mm 3mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.budget tr:nth-child(even) td { background: #fafbfd; }
+
+  /* Rendez-vous */
+  .timeline { margin-top: 5mm; }
+  .tl { display: grid; grid-template-columns: 20mm 1fr; gap: 4mm; padding: 3mm 0; border-bottom: 1px solid var(--line); }
+  .tl .time { font-weight: 800; color: var(--red); font-size: 9pt; }
+  .tl b { display: block; font-size: 10.5pt; }
+  .tl span { font-size: 9pt; color: #3a4152; }
+  .qs { columns: 2; column-gap: 6mm; font-size: 9.2pt; }
+  .qs li { break-inside: avoid; margin-bottom: 2mm; }
+
+  /* Objections */
+  .obj { display: grid; grid-template-columns: 58mm 1fr; border: 1px solid var(--line); border-radius: 3.5mm; overflow: hidden; margin-bottom: 3.5mm; }
+  .obj .q { background: var(--ink); color: #fff; padding: 4mm; font-family: "Cormorant Garamond", Georgia, serif; font-size: 14pt; font-weight: 700; line-height: 1.15; display: flex; align-items: center; }
+  .obj .q span::before { content: "« "; color: var(--red-light); }
+  .obj .q span::after { content: " »"; color: var(--red-light); }
+  .obj .a { padding: 3.5mm 4.5mm; font-size: 9.2pt; }
+  .obj .a p { margin-bottom: 1.2mm; }
+  .obj .a .tip { font-size: 8.3pt; color: var(--blue); font-weight: 700; }
+
+  /* Contact */
+  .closing { background: var(--ink); color: #fff; }
+  .closing h2 { color: #fff; }
+  .closing .eyebrow { color: var(--blue-light); }
+  .closing .card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.12); color: #fff; }
+  .closing .muted { color: #9ba3b4; }
+  .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin-top: 6mm; }
+  .flow .f { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); border-radius: 3mm; padding: 4mm; }
+  .flow .f .num { font-size: 22pt; color: var(--blue-light); }
+  .flow .f:nth-child(even) .num { color: var(--red-light); }
+  .flow .f b { display: block; margin: 1.5mm 0 1mm; font-size: 10pt; }
+  .flow .f span { font-size: 8.3pt; color: #c9cedb; }
+  .qr { background: #fff; border-radius: 3mm; padding: 2.5mm; width: 34mm; }
+  .qr img { width: 100%; display: block; }
+  .contact-line { display: flex; gap: 3mm; margin-bottom: 2.6mm; font-size: 10pt; }
+  .contact-line b { color: var(--blue-light); width: 30mm; flex-shrink: 0; font-size: 8.5pt; text-transform: uppercase; letter-spacing: .08em; padding-top: .5mm; }
+  .closing .footer { border-top-color: rgba(255,255,255,.12); color: #9ba3b4; }
+  .closing .footer b { color: var(--blue-light); }
+</style>
+</head>
+<body>
+
+<!-- 1. COUVERTURE -->
+<section class="page cover">
+  <div class="bg"></div><div class="veil"></div><div class="stripe"></div>
+  <div class="content">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <div class="logo"><img src="assets/logo.png" alt="Logo Digitalpro Solutions"></div>
+      <span class="pill red">Usage interne · Équipe commerciale</span>
+    </div>
+    <div class="eyebrow" style="margin-top:auto; color:#9ba3b4;">Agence d'intelligence numérique — Abidjan</div>
+    <h1 style="margin-top:0">Guide<br><em>commercial</em></h1>
+    <p class="sub">Tout ce qu'il faut pour présenter nos services, mener un rendez-vous client, répondre aux objections et transformer un échange en projet signé.</p>
+    <div class="meta">
+      <div><b>Digitalpro Solutions</b>Bvd Koffi Gadaud, Cocody — Abidjan, Côte d'Ivoire</div>
+      <div style="text-align:right"><b>Édition 2026</b>digitalpro-solutions.com</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. SOMMAIRE -->
+<section class="page">
+  <div class="inner">
+    <div class="eyebrow">Mode d'emploi</div>
+    <h2>Comment utiliser<br>ce guide</h2>
+    <p class="lead">Ce document est votre support de terrain. Lisez-le en entier une première fois, puis gardez-le sous la main (tablette, téléphone ou version imprimée) pendant vos rendez-vous. Les pages « Services », « Réalisations » et « Offres » peuvent être montrées directement au client.</p>
+
+    <div class="toc">
+      <div class="toc-row"><span class="n">01</span><span class="t">Qui sommes-nous<small>Le pitch en 30 secondes et nos atouts</small></span><span class="p">p. 3</span></div>
+      <div class="toc-row"><span class="n">02</span><span class="t">Nos services<small>Pour qui, ce que le client gagne, la phrase à dire</small></span><span class="p">p. 4–5</span></div>
+      <div class="toc-row"><span class="n">03</span><span class="t">Notre méthode<small>Les 4 étapes d'un projet Digitalpro</small></span><span class="p">p. 6</span></div>
+      <div class="toc-row"><span class="n">04</span><span class="t">Nos réalisations<small>Des projets en ligne à montrer en rendez-vous</small></span><span class="p">p. 7–8</span></div>
+      <div class="toc-row"><span class="n">05</span><span class="t">Offres & tarifs<small>Basic, Premium, Enterprise et fourchettes de budget</small></span><span class="p">p. 9</span></div>
+      <div class="toc-row"><span class="n">06</span><span class="t">Mener le rendez-vous<small>Déroulé type et questions de découverte</small></span><span class="p">p. 10</span></div>
+      <div class="toc-row"><span class="n">07</span><span class="t">Répondre aux objections<small>Les réponses aux freins les plus fréquents</small></span><span class="p">p. 11</span></div>
+      <div class="toc-row"><span class="n">08</span><span class="t">Conclure & contacts<small>De la demande au lancement, liens et QR codes</small></span><span class="p">p. 12</span></div>
+    </div>
+
+    <div class="grid-3" style="margin-top:auto; margin-bottom:6mm;">
+      <div class="card soft"><b class="blue">Écouter d'abord</b><p class="muted" style="font-size:9pt; margin:1mm 0 0">On vend une solution à un problème, pas une liste de technologies.</p></div>
+      <div class="card softred"><b class="red">Montrer du concret</b><p class="muted" style="font-size:9pt; margin:1mm 0 0">Une démo en direct convainc plus qu'un long discours.</p></div>
+      <div class="card soft"><b class="blue">Toujours une suite</b><p class="muted" style="font-size:9pt; margin:1mm 0 0">Chaque rendez-vous se termine par une prochaine étape datée.</p></div>
+    </div>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · Guide commercial</span><span>2</span></div>
+</section>
+
+<!-- 3. QUI SOMMES-NOUS -->
+<section class="page">
+  <div class="inner">
+    <div class="eyebrow">01 · Qui sommes-nous</div>
+    <h2>L'excellence digitale<br>à portée de marque</h2>
+    <p class="lead">Digitalpro Solutions est une agence d'intelligence numérique basée à Cocody, Abidjan. Nous accompagnons les entreprises, commerces, startups et indépendants dans leur présence en ligne : identité visuelle, sites web, applications, e-commerce, référencement et marketing digital.</p>
+
+    <img class="img" src="assets/custom-2.jpeg" alt="Site responsive sur ordinateur, tablette et portable" style="height:62mm; margin:5mm 0; object-fit:cover; background:#eee;">
+
+    <div class="grid-2">
+      <div>
+        <h3 style="margin-bottom:2mm">Le pitch en 30 secondes</h3>
+        <div class="quote">« Chez Digitalpro Solutions, nous aidons les entreprises à être trouvées, comprises et choisies en ligne. Nous concevons des sites, des applications et des boutiques en ligne modernes, rapides et adaptés au mobile, puis nous les faisons connaître grâce au référencement et aux réseaux sociaux. Vous avez un interlocuteur à Abidjan, un devis personnalisé sous 24 heures, et un suivi après la mise en ligne. »</div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:2mm">Nos atouts à mettre en avant</h3>
+        <ul class="check">
+          <li><b>Tout sous un même toit :</b> design, développement, référencement et marketing.</li>
+          <li><b>Réactivité :</b> réponse et devis personnalisé sous 24 heures.</li>
+          <li><b>Proximité :</b> une équipe locale à Cocody, joignable par téléphone et par email.</li>
+          <li><b>Technologies modernes :</b> sites rapides, sécurisés et 100 % responsive.</li>
+          <li><b>Suivi dans la durée :</b> maintenance et support du lundi au vendredi.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="promises">
+      <div><b>24 h</b><span>Réponse & devis personnalisé</span></div>
+      <div><b>100 %</b><span>Responsive : mobile, tablette, ordinateur</span></div>
+      <div><b>Lun–Ven</b><span>Support client</span></div>
+      <div><b>Abidjan</b><span>Équipe locale à Cocody</span></div>
+    </div>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · Guide commercial</span><span>3</span></div>
+</section>
+
+<!-- 4. SERVICES 1/2 -->
+<section class="page">
+  <div class="inner">
+    <div class="eyebrow">02 · Nos services (1/2)</div>
+    <h2>Construire la présence<br>en ligne du client</h2>
+
+    <div class="svc" style="margin-top:3mm">
+      <img class="img" src="assets/svc-web.jpg" alt="Développement web">
+      <div>
+        <h3><span class="pill">Web</span> Développement de sites web</h3>
+        <div class="who"><b>Pour qui :</b> entreprises, PME, cabinets, restaurants, écoles, indépendants qui n'ont pas de site ou dont le site est ancien.</div>
+        <ul class="check">
+          <li>Site vitrine ou institutionnel, moderne et adapté au mobile.</li>
+          <li>Chargement rapide et bonnes bases de référencement dès la mise en ligne.</li>
+          <li>Formulaires de contact, prise de rendez-vous, liens réseaux sociaux, cartes.</li>
+        </ul>
+        <div class="say quote blueq">« Aujourd'hui, vos clients vous cherchent sur Google avant de vous appeler. Un site professionnel vous rend crédible et travaille pour vous 24h/24. »</div>
+      </div>
+    </div>
+
+    <div class="svc">
+      <img class="img" src="assets/svc-mobile.jpg" alt="Applications mobiles">
+      <div>
+        <h3><span class="pill red">Mobile</span> Applications mobiles</h3>
+        <div class="who"><b>Pour qui :</b> entreprises qui veulent fidéliser leurs clients, digitaliser un service ou lancer un produit (réservation, livraison, gestion…).</div>
+        <ul class="check redc">
+          <li>Applications iOS et Android, natives ou multiplateformes.</li>
+          <li>Interfaces simples, pensées pour les utilisateurs finaux.</li>
+          <li>Tableau de bord pour gérer les contenus, commandes ou clients.</li>
+        </ul>
+        <div class="say quote">« Votre application met votre entreprise directement dans la poche de vos clients : ils commandent, réservent ou vous contactent en deux clics. »</div>
+      </div>
+    </div>
+
+    <div class="svc">
+      <img class="img" src="assets/svc-ecommerce.jpg" alt="E-commerce">
+      <div>
+        <h3><span class="pill">E-commerce</span> Boutiques en ligne</h3>
+        <div class="who"><b>Pour qui :</b> commerçants, boutiques, restaurants, marques qui vendent déjà en magasin ou sur les réseaux sociaux.</div>
+        <ul class="check">
+          <li>Catalogue produits, panier, commande et suivi des stocks.</li>
+          <li>Solutions de caisse et de point de vente pour le magasin.</li>
+          <li>Suivi des ventes pour piloter l'activité.</li>
+        </ul>
+        <div class="say quote blueq">« Au lieu de répondre un par un aux messages "c'est combien ?", vos clients voient les prix, choisissent et commandent directement. »</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · Guide commercial</span><span>4</span></div>
+</section>
+
+<!-- 5. SERVICES 2/2 -->
+<section class="page">
+  <div class="inner">
+    <div class="eyebrow">02 · Nos services (2/2)</div>
+    <h2>Se faire connaître<br>et durer</h2>
+
+    <div class="svc" style="margin-top:3mm">
+      <img class="img" src="assets/svc-seo.jpg" alt="SEO et marketing">
+      <div>
+        <h3><span class="pill red">Visibilité</span> SEO, réseaux sociaux & marketing</h3>
+        <div class="who"><b>Pour qui :</b> toute entreprise qui a un site ou une page mais trop peu de demandes, ou qui veut lancer une offre.</div>
+        <ul class="check redc">
+          <li>Référencement naturel pour apparaître sur Google.</li>
+          <li>Gestion et animation des réseaux sociaux (Facebook, Instagram…).</li>
+          <li>Stratégie de croissance digitale et suivi des résultats.</li>
+        </ul>
+        <div class="say quote">« Un beau site que personne ne voit ne rapporte rien. Nous faisons venir les bons visiteurs et les transformons en clients. »</div>
+      </div>
+    </div>
+
+    <div class="svc">
+      <img class="img" src="assets/svc-uiux.jpg" alt="Design UI/UX et identité visuelle">
+      <div>
+        <h3><span class="pill">Design</span> UI/UX & identité visuelle</h3>
+        <div class="who"><b>Pour qui :</b> créateurs d'entreprise, marques en repositionnement, entreprises dont l'image ne reflète plus le niveau de service.</div>
+        <ul class="check">
+          <li>Logo, charte graphique, supports de communication.</li>
+          <li>Maquettes d'interfaces centrées sur l'utilisateur.</li>
+          <li>Une image cohérente sur le site, les réseaux et les documents.</li>
+        </ul>
+        <div class="say quote blueq">« Vos clients jugent votre sérieux en quelques secondes. Une image professionnelle vous permet de justifier vos prix. »</div>
+      </div>
+    </div>
+
+    <div class="svc">
+      <img class="img" src="assets/svc-maintenance.jpg" alt="Maintenance informatique">
+      <div>
+        <h3><span class="pill red">Suivi</span> Maintenance & support</h3>
+        <div class="who"><b>Pour qui :</b> clients qui ont déjà un site ou une application et veulent la tranquillité (mises à jour, sécurité, évolutions).</div>
+        <ul class="check redc">
+          <li>Mises à jour, sauvegardes et surveillance.</li>
+          <li>Corrections et petites évolutions sur demande.</li>
+          <li>Support du lundi au vendredi, maintenance informatique.</li>
+        </ul>
+        <div class="say quote">« Votre site est un outil de travail : nous le gardons à jour, sécurisé et performant pour que vous vous concentriez sur votre métier. »</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · Guide commercial</span><span>5</span></div>
+</section>
+
+<!-- 6. MÉTHODE -->
+<section class="page">
+  <div class="inner">
+    <div class="eyebrow">03 · Notre méthode</div>
+    <h2>Un projet clair,<br>en 4 étapes</h2>
+    <p class="lead">Expliquez la méthode au client : elle rassure, montre notre professionnalisme et lui fait comprendre qu'il sera accompagné du début à la fin.</p>
+
+    <div class="steps">
+      <div class="step">
+        <span class="num">01</span>
+        <h3>Audit & positionnement</h3>
+        <p>Nous analysons l'activité du client, ses objectifs, ses concurrents et sa cible pour définir ce qui doit être construit en priorité.</p>
+        <div class="client">Ce que le client reçoit : un diagnostic et des priorités claires.</div>
+      </div>
+      <div class="step">
+        <span class="num">02</span>
+        <h3>Direction créative</h3>
+        <p>Nous proposons l'identité, l'arborescence et les maquettes. Le client valide avant toute étape de développement.</p>
+        <div class="client">Ce que le client reçoit : un aperçu visuel à valider.</div>
+      </div>
+      <div class="step">
+        <span class="num">03</span>
+        <h3>Développement & performance</h3>
+        <p>Nous développons une solution rapide, responsive et sécurisée, puis nous la testons sur mobile, tablette et ordinateur.</p>
+        <div class="client">Ce que le client reçoit : une solution prête à être mise en ligne.</div>
+      </div>
+      <div class="step">
+        <span class="num">04</span>
+        <h3>Suivi & croissance</h3>
+        <p>Après la mise en ligne, nous mesurons les résultats, améliorons ce qui doit l'être et accompagnons la croissance.</p>
+        <div class="client">Ce que le client reçoit : un partenaire dans la durée.</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:8mm">Les 4 leviers que nous activons</h3>
+    <div class="tracks">
+      <div class="track"><b>Acquisition</b><span>Attirer les bons visiteurs</span></div>
+      <div class="track"><b>Expérience</b><span>Offrir un parcours fluide</span></div>
+      <div class="track"><b>Conversion</b><span>Transformer en demandes</span></div>
+      <div class="track"><b>Suivi</b><span>Mesurer et améliorer</span></div>
+    </div>
+
+    <div class="quote blueq" style="margin-top:auto; margin-bottom:6mm;">Astuce : dessinez ces 4 étapes sur une feuille pendant le rendez-vous et placez le client dessus (« Vous êtes ici »). Il visualise immédiatement le chemin.</div>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · Guide commercial</span><span>6</span></div>
+</section>
+
+<!-- 7. RÉALISATIONS 1/2 -->
+<section class="page">
+  <div class="inner">
+    <div class="eyebrow">04 · Nos réalisations (1/2)</div>
+    <h2>Des projets en ligne,<br>à montrer en direct</h2>
+    <p class="lead">Ouvrez ces sites sur votre téléphone ou votre ordinateur pendant le rendez-vous. Faites naviguer le client lui-même : c'est la meilleure preuve de qualité.</p>
+
+    <div class="work" style="margin-top:4mm">
+      <div class="shot">
+        <div class="bar"><i></i><i></i><i></i><span>digitalpro-solutions.com</span></div>
+        <img src="assets/shot-digitalpro.png" alt="Site Digitalpro Solutions">
+      </div>
+      <div>
+        <h3>Digitalpro Solutions</h3>
+        <p class="muted">Notre propre vitrine : design premium, démos d'applications intégrées, demande de devis, prise de rendez-vous et facturation en ligne.</p>
+        <b style="font-size:9pt">À montrer au client :</b>
+        <ul class="check"><li>La page d'accueil et les démos en direct.</li><li>Le devis (<b>/devis</b>) et la prise de rendez-vous (<b>/book</b>).</li></ul>
+      </div>
+    </div>
+
+    <div class="work">
+      <div class="shot">
+        <div class="bar"><i></i><i></i><i></i><span>www.nyimmobilier.com</span></div>
+        <img src="assets/shot-nyimmobilier.png" alt="Site NY Immobilier">
+      </div>
+      <div>
+        <h3>NY Immobilier</h3>
+        <p class="muted">Plateforme de gestion immobilière : catalogue de biens et terrains, recherche et filtres, parcours de contact et espace agence.</p>
+        <b style="font-size:9pt">Idéal pour convaincre :</b>
+        <ul class="check redc"><li>Agences immobilières, promoteurs, hôtels et résidences.</li><li>Toute activité avec un catalogue à présenter.</li></ul>
+      </div>
+    </div>
+
+    <div class="quote blueq" style="margin-top:auto; margin-bottom:6mm;">Conseil : ajoutez ces liens en favoris sur votre téléphone et testez-les le matin du rendez-vous. Si la connexion du client est faible, utilisez le partage de connexion de votre téléphone.</div>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · Guide commercial</span><span>7</span></div>
+</section>
+
+<!-- 8. RÉALISATIONS 2/2 -->
+<section class="page">
+  <div class="inner">
+    <div class="eyebrow">04 · Nos réalisations (2/2)</div>
+    <h2>Vendre et encaisser<br>plus simplement</h2>
+
+    <div class="shot" style="margin-top:6mm">
+      <div class="bar"><i></i><i></i><i></i><span>enregistreur-caisse.vercel.app</span></div>
+      <img src="assets/shot-infinitecore.png" alt="Boutique et point de vente Infinitecore" style="height:88mm; object-fit:cover; object-position:top;">
+    </div>
+    <div class="grid-2" style="margin-top:4mm">
+      <div><h3>Infinitecore — Boutique & point de vente</h3><p class="muted" style="font-size:9pt">Boutique en ligne avec catalogue, panier et commande, couplée à une interface de caisse : encaissement rapide, gestion des stocks et suivi des ventes.</p></div>
+      <div><b style="font-size:9pt">Idéal pour convaincre :</b><ul class="check" style="font-size:9pt; margin-top:1mm"><li>Restaurants, maquis, fast-foods, supérettes.</li><li>Boutiques qui veulent vendre en ligne et suivre leur stock.</li></ul></div>
+    </div>
+
+    <h3 style="margin-top:7mm">Réussir la démo en 4 gestes</h3>
+    <div class="grid-2" style="margin-top:3mm">
+      <div class="card soft"><b class="blue">1. Préparez</b><p style="font-size:9pt; margin:1mm 0 0">Ouvrez les sites dans des onglets avant l'arrivée du client : aucune attente pendant la démo.</p></div>
+      <div class="card softred"><b class="red">2. Choisissez</b><p style="font-size:9pt; margin:1mm 0 0">Montrez la réalisation la plus proche du métier du client, pas toutes.</p></div>
+      <div class="card softred"><b class="red">3. Faites manipuler</b><p style="font-size:9pt; margin:1mm 0 0">Donnez le téléphone au client : il cherche un produit, filtre, ajoute au panier.</p></div>
+      <div class="card soft"><b class="blue">4. Projetez</b><p style="font-size:9pt; margin:1mm 0 0">« Imaginez la même chose avec vos produits, vos couleurs et votre logo. »</p></div>
+    </div>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · Guide commercial</span><span>8</span></div>
+</section>
+
+<!-- 9. OFFRES & TARIFS -->
+<section class="page">
+  <div class="inner">
+    <div class="eyebrow">05 · Offres & tarifs</div>
+    <h2>Trois formules,<br>un devis sur mesure</h2>
+    <p class="lead">Présentez les formules comme des points de repère. Le prix final est toujours confirmé par un devis personnalisé, envoyé sous 24 heures.</p>
+
+    <div class="plans">
+      <div class="plan">
+        <h3>Basic</h3>
+        <div class="price">200.000 FCFA</div>
+        <div class="delay">Délai : 1 à 3 jours</div>
+        <div class="desc">Composants et sections autonomes, adaptés au besoin et faciles à intégrer.</div>
+        <ul class="check">
+          <li>Réactif sur tous les écrans</li>
+          <li>Conception + développement</li>
+          <li>Canal de communication privé</li>
+        </ul>
+        <div class="fit"><b>Pour :</b> un besoin précis, une page ou une section à créer.</div>
+      </div>
+      <div class="plan pop">
+        <span class="pill badge">Populaire</span>
+        <h3>Premium</h3>
+        <div class="price">500.000 FCFA</div>
+        <div class="delay">Délai : 3 à 5 jours</div>
+        <div class="desc">Pour les startups, entreprises et freelances qui veulent présenter leur travail et leur vision.</div>
+        <ul class="check">
+          <li>Réactif sur tous les écrans</li>
+          <li>Code React / Next.js / Tailwind</li>
+          <li>Conception + développement</li>
+          <li>Support : réponse sous 24 h</li>
+          <li>Canal de communication privé</li>
+        </ul>
+        <div class="fit"><b>Pour :</b> la majorité des sites vitrines professionnels.</div>
+      </div>
+      <div class="plan">
+        <h3>Enterprise</h3>
+        <div class="price">Sur devis</div>
+        <div class="delay">Délai : selon le projet</div>
+        <div class="desc">Pour les projets ambitieux : plateformes, applications, e-commerce avancé.</div>
+        <ul class="check redc">
+          <li>Tout le Premium</li>
+          <li>Révisions illimitées</li>
+          <li>File de développement prioritaire</li>
+          <li>Chef de projet dédié</li>
+        </ul>
+        <div class="fit"><b>Pour :</b> applications, boutiques, projets multi-services.</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:7mm">Fourchettes de budget du formulaire de devis</h3>
+    <table class="budget">
+      <tr><th style="width:42mm">Budget</th><th>Projets typiques à proposer</th></tr>
+      <tr><td><b>Moins de 500.000 F</b></td><td>Formules Basic ou Premium, page de présentation, identité visuelle simple.</td></tr>
+      <tr><td><b>500.000 – 1.000.000 F</b></td><td>Site vitrine complet, refonte, lancement réseaux sociaux.</td></tr>
+      <tr><td><b>1.000.000 – 2.500.000 F</b></td><td>Boutique en ligne, site + référencement, identité + site.</td></tr>
+      <tr><td><b>2.500.000 – 5.000.000 F</b></td><td>Application mobile, plateforme métier, e-commerce avancé.</td></tr>
+      <tr><td><b>Plus de 5.000.000 F</b></td><td>Projets sur mesure multi-services, avec chef de projet dédié.</td></tr>
+    </table>
+    <p class="muted" style="font-size:8pt; margin-top:2mm">Ces correspondances sont indicatives : ne vous engagez jamais sur un prix définitif sans devis validé par l'équipe.</p>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · Guide commercial</span><span>9</span></div>
+</section>
+
+<!-- 10. RENDEZ-VOUS -->
+<section class="page">
+  <div class="inner">
+    <div class="eyebrow">06 · Mener le rendez-vous</div>
+    <h2>Un rendez-vous client<br>en 5 temps</h2>
+
+    <img class="img" src="assets/meeting.jpg" alt="Présentation en rendez-vous client" style="height:48mm; margin-top:5mm;">
+
+    <div class="timeline">
+      <div class="tl"><span class="time">0–5 min</span><div><b>Accueil & mise en confiance</b><span>Présentez-vous, remerciez pour le temps accordé, donnez le pitch en 30 secondes.</span></div></div>
+      <div class="tl"><span class="time">5–20 min</span><div><b>Découverte</b><span>Posez les questions ci-dessous et prenez des notes. Le client doit parler 70 % du temps.</span></div></div>
+      <div class="tl"><span class="time">20–35 min</span><div><b>Présentation ciblée & démo</b><span>Reformulez son besoin, puis montrez le service et la réalisation qui y répondent.</span></div></div>
+      <div class="tl"><span class="time">35–40 min</span><div><b>Objections & budget</b><span>Écoutez les freins, répondez (page 11), situez la formule adaptée.</span></div></div>
+      <div class="tl"><span class="time">40–45 min</span><div><b>Conclusion & prochaine étape</b><span>Remplissez la demande de devis ensemble ou fixez une date de rappel précise.</span></div></div>
+    </div>
+
+    <h3 style="margin-top:5mm; margin-bottom:2.5mm">Les questions de découverte</h3>
+    <ul class="check qs">
+      <li>Parlez-moi de votre activité : que vendez-vous et à qui ?</li>
+      <li>Comment vos clients vous trouvent-ils aujourd'hui ?</li>
+      <li>Avez-vous déjà un site, une page ou une application ? Qu'en pensez-vous ?</li>
+      <li>Quel est votre objectif principal : plus de clients, vendre en ligne, gagner du temps, image ?</li>
+      <li>Qui sont vos principaux concurrents ? Que font-ils mieux ou moins bien ?</li>
+      <li>Qu'est-ce qui vous empêche d'avancer aujourd'hui ?</li>
+      <li>Pour quand souhaitez-vous être en ligne ?</li>
+      <li>Quel budget avez-vous prévu pour ce projet ?</li>
+      <li>Qui d'autre participe à la décision ?</li>
+    </ul>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · Guide commercial</span><span>10</span></div>
+</section>
+
+<!-- 11. OBJECTIONS -->
+<section class="page">
+  <div class="inner">
+    <div class="eyebrow">07 · Répondre aux objections</div>
+    <h2>Transformer un frein<br>en conversation</h2>
+    <p class="lead" style="margin-bottom:5mm">Règle d'or : on ne contredit pas. On écoute, on reformule (« Je comprends… »), on répond avec un exemple, puis on vérifie (« Est-ce que cela répond à votre question ? »).</p>
+
+    <div class="obj"><div class="q"><span>C'est trop cher</span></div><div class="a"><p>« Je comprends. Comparons plutôt ce que cela peut vous rapporter : combien vous rapporte un nouveau client ? Si le site en apporte quelques-uns par mois, il est rentabilisé rapidement. »</p><p class="tip">→ Proposez une formule plus légère (Basic) ou un projet par étapes.</p></div></div>
+
+    <div class="obj"><div class="q"><span>Je vais réfléchir</span></div><div class="a"><p>« Bien sûr, c'est une décision importante. Pour vous aider, qu'est-ce qui vous fait hésiter : le budget, le délai ou le contenu du projet ? »</p><p class="tip">→ Proposez le devis gratuit sous 24 h et fixez une date de rappel.</p></div></div>
+
+    <div class="obj"><div class="q"><span>Ma page Facebook me suffit</span></div><div class="a"><p>« Facebook est un excellent complément. Mais la page ne vous appartient pas, n'apparaît pas bien sur Google et limite votre image. Un site renvoie vers vos réseaux et inversement : les deux se renforcent. »</p><p class="tip">→ Montrez l'offre « réseaux sociaux + site ».</p></div></div>
+
+    <div class="obj"><div class="q"><span>J'ai déjà quelqu'un</span></div><div class="a"><p>« Très bien. Êtes-vous pleinement satisfait des résultats et du suivi ? Nous pouvons faire un audit gratuit de votre site actuel et vous donner des pistes, sans engagement. »</p><p class="tip">→ Positionnez-vous sur ce que l'autre prestataire ne fait pas (SEO, maintenance, application).</p></div></div>
+
+    <div class="obj"><div class="q"><span>Je n'ai pas le temps</span></div><div class="a"><p>« C'est justement notre rôle : vous nous donnez les informations essentielles, nous nous occupons du reste. Vous validez simplement les étapes clés. »</p><p class="tip">→ Insistez sur le chef de projet et le canal de communication privé.</p></div></div>
+
+    <div class="obj" style="margin-bottom:0"><div class="q"><span>Je ne connais pas votre agence</span></div><div class="a"><p>« Je vous comprends. Voici des projets en ligne que nous avons réalisés : naviguez vous-même. Et vous pouvez nous rencontrer dans nos locaux à Cocody. »</p><p class="tip">→ Démo en direct des réalisations (pages 7–8).</p></div></div>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · Guide commercial</span><span>11</span></div>
+</section>
+
+<!-- 12. CONCLURE & CONTACTS -->
+<section class="page closing">
+  <div class="inner">
+    <div class="eyebrow">08 · Conclure & contacts</div>
+    <h2>De la demande<br>au lancement</h2>
+
+    <div class="flow">
+      <div class="f"><span class="num">01</span><b>Demande de devis</b><span>Le client remplit le formulaire sur /devis (ou vous le remplissez avec lui).</span></div>
+      <div class="f"><span class="num">02</span><b>Devis sous 24 h</b><span>L'équipe analyse le projet et envoie un devis détaillé et personnalisé.</span></div>
+      <div class="f"><span class="num">03</span><b>Validation</b><span>Le client valide le devis et la feuille de route du projet.</span></div>
+      <div class="f"><span class="num">04</span><b>Lancement</b><span>Démarrage de l'audit, puis des 4 étapes de notre méthode.</span></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:7mm">
+      <div class="card">
+        <h3 style="color:#fff; margin-bottom:3mm">Avant de quitter le client</h3>
+        <ul class="check" style="font-size:9.3pt">
+          <li>Le besoin et l'objectif sont reformulés et validés.</li>
+          <li>Le budget et le délai souhaités sont connus.</li>
+          <li>Le décideur est identifié.</li>
+          <li>La demande de devis est envoyée ou programmée.</li>
+          <li>Une date de rappel précise est fixée.</li>
+          <li>Le client a vos coordonnées et le lien du site.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="color:#fff; margin-bottom:3mm">Scanner pour accéder</h3>
+        <div style="display:flex; gap:5mm;">
+          <div style="text-align:center"><div class="qr"><img src="assets/qr-site.png" alt="QR code site"></div><div class="muted" style="font-size:8pt; margin-top:1.5mm">Site web</div></div>
+          <div style="text-align:center"><div class="qr"><img src="assets/qr-devis.png" alt="QR code devis"></div><div class="muted" style="font-size:8pt; margin-top:1.5mm">Demande de devis</div></div>
+        </div>
+        <p class="muted" style="font-size:8.3pt; margin-top:3mm">Montrez ces QR codes au client pour qu'il ouvre le site ou la demande de devis sur son téléphone.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:6mm">
+      <div class="contact-line"><b>Site</b><span>https://digitalpro-solutions.com</span></div>
+      <div class="contact-line"><b>Devis</b><span>https://digitalpro-solutions.com/devis</span></div>
+      <div class="contact-line"><b>Rendez-vous</b><span>https://digitalpro-solutions.com/book</span></div>
+      <div class="contact-line"><b>Email</b><span>digitalprosolutions27@gmail.com</span></div>
+      <div class="contact-line"><b>Téléphone</b><span>+225 07 48 97 60 31</span></div>
+      <div class="contact-line" style="margin-bottom:0"><b>Adresse</b><span>Bvd Koffi Gadaud, Cocody — Abidjan, Côte d'Ivoire</span></div>
+    </div>
+  </div>
+  <div class="footer"><span><b>Digitalpro Solutions</b> · L'excellence digitale à portée de marque</span><span>12</span></div>
+</section>
+
+</body>
+</html>
