@@ -122,30 +122,30 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
 
         {/* Actions prioritaires 1-tap */}
         {!normalizedQuery ? (
-          <div className="grid grid-cols-3 gap-2.5">
+          <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
             <Link
               href="/devis"
               onClick={onClose}
-              className="lux-card-interactive lux-card-accent-red min-h-[44px] flex flex-col items-center justify-center gap-1.5 p-3.5 text-center"
+              className="lux-card-interactive lux-card-accent-red min-h-[44px] flex flex-col items-center justify-center gap-1.5 p-2.5 sm:p-3.5 text-center"
             >
               <FileText className="w-4 h-4 text-[var(--brand-red)]" />
-              <span className="text-xs font-semibold text-slate-900">Devis gratuit</span>
+              <span className="text-[11px] sm:text-xs leading-tight font-semibold text-slate-900">Devis gratuit</span>
             </Link>
             <Link
               href="/book"
               onClick={onClose}
-              className="lux-card-interactive min-h-[44px] flex flex-col items-center justify-center gap-1.5 p-3.5 text-center"
+              className="lux-card-interactive min-h-[44px] flex flex-col items-center justify-center gap-1.5 p-2.5 sm:p-3.5 text-center"
             >
               <Calendar className="w-4 h-4 text-[var(--brand-blue)]" />
-              <span className="text-xs font-semibold text-slate-900">RDV 30 min</span>
+              <span className="text-[11px] sm:text-xs leading-tight font-semibold text-slate-900">RDV 30 min</span>
             </Link>
             <Link
               href="/#nos-realisations"
               onClick={onClose}
-              className="lux-card-interactive min-h-[44px] flex flex-col items-center justify-center gap-1.5 p-3.5 text-center"
+              className="lux-card-interactive min-h-[44px] flex flex-col items-center justify-center gap-1.5 p-2.5 sm:p-3.5 text-center"
             >
               <Globe className="w-4 h-4 text-[var(--brand-blue)]" />
-              <span className="text-xs font-semibold text-slate-900">Réalisations</span>
+              <span className="text-[11px] sm:text-xs leading-tight font-semibold text-slate-900">Réalisations</span>
             </Link>
           </div>
         ) : null}

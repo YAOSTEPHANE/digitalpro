@@ -23,13 +23,17 @@ const Logo = ({
   
   // Pour un logo rond, on utilise la même dimension pour width et height
   const logoSize = Math.min(width, showText ? logoHeight : width);
+  const hasSizeClass = /\b(?:w-|h-|size-)/.test(className);
+  const sizeStyle = hasSizeClass
+    ? undefined
+    : { width: logoSize, height: logoSize };
   
   // Si l'image n'existe pas, on affiche un fallback SVG simple
   if (imageError) {
     return (
       <div 
         className={`flex items-center justify-center bg-[var(--brand-blue)] rounded-full ${className}`}
-        style={{ width: logoSize, height: logoSize }}
+        style={sizeStyle}
       >
         <span className="text-white font-bold text-sm">DP</span>
       </div>
@@ -39,7 +43,7 @@ const Logo = ({
   return (
     <div 
       className={`relative overflow-hidden rounded-full ${className}`} 
-      style={{ width: logoSize, height: logoSize }}
+      style={sizeStyle}
     >
       <Image
         src="/logo/logo.png"

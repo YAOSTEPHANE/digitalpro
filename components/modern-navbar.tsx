@@ -177,20 +177,20 @@ const ModernNavbar = ({
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-[4.5rem] gap-3">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-5 xl:px-8">
+          <div className="flex items-center justify-between h-16 md:h-[4.5rem] gap-2 sm:gap-3">
             {/* Marque */}
             <Link
               href="/"
-              className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0"
+              className="flex items-center gap-2 sm:gap-3 group shrink-0 min-w-0"
             >
               <Logo
-                className="w-9 h-9 md:w-11 md:h-11 object-contain ring-1 ring-[rgba(81,102,153,0.22)] group-hover:ring-[var(--brand-blue)] transition-all"
+                className="w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 object-contain ring-1 ring-[rgba(81,102,153,0.22)] group-hover:ring-[var(--brand-blue)] transition-all shrink-0"
                 width={44}
                 height={44}
               />
               <div className="flex flex-col leading-none">
-                <span className="font-display text-base sm:text-lg md:text-xl font-extrabold tracking-tight text-slate-900">
+                <span className="font-display text-[15px] sm:text-lg md:text-xl font-extrabold tracking-tight text-slate-900">
                   digitalpro
                 </span>
                 <span className="text-[9px] uppercase tracking-[0.24em] text-[var(--brand-blue)] font-semibold mt-0.5">
@@ -406,7 +406,7 @@ const ModernNavbar = ({
 
                 <Link
                   href="/contact"
-                  className={`lux-btn-primary !px-5 !py-2 text-sm gap-1.5 ${pathname === "/contact" ? "ring-2 ring-[var(--brand-blue)]/30" : ""
+                  className={`lux-btn-primary !px-3.5 xl:!px-5 !py-2 text-sm gap-1.5 ${pathname === "/contact" ? "ring-2 ring-[var(--brand-blue)]/30" : ""
                     }`}
                 >
                   Contact
@@ -416,7 +416,7 @@ const ModernNavbar = ({
             </div>
 
             {/* Actions Mobile & Tablette */}
-            <div className="flex lg:hidden items-center gap-2">
+            <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => {
@@ -424,17 +424,20 @@ const ModernNavbar = ({
                   setIsCommandOpen(true);
                 }}
                 aria-label="Rechercher sur le site"
-                className="w-9 h-9 flex items-center justify-center text-slate-700 border border-slate-200 bg-white hover:border-[var(--brand-blue)] hover:text-[var(--brand-blue)] transition-colors rounded-full shadow-xs"
+                className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 flex items-center justify-center text-slate-700 border border-slate-200 bg-white hover:border-[var(--brand-blue)] hover:text-[var(--brand-blue)] transition-colors rounded-full shadow-xs"
               >
                 <Search className="w-4 h-4" />
               </button>
               <Link
                 href="/devis"
-                className="hidden sm:inline-flex lux-btn-ghost !px-3.5 !py-2 text-xs"
+                className="hidden sm:inline-flex lux-btn-ghost !px-3.5 !py-2 text-xs whitespace-nowrap"
               >
                 Devis
               </Link>
-              <Link href="/contact" className="lux-btn-primary !px-3.5 !py-2 text-xs">
+              <Link
+                href="/contact"
+                className="lux-btn-primary !px-2.5 !py-1.5 sm:!px-3.5 sm:!py-2 text-[11px] sm:text-xs whitespace-nowrap"
+              >
                 Contact
               </Link>
               <button
@@ -442,20 +445,20 @@ const ModernNavbar = ({
                 onClick={() => setIsDropDownVisible((prev) => !prev)}
                 aria-label={isDropDownVisible ? "Fermer le menu" : "Ouvrir le menu"}
                 aria-expanded={isDropDownVisible}
-                className={`h-9 px-3 flex items-center gap-1.5 border transition-colors rounded-full shadow-xs text-xs font-semibold ${isDropDownVisible
+                className={`h-9 px-2.5 sm:px-3 shrink-0 flex items-center gap-1.5 border transition-colors rounded-full shadow-xs text-xs font-semibold ${isDropDownVisible
                   ? "border-[var(--brand-blue)] bg-[var(--brand-blue)] text-white"
-                  : "border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
+                  : "border-slate-300 bg-white text-slate-900 hover:bg-slate-50"
                   }`}
               >
                 {isDropDownVisible ? (
                   <>
                     <X className="w-4 h-4" />
-                    <span className="hidden sm:inline">Fermer</span>
+                    <span className="hidden min-[400px]:inline">Fermer</span>
                   </>
                 ) : (
                   <>
                     <AlignJustify className="w-4 h-4" />
-                    <span className="hidden sm:inline">Menu</span>
+                    <span className="hidden min-[400px]:inline">Menu</span>
                   </>
                 )}
               </button>

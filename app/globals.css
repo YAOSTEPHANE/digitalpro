@@ -152,6 +152,90 @@
   }
 }
 
+@layer components {
+  .lux-btn-primary {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[rgba(81,102,153,0.4)];
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+    background-color: var(--brand-blue);
+    box-shadow: 0 10px 26px rgba(81, 102, 153, 0.26);
+  }
+
+  .lux-btn-primary:hover {
+    transform: translateY(-1px);
+    background-color: var(--brand-blue-light);
+    box-shadow: 0 14px 32px rgba(81, 102, 153, 0.34);
+  }
+
+  .lux-btn-accent {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[rgba(204,38,40,0.4)];
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+    background-color: var(--brand-red);
+    box-shadow: 0 10px 26px rgba(204, 38, 40, 0.24);
+  }
+
+  .lux-btn-accent:hover {
+    transform: translateY(-1px);
+    background-color: var(--brand-red-light);
+    box-shadow: 0 14px 32px rgba(204, 38, 40, 0.32);
+  }
+
+  .lux-btn-primary::after,
+  .lux-btn-accent::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24), transparent);
+    transition: transform 0.55s ease;
+  }
+
+  .lux-btn-primary:hover::after,
+  .lux-btn-accent:hover::after {
+    transform: translateX(120%);
+  }
+
+  .lux-btn-ghost {
+    @apply inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[rgba(81,102,153,0.35)];
+    border-color: rgba(81, 102, 153, 0.28);
+    color: var(--lux-ink);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+  }
+
+  .lux-btn-ghost:hover {
+    transform: translateY(-1px);
+    border-color: var(--brand-blue);
+    background: #eef2f9;
+    color: var(--brand-blue-dark);
+  }
+
+  .lux-btn-light {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 bg-white text-slate-950 hover:bg-slate-100 active:scale-[0.98];
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.25);
+  }
+
+  .lux-btn-light:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.32);
+  }
+
+  .lux-btn-dark-ghost {
+    @apply inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold text-white transition-all duration-300 active:scale-[0.98];
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .lux-btn-dark-ghost:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.18);
+  }
+}
+
 @layer utilities {
   .font-display {
     font-family: var(--font-display), system-ui, sans-serif;
@@ -242,69 +326,6 @@
 
   .lux-muted {
     color: var(--lux-muted);
-  }
-
-  .lux-btn-primary {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[rgba(81,102,153,0.4)];
-    color: #ffffff;
-    background-color: var(--brand-blue);
-    box-shadow: 0 10px 26px rgba(81, 102, 153, 0.26);
-  }
-
-  .lux-btn-primary:hover {
-    transform: translateY(-1px);
-    background-color: var(--brand-blue-light);
-    box-shadow: 0 14px 32px rgba(81, 102, 153, 0.34);
-  }
-
-  .lux-btn-accent {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[rgba(204,38,40,0.4)];
-    color: #ffffff;
-    background-color: var(--brand-red);
-    box-shadow: 0 10px 26px rgba(204, 38, 40, 0.24);
-  }
-
-  .lux-btn-accent:hover {
-    transform: translateY(-1px);
-    background-color: var(--brand-red-light);
-    box-shadow: 0 14px 32px rgba(204, 38, 40, 0.32);
-  }
-
-  .lux-btn-ghost {
-    @apply inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[rgba(81,102,153,0.35)];
-    border-color: rgba(81, 102, 153, 0.28);
-    color: var(--lux-ink);
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
-  }
-
-  .lux-btn-ghost:hover {
-    transform: translateY(-1px);
-    border-color: var(--brand-blue);
-    background: #eef2f9;
-    color: var(--brand-blue-dark);
-  }
-
-  .lux-btn-light {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 bg-white text-slate-950 hover:bg-slate-100 active:scale-[0.98];
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.25);
-  }
-
-  .lux-btn-light:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.32);
-  }
-
-  .lux-btn-dark-ghost {
-    @apply inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold text-white transition-all duration-300 active:scale-[0.98];
-    border-color: rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .lux-btn-dark-ghost:hover {
-    transform: translateY(-1px);
-    border-color: rgba(255, 255, 255, 0.45);
-    background: rgba(255, 255, 255, 0.18);
   }
 
   .lux-chip {
@@ -639,27 +660,6 @@
   .lux-orb-red {
     background: rgba(204, 38, 40, 0.08);
     animation-delay: -5s;
-  }
-
-  .lux-btn-primary,
-  .lux-btn-accent {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .lux-btn-primary::after,
-  .lux-btn-accent::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    transform: translateX(-120%);
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24), transparent);
-    transition: transform 0.55s ease;
-  }
-
-  .lux-btn-primary:hover::after,
-  .lux-btn-accent:hover::after {
-    transform: translateX(120%);
   }
 
   .lux-browser-frame {
