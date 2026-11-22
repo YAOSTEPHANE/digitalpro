@@ -5,6 +5,7 @@ import {
   DEFAULT_GEMINI_MODEL,
   getGeminiApiKey,
 } from '@/lib/gemini';
+import { checkRateLimit, getClientIp } from '@/lib/security';
 
 // Interface pour le conseil généré
 interface MarketingTip {
@@ -17,9 +18,28 @@ interface MarketingTip {
 }
 
 export async function GET(request: NextRequest) {
+  const ip = getClientIp(request);
+  const rateLimit = checkRateLimit(`marketing-tip:${ip}`, {
+    limit: 30,
+    windowMs: 5 * 60_000,
+  });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Trop de requêtes. Veuillez patienter un instant.' },
+      {
+        status: 429,
+        headers: { 'Retry-After': String(rateLimit.retryAfterSec) },
+      }
+    );
+  }
+
   try {
     const searchParams = request.nextUrl.searchParams;
-    const dayOfYear = parseInt(searchParams.get('day') || '1', 10);
+    const parsedDay = Number.parseInt(searchParams.get('day') || '1', 10);
+    const dayOfYear =
+      Number.isFinite(parsedDay) && parsedDay > 0
+        ? ((parsedDay - 1) % 366) + 1
+        : 1;
 
     // Catégories possibles pour varier les conseils
     const categories = [

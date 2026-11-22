@@ -356,7 +356,7 @@ const ModernNavbar = ({
                     <Link
                       key={link.href}
                       href={link.href}
-                      className={`relative px-3.5 py-1.5 text-sm font-medium transition-colors whitespace-nowrap rounded-full ${active
+                      className={`relative px-2.5 xl:px-3.5 py-1.5 text-sm font-medium transition-colors whitespace-nowrap rounded-full ${active
                         ? "text-[var(--brand-blue-dark)] font-semibold"
                         : "text-slate-600 hover:text-slate-950"
                         }`}

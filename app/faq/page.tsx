@@ -1,5 +1,3 @@
-"use client";
-
 import LuxPageLayout from "@/components/lux-page-layout";
 import LuxSectionHeader from "@/components/lux-section-header";
 import FAQS from "@/app/faq";

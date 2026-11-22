@@ -10,7 +10,7 @@ export const siteConfig = {
   version: siteVersionLabel,
   title: "digitalpro solutions - Agence d'intelligence numérique",
   description: "Agence spécialisée en SEO, médias sociaux et développement web. Solutions sur mesure pour votre transformation digitale. Expertise en référencement, marketing digital et création de sites web.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://digitalprosolutions.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.digitalpro-solutions.com",
   ogImage: "/logo/logo.png",
   locale: "fr_FR",
   type: "website",

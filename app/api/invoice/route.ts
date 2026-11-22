@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { NextRequest, NextResponse } from "next/server";
+import { invoiceRequestSchema } from "@/lib/api-schemas";
+import { isSmtpConfigured, sendStudioEmail } from "@/lib/mailer";
+import { checkRateLimit, escapeHtml, getClientIp } from "@/lib/security";
 
-interface InvoiceData {
+interface NormalizedInvoice {
   invoiceNumber: string;
   clientName: string;
   clientEmail: string;
@@ -14,135 +16,183 @@ interface InvoiceData {
     total: number;
   }>;
   subtotal: number;
-  tax?: number;
-  discount?: number;
+  taxRate: number;
+  taxAmount: number;
+  discountRate: number;
+  discountAmount: number;
   total: number;
-  dueDate: string;
+  dueDate?: string;
   notes?: string;
 }
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  const rateLimit = checkRateLimit(`invoice:${ip}`, {
+    limit: 10,
+    windowMs: 10 * 60_000,
+  });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Trop de requêtes. Veuillez réessayer plus tard." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateLimit.retryAfterSec) },
+      }
+    );
+  }
+
+  let rawBody: unknown;
   try {
-    const data: InvoiceData = await request.json();
+    rawBody = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Corps de requête JSON invalide" }, { status: 400 });
+  }
 
-    // Validation
-    if (!data.clientName || !data.clientEmail || !data.items || data.items.length === 0) {
-      return NextResponse.json(
-        { error: 'Données manquantes' },
-        { status: 400 }
-      );
-    }
+  const parsed = invoiceRequestSchema.safeParse(rawBody);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Données manquantes ou invalides", details: parsed.error.flatten().fieldErrors },
+      { status: 400 }
+    );
+  }
 
-    // Générer le numéro de facture s'il n'existe pas
-    if (!data.invoiceNumber) {
-      data.invoiceNumber = `INV-${Date.now()}`;
-    }
+  const input = parsed.data;
+  const invoiceNumber = input.invoiceNumber || `INV-${Date.now()}`;
+  const normalizedItems = input.items.map((item) => ({
+    description: item.description,
+    quantity: item.quantity,
+    unitPrice: item.unitPrice,
+    total: Math.round(item.quantity * item.unitPrice),
+  }));
 
-    // Calculer le total si non fourni
-    if (!data.total) {
-      const subtotal = data.items.reduce((sum, item) => sum + item.total, 0);
-      const taxAmount = data.tax ? (subtotal * data.tax) / 100 : 0;
-      const discountAmount = data.discount ? (subtotal * data.discount) / 100 : 0;
-      data.total = subtotal + taxAmount - discountAmount;
-    }
+  const subtotal = normalizedItems.reduce((sum, item) => sum + item.total, 0);
+  const taxRate = input.tax ?? 0;
+  const discountRate = input.discount ?? 0;
+  const taxAmount = Math.round((subtotal * taxRate) / 100);
+  const discountAmount = Math.round((subtotal * discountRate) / 100);
+  const total = Math.max(0, subtotal + taxAmount - discountAmount);
 
-    // Générer le HTML de la facture
-    const invoiceHTML = generateInvoiceHTML(data);
+  const normalizedInvoice: NormalizedInvoice = {
+    invoiceNumber,
+    clientName: input.clientName,
+    clientEmail: input.clientEmail,
+    clientPhone: input.clientPhone,
+    clientAddress: input.clientAddress,
+    items: normalizedItems,
+    subtotal,
+    taxRate,
+    taxAmount,
+    discountRate,
+    discountAmount,
+    total,
+    dueDate: input.dueDate,
+    notes: input.notes,
+  };
 
-    // Envoyer l'email seulement si les credentials SMTP sont configurés
-    if (process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
-      try {
-        const transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST || 'smtp.gmail.com',
-          port: parseInt(process.env.SMTP_PORT || '587'),
-          secure: false,
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASSWORD,
-          },
-        });
+  const invoiceHTML = generateInvoiceHTML(normalizedInvoice);
 
-        // Email au client
-        await transporter.sendMail({
-          from: process.env.SMTP_USER,
-          to: data.clientEmail,
-          subject: `Facture ${data.invoiceNumber} - digitalpro solutions`,
+  let clientEmailSent = false;
+  if (isSmtpConfigured()) {
+    const configuredSecret = process.env.INVOICE_EMAIL_SECRET?.trim();
+    const providedToken = request.headers.get("x-invoice-token")?.trim();
+    const allowExternalClientEmail = Boolean(
+      configuredSecret && providedToken && providedToken === configuredSecret
+    );
+
+    try {
+      if (allowExternalClientEmail) {
+        await sendStudioEmail({
+          to: normalizedInvoice.clientEmail,
+          subject: `Facture ${invoiceNumber} - digitalpro solutions`,
           html: invoiceHTML,
           attachments: [
             {
-              filename: `facture-${data.invoiceNumber}.html`,
+              filename: `facture-${invoiceNumber}.html`,
               content: invoiceHTML,
             },
           ],
         });
-
-        // Email à l'équipe
-        await transporter.sendMail({
-          from: process.env.SMTP_USER,
-          to: process.env.SMTP_USER,
-          subject: `Nouvelle facture générée: ${data.invoiceNumber}`,
-          html: `
-            <h2>Nouvelle facture générée</h2>
-            <p><strong>Numéro:</strong> ${data.invoiceNumber}</p>
-            <p><strong>Client:</strong> ${data.clientName}</p>
-            <p><strong>Email:</strong> ${data.clientEmail}</p>
-            <p><strong>Total:</strong> ${data.total.toLocaleString('fr-FR')} FCFA</p>
-          `,
-        });
-      } catch (emailError) {
-        console.error('Erreur lors de l\'envoi de l\'email:', emailError);
-        // Continuer même si l'email échoue
+        clientEmailSent = true;
       }
-    } else {
-      console.warn('Credentials SMTP non configurés. La facture sera générée mais aucun email ne sera envoyé.');
-    }
 
-    return NextResponse.json({
-      success: true,
-      invoiceNumber: data.invoiceNumber,
-      message: process.env.SMTP_USER && process.env.SMTP_PASSWORD 
-        ? 'Facture générée et envoyée avec succès' 
-        : 'Facture générée avec succès (email non envoyé - credentials SMTP non configurés)',
-      invoiceHTML: invoiceHTML, // Retourner le HTML pour téléchargement côté client
-    });
-  } catch (error) {
-    console.error('Erreur lors de la génération de la facture:', error);
-    return NextResponse.json(
-      { error: 'Erreur lors de la génération de la facture' },
-      { status: 500 }
-    );
+      await sendStudioEmail({
+        subject: `Nouvelle facture générée : ${invoiceNumber}`,
+        html: `
+          <h2>Nouvelle facture générée</h2>
+          <p><strong>Numéro :</strong> ${escapeHtml(invoiceNumber)}</p>
+          <p><strong>Client :</strong> ${escapeHtml(normalizedInvoice.clientName)}</p>
+          <p><strong>Email :</strong> ${escapeHtml(normalizedInvoice.clientEmail)}</p>
+          <p><strong>Total :</strong> ${total.toLocaleString("fr-FR")} FCFA</p>
+        `,
+        attachments: [
+          {
+            filename: `facture-${invoiceNumber}.html`,
+            content: invoiceHTML,
+          },
+        ],
+      });
+    } catch (emailError) {
+      console.error("Erreur lors de l'envoi de la facture:", emailError);
+    }
   }
+
+  return NextResponse.json({
+    success: true,
+    invoiceNumber,
+    clientEmailSent,
+    message: clientEmailSent
+      ? "Facture générée et envoyée au client avec succès"
+      : isSmtpConfigured()
+        ? "Facture générée et transmise au studio avec succès"
+        : "Facture générée avec succès (prête au téléchargement)",
+    invoiceHTML,
+  });
 }
 
-function generateInvoiceHTML(data: InvoiceData): string {
-  const subtotal = data.subtotal || data.items.reduce((sum, item) => sum + item.total, 0);
-  const taxAmount = data.tax ? (subtotal * data.tax) / 100 : 0;
-  const discountAmount = data.discount ? (subtotal * data.discount) / 100 : 0;
-  const total = data.total || subtotal + taxAmount - discountAmount;
+function formatOptionalDate(rawDate?: string): string {
+  if (!rawDate) return "";
+  const parsed = new Date(rawDate);
+  if (Number.isNaN(parsed.getTime())) {
+    return rawDate;
+  }
+  return parsed.toLocaleDateString("fr-FR");
+}
+
+function generateInvoiceHTML(data: NormalizedInvoice): string {
+  const formattedDueDate = formatOptionalDate(data.dueDate);
 
   return `
     <!DOCTYPE html>
-    <html>
+    <html lang="fr">
     <head>
       <meta charset="UTF-8">
       <style>
         body {
           font-family: Arial, sans-serif;
           line-height: 1.6;
-          color: #333;
+          color: #0f172a;
           max-width: 800px;
           margin: 0 auto;
-          padding: 20px;
+          padding: 24px;
         }
         .header {
-          border-bottom: 3px solid #8b5cf6;
+          border-bottom: 3px solid #516699;
           padding-bottom: 20px;
           margin-bottom: 30px;
         }
         .logo {
           font-size: 24px;
           font-weight: bold;
-          color: #8b5cf6;
+          color: #516699;
+        }
+        .badge-accent {
+          display: inline-block;
+          margin-top: 6px;
+          font-size: 11px;
+          font-weight: bold;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #CC2628;
         }
         .invoice-info {
           display: flex;
@@ -163,11 +213,12 @@ function generateInvoiceHTML(data: InvoiceData): string {
         th, td {
           padding: 12px;
           text-align: left;
-          border-bottom: 1px solid #ddd;
+          border-bottom: 1px solid #e2e8f0;
         }
         th {
-          background-color: #f8f9fa;
+          background-color: #f7f9fc;
           font-weight: bold;
+          color: #0f172a;
         }
         .totals {
           margin-top: 20px;
@@ -179,27 +230,27 @@ function generateInvoiceHTML(data: InvoiceData): string {
           margin-bottom: 10px;
         }
         .total-label {
-          width: 150px;
+          width: 160px;
           text-align: right;
           margin-right: 20px;
         }
         .total-value {
-          width: 150px;
+          width: 160px;
           text-align: right;
           font-weight: bold;
         }
         .grand-total {
           font-size: 20px;
-          color: #8b5cf6;
-          border-top: 2px solid #8b5cf6;
+          color: #516699;
+          border-top: 2px solid #516699;
           padding-top: 10px;
         }
         .footer {
           margin-top: 40px;
           padding-top: 20px;
-          border-top: 1px solid #ddd;
+          border-top: 1px solid #e2e8f0;
           text-align: center;
-          color: #666;
+          color: #475569;
           font-size: 12px;
         }
       </style>
@@ -207,26 +258,27 @@ function generateInvoiceHTML(data: InvoiceData): string {
     <body>
       <div class="header">
         <div class="logo">digitalpro solutions</div>
+        <div class="badge-accent">Studio d'ingénierie digitale</div>
         <h1>FACTURE</h1>
-        <p><strong>Numéro:</strong> ${data.invoiceNumber}</p>
-        <p><strong>Date:</strong> ${new Date().toLocaleDateString('fr-FR')}</p>
-        ${data.dueDate ? `<p><strong>Date d'échéance:</strong> ${new Date(data.dueDate).toLocaleDateString('fr-FR')}</p>` : ''}
+        <p><strong>Numéro :</strong> ${escapeHtml(data.invoiceNumber)}</p>
+        <p><strong>Date :</strong> ${new Date().toLocaleDateString("fr-FR")}</p>
+        ${formattedDueDate ? `<p><strong>Date d'échéance :</strong> ${escapeHtml(formattedDueDate)}</p>` : ""}
       </div>
 
       <div class="invoice-info">
         <div class="client-info">
-          <h3>Facturé à:</h3>
-          <p><strong>${data.clientName}</strong></p>
-          ${data.clientEmail ? `<p>${data.clientEmail}</p>` : ''}
-          ${data.clientPhone ? `<p>${data.clientPhone}</p>` : ''}
-          ${data.clientAddress ? `<p>${data.clientAddress}</p>` : ''}
+          <h3>Facturé à :</h3>
+          <p><strong>${escapeHtml(data.clientName)}</strong></p>
+          ${data.clientEmail ? `<p>${escapeHtml(data.clientEmail)}</p>` : ""}
+          ${data.clientPhone ? `<p>${escapeHtml(data.clientPhone)}</p>` : ""}
+          ${data.clientAddress ? `<p>${escapeHtml(data.clientAddress)}</p>` : ""}
         </div>
         <div class="company-info">
           <h3>digitalpro solutions</h3>
           <p>Bvd Koffi Gadaud, Cocody</p>
           <p>Abidjan, Côte d'Ivoire</p>
-          <p>Email: digitalprosolutions27@gmail.com</p>
-          <p>Tél: +225 07 48 97 60 31</p>
+          <p>Email : digitalprosolutions27@gmail.com</p>
+          <p>Tél : +225 07 48 97 60 31</p>
         </div>
       </div>
 
@@ -240,54 +292,68 @@ function generateInvoiceHTML(data: InvoiceData): string {
           </tr>
         </thead>
         <tbody>
-          ${data.items.map(item => `
+          ${data.items
+            .map(
+              (item) => `
             <tr>
-              <td>${item.description}</td>
+              <td>${escapeHtml(item.description)}</td>
               <td>${item.quantity}</td>
-              <td>${item.unitPrice.toLocaleString('fr-FR')} FCFA</td>
-              <td>${item.total.toLocaleString('fr-FR')} FCFA</td>
+              <td>${item.unitPrice.toLocaleString("fr-FR")} FCFA</td>
+              <td>${item.total.toLocaleString("fr-FR")} FCFA</td>
             </tr>
-          `).join('')}
+          `
+            )
+            .join("")}
         </tbody>
       </table>
 
       <div class="totals">
         <div class="total-row">
-          <span class="total-label">Sous-total:</span>
-          <span class="total-value">${subtotal.toLocaleString('fr-FR')} FCFA</span>
+          <span class="total-label">Sous-total :</span>
+          <span class="total-value">${data.subtotal.toLocaleString("fr-FR")} FCFA</span>
         </div>
-        ${data.tax ? `
+        ${
+          data.taxRate
+            ? `
           <div class="total-row">
-            <span class="total-label">TVA (${data.tax}%):</span>
-            <span class="total-value">${taxAmount.toLocaleString('fr-FR')} FCFA</span>
+            <span class="total-label">TVA (${data.taxRate}%) :</span>
+            <span class="total-value">${data.taxAmount.toLocaleString("fr-FR")} FCFA</span>
           </div>
-        ` : ''}
-        ${data.discount ? `
+        `
+            : ""
+        }
+        ${
+          data.discountRate
+            ? `
           <div class="total-row">
-            <span class="total-label">Remise (${data.discount}%):</span>
-            <span class="total-value">-${discountAmount.toLocaleString('fr-FR')} FCFA</span>
+            <span class="total-label">Remise (${data.discountRate}%) :</span>
+            <span class="total-value">-${data.discountAmount.toLocaleString("fr-FR")} FCFA</span>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
         <div class="total-row grand-total">
-          <span class="total-label">TOTAL:</span>
-          <span class="total-value">${total.toLocaleString('fr-FR')} FCFA</span>
+          <span class="total-label">TOTAL :</span>
+          <span class="total-value">${data.total.toLocaleString("fr-FR")} FCFA</span>
         </div>
       </div>
 
-      ${data.notes ? `
+      ${
+        data.notes
+          ? `
         <div style="margin-top: 30px;">
-          <h3>Notes:</h3>
-          <p>${data.notes}</p>
+          <h3>Notes :</h3>
+          <p>${escapeHtml(data.notes).replace(/\n/g, "<br/>")}</p>
         </div>
-      ` : ''}
+      `
+          : ""
+      }
 
       <div class="footer">
-        <p>Merci pour votre confiance!</p>
-        <p>digitalpro solutions - Agence d'intelligence numérique</p>
+        <p>Merci pour votre confiance !</p>
+        <p>digitalpro solutions — Agence d'intelligence numérique</p>
       </div>
     </body>
     </html>
   `;
 }
-
-

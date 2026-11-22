@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight, Compass, Layers, Target, LineChart, ShieldCheck } from "lucide-react";
 import LuxPageLayout from "@/components/lux-page-layout";
@@ -70,22 +68,19 @@ export default function ServicesPage() {
             return (
               <LuxReveal key={track.title} delay={index * 0.06}>
                 <article
-                  className={`lux-card-interactive p-5 md:p-6 h-full flex flex-col ${
-                    track.accent === "red" ? "lux-card-accent-red" : ""
-                  }`}
+                  className={`lux-card-interactive p-5 md:p-6 h-full flex flex-col ${track.accent === "red" ? "lux-card-accent-red" : ""
+                    }`}
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div
-                      className={`lux-icon-badge ${
-                        track.accent === "red" ? "lux-icon-badge-red" : ""
-                      }`}
+                      className={`lux-icon-badge ${track.accent === "red" ? "lux-icon-badge-red" : ""
+                        }`}
                     >
                       <Icon
-                        className={`w-5 h-5 ${
-                          track.accent === "red"
-                            ? "text-[var(--brand-red)]"
-                            : "text-[var(--brand-blue)]"
-                        }`}
+                        className={`w-5 h-5 ${track.accent === "red"
+                          ? "text-[var(--brand-red)]"
+                          : "text-[var(--brand-blue)]"
+                          }`}
                       />
                     </div>
                     <span className="font-mono text-xs font-semibold text-slate-500">{track.num}</span>
@@ -93,11 +88,10 @@ export default function ServicesPage() {
                   <h2 className="text-xl font-bold lux-heading mb-2">{track.title}</h2>
                   <p className="lux-muted text-sm leading-relaxed flex-grow">{track.points}</p>
                   <div
-                    className={`mt-4 pt-3 border-t border-slate-100 text-xs font-semibold ${
-                      track.accent === "red"
-                        ? "text-[var(--brand-red)]"
-                        : "text-[var(--brand-blue)]"
-                    }`}
+                    className={`mt-4 pt-3 border-t border-slate-100 text-xs font-semibold ${track.accent === "red"
+                      ? "text-[var(--brand-red)]"
+                      : "text-[var(--brand-blue)]"
+                      }`}
                   >
                     {track.metric}
                   </div>

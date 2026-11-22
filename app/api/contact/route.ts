@@ -1,69 +1,90 @@
 import { NextResponse } from "next/server";
-
-import nodemailer from "nodemailer";
+import { contactRequestSchema } from "@/lib/api-schemas";
+import { isSmtpConfigured, sendStudioEmail } from "@/lib/mailer";
+import { checkRateLimit, escapeHtml, getClientIp } from "@/lib/security";
 
 export async function POST(req: Request) {
-  if (req.method === "POST") {
+  const ip = getClientIp(req);
+  const rateLimit = checkRateLimit(`contact:${ip}`, {
+    limit: 5,
+    windowMs: 10 * 60_000,
+  });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { success: false, error: "Trop de requêtes. Veuillez réessayer plus tard." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateLimit.retryAfterSec) },
+      }
+    );
+  }
 
-    try {
+  let rawBody: unknown;
+  try {
+    rawBody = await req.json();
+  } catch {
+    return NextResponse.json(
+      { success: false, error: "Corps de requête JSON invalide" },
+      { status: 400 }
+    );
+  }
 
-    const body = await req.json();
-    const {
-      first_name,
-      last_name,
-      email,
-      phone,
-      job_title,
-      company_name,
-      help,
-      services,
-      service,
-      info,
-      message,
-      terms,
-    } = body;
+  const parsed = contactRequestSchema.safeParse(rawBody);
+  if (!parsed.success) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Données invalides",
+        details: parsed.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
+  }
 
-    const resolvedServices = service ?? services;
-    const resolvedInfo = message ?? info;
+  if (!isSmtpConfigured()) {
+    return NextResponse.json(
+      {
+        success: false,
+        error:
+          "Service d'envoi temporairement indisponible. Merci de nous contacter par email ou téléphone.",
+      },
+      { status: 503 }
+    );
+  }
 
+  const data = parsed.data;
+  const resolvedService = data.service ?? data.services ?? "";
+  const resolvedMessage = (data.message ?? data.info ?? "").trim();
 
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: "digitalproslutions01@gmail.com",
-          pass: "glla okbr gnjv ujqw",
-        },
-      });
+  try {
+    await sendStudioEmail({
+      replyTo: data.email,
+      subject: `Nouveau message contact - ${data.first_name} ${data.last_name}`,
+      html: `
+        <h1>Nouveau message de contact</h1>
+        <p><strong>Prénom :</strong> ${escapeHtml(data.first_name)}</p>
+        <p><strong>Nom :</strong> ${escapeHtml(data.last_name)}</p>
+        <p><strong>Email :</strong> ${escapeHtml(data.email)}</p>
+        ${data.phone ? `<p><strong>Téléphone :</strong> ${escapeHtml(data.phone)}</p>` : ""}
+        ${data.job_title ? `<p><strong>Poste :</strong> ${escapeHtml(data.job_title)}</p>` : ""}
+        ${data.company_name ? `<p><strong>Entreprise :</strong> ${escapeHtml(data.company_name)}</p>` : ""}
+        ${resolvedService ? `<p><strong>Service :</strong> ${escapeHtml(resolvedService)}</p>` : ""}
+        ${data.help ? `<p><strong>Objet :</strong> ${escapeHtml(data.help)}</p>` : ""}
+        <p><strong>Message :</strong></p>
+        <p>${escapeHtml(resolvedMessage).replace(/\n/g, "<br/>")}</p>
+        <p><strong>Conditions acceptées :</strong> Oui</p>
+      `,
+    });
 
-      const mailOptions = {
-        from: email,
-        to: "digitalproslutions01@gmail.com",
-        subject: "Contact Form Submission",
-        html: `
-                    <h1>Contact Form</h1>
-                    <p>First Name: ${first_name}</p>
-                    <p>Last Name: ${last_name}</p>
-                    <p>Email: ${email}</p>
-                    ${phone ? `<p>Phone: ${phone}</p>` : ""}
-                    <p>Job Title: ${job_title ?? ""}</p>
-                    <p>Company Name: ${company_name ?? ""}</p>
-                    <p>Services: ${resolvedServices ?? ""}</p>
-                    <p>Help: ${help ?? ""}</p>
-                    <p>Info: ${resolvedInfo ?? ""}</p>
-                    <p>Terms Accepted: ${terms}</p>
-                `,
-      };
-
- 
-      await transporter.sendMail(mailOptions);
-
-      return NextResponse.json("l'email a été envoyé");
-    } catch (_error) {
-      return NextResponse.json("l'email n'a pas été envoyé");
-    }
-  } else {
-    return NextResponse.json('méthode non autorisée');
+    return NextResponse.json({
+      success: true,
+      message: "Message envoyé avec succès",
+    });
+  } catch (error) {
+    console.error("Contact email send error:", error);
+    return NextResponse.json(
+      { success: false, error: "Erreur lors de l'envoi du message" },
+      { status: 500 }
+    );
   }
 }

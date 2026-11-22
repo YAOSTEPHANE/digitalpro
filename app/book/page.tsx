@@ -137,14 +137,23 @@ export default function Book() {
       });
 
       if (!res.ok) {
-        throw new Error("Une erreur est survenue");
+        const payload = (await res.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        throw new Error(
+          payload?.error || "Une erreur est survenue. Veuillez réessayer."
+        );
       }
 
       setBookedSummary(data);
       setSubmitted(true);
       toast.success("Demande de rendez-vous envoyée avec succès !");
-    } catch {
-      toast.error("Une erreur est survenue. Veuillez réessayer.");
+    } catch (err) {
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Une erreur est survenue. Veuillez réessayer."
+      );
     } finally {
       setLoading(false);
     }

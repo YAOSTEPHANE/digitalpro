@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight, Code2, Sparkles, Zap } from "lucide-react";
 import LuxPageLayout from "@/components/lux-page-layout";

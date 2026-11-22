@@ -213,14 +213,23 @@ function QuoteStudioInner() {
       });
 
       if (!res.ok) {
-        throw new Error("Une erreur est survenue");
+        const payload = (await res.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        throw new Error(
+          payload?.error || "Une erreur est survenue. Veuillez réessayer."
+        );
       }
 
       setSubmitted(true);
       toast.success("Demande de devis envoyée avec succès !");
       form.reset();
-    } catch {
-      toast.error("Une erreur est survenue. Veuillez réessayer.");
+    } catch (err) {
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Une erreur est survenue. Veuillez réessayer."
+      );
     } finally {
       setLoading(false);
     }

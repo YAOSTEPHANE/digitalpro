@@ -40,6 +40,7 @@ SERVICES OFFERTS:
 ${AGENCY_SERVICES.map((service) => `• ${service}`).join('\n')}
 
 PAGES CLÉS DU SITE À RECOMMANDER:
+- /a-propos pour découvrir l'agence, notre histoire, nos valeurs et nos pôles d'expertise
 - /devis pour estimer un projet et recevoir un chiffrage personnalisé
 - /book pour réserver une consultation gratuite de 30 minutes
 - /contact pour envoyer un message ou demander un audit rapide

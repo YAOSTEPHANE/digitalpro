@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { chatRequestSchema } from '@/lib/api-schemas'
 import { chatbotConfig } from '@/lib/chatbot-config'
 import { createGeminiInteraction, type GeminiStep } from '@/lib/gemini'
+import { checkRateLimit, getClientIp } from '@/lib/security'
 
 type ChatSource = 'openai' | 'gemini' | 'fallback'
 
@@ -216,40 +218,40 @@ async function getAIResponse(
 }
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request)
+  const rateLimit = checkRateLimit(`chat:${ip}`, {
+    limit: 25,
+    windowMs: 5 * 60_000,
+  })
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Trop de messages envoyés. Réessayez dans un instant.' },
+      {
+        status: 429,
+        headers: { 'Retry-After': String(rateLimit.retryAfterSec) },
+      }
+    )
+  }
+
+  let rawBody: unknown
   try {
-    const { message, history } = await request.json()
+    rawBody = await request.json()
+  } catch {
+    return NextResponse.json({ error: 'Requête JSON invalide' }, { status: 400 })
+  }
 
-    if (!message || typeof message !== 'string') {
-      return NextResponse.json(
-        { error: 'Message invalide' },
-        { status: 400 }
-      )
-    }
+  const parsed = chatRequestSchema.safeParse(rawBody)
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: 'Message invalide', details: parsed.error.flatten().fieldErrors },
+      { status: 400 }
+    )
+  }
 
-    // Valider et formater l'historique de conversation
-    interface HistoryMessage {
-      role: 'user' | 'assistant'
-      content: string
-    }
-    
-    const conversationHistory: Array<{role: string, content: string}> = Array.isArray(history)
-      ? history
-          .slice(-10) // Limiter à 10 messages pour éviter les requêtes trop longues
-          .filter((msg): msg is HistoryMessage => {
-            if (msg === null || typeof msg !== 'object') return false
-            if (!('role' in msg) || !('content' in msg)) return false
-            const role = (msg as { role: unknown }).role
-            const content = (msg as { content: unknown }).content
-            return (
-              (role === 'user' || role === 'assistant') &&
-              typeof content === 'string'
-            )
-          })
-          .map((msg) => ({
-            role: msg.role,
-            content: msg.content,
-          }))
-      : []
+  try {
+    const { message, history } = parsed.data
+    const conversationHistory: Array<{ role: string; content: string }> =
+      (history ?? []).slice(-10)
 
     const { response, source } = await getAIResponse(message, conversationHistory)
 

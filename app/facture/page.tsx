@@ -1,5 +1,3 @@
-"use client";
-
 import LuxPageLayout from "@/components/lux-page-layout";
 import ModernBilling from "@/components/modern-billing";
 

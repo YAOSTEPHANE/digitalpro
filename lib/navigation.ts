@@ -15,6 +15,7 @@ import {
   Sparkles,
   Play,
   Compass,
+  Users,
 } from "lucide-react";
 
 export interface NavItem {
@@ -82,6 +83,26 @@ export const MAIN_NAV_LINKS: NavItem[] = [
     accent: "blue",
     icon: Layers,
     keywords: ["services", "prestations", "agence", "offres", "poles"],
+  },
+  {
+    id: "a-propos",
+    label: "À propos",
+    description: "Notre studio, nos valeurs et notre équipe à Abidjan",
+    href: "/a-propos",
+    badge: "Studio",
+    accent: "blue",
+    icon: Users,
+    keywords: [
+      "a propos",
+      "apropos",
+      "agence",
+      "equipe",
+      "histoire",
+      "abidjan",
+      "studio",
+      "valeurs",
+      "qui sommes nous",
+    ],
   },
   {
     id: "devis",
@@ -220,6 +241,7 @@ export const HOME_ANCHOR_LINKS: NavItem[] = [
 export function getSuggestedNextLinks(pathname: string): NavItem[] {
   const pool = [...SERVICE_NAV_ITEMS, ...MAIN_NAV_LINKS.slice(0, 4)];
   const priorityMap: Record<string, string[]> = {
+    "/a-propos": ["services", "devis", "book"],
     "/services": ["sites", "design", "ecommerce"],
     "/sites-web": ["design", "tech", "devis"],
     "/design": ["sites", "ecommerce", "devis"],

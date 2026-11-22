@@ -275,6 +275,7 @@ export default function ModernFooter() {
               <ul className="space-y-2.5">
                 {[
                   { name: "Accueil", href: "/" },
+                  { name: "À propos de nous", href: "/a-propos" },
                   { name: "Demander un devis", href: "/devis" },
                   { name: "Prendre rendez-vous", href: "/book" },
                   { name: "Tarifs & Facturation", href: "/facture" },

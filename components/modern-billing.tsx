@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import LuxSectionHeader from "@/components/lux-section-header";
 import LuxReveal from "@/components/lux-reveal";
+import { escapeHtml } from "@/lib/security";
 
 const luxFieldClass =
   "bg-white border-slate-200 text-slate-900 placeholder:text-slate-400";
@@ -161,7 +162,7 @@ const ModernBilling = () => {
     </div>
     <div style="text-align:right;">
       <h1 style="margin:0;">FACTURE</h1>
-      <p style="margin:4px 0;"><strong>N° :</strong> ${invoice.invoiceNumber}</p>
+      <p style="margin:4px 0;"><strong>N° :</strong> ${escapeHtml(invoice.invoiceNumber)}</p>
       <p style="margin:4px 0;"><strong>Date :</strong> ${new Date(invoice.createdAt).toLocaleDateString("fr-FR")}</p>
       ${invoice.dueDate ? `<p style="margin:4px 0;"><strong>Échéance :</strong> ${new Date(invoice.dueDate).toLocaleDateString("fr-FR")}</p>` : ""}
     </div>
@@ -169,10 +170,10 @@ const ModernBilling = () => {
   <div class="invoice-info">
     <div>
       <h3>Facturé à :</h3>
-      <p><strong>${invoice.clientName}</strong></p>
-      ${invoice.clientEmail ? `<p>${invoice.clientEmail}</p>` : ""}
-      ${invoice.clientPhone ? `<p>${invoice.clientPhone}</p>` : ""}
-      ${invoice.clientAddress ? `<p>${invoice.clientAddress}</p>` : ""}
+      <p><strong>${escapeHtml(invoice.clientName)}</strong></p>
+      ${invoice.clientEmail ? `<p>${escapeHtml(invoice.clientEmail)}</p>` : ""}
+      ${invoice.clientPhone ? `<p>${escapeHtml(invoice.clientPhone)}</p>` : ""}
+      ${invoice.clientAddress ? `<p>${escapeHtml(invoice.clientAddress)}</p>` : ""}
     </div>
     <div style="text-align:right;">
       <h3>digitalpro solutions</h3>
@@ -190,7 +191,7 @@ const ModernBilling = () => {
       ${invoice.items
         .map(
           (item) => `<tr>
-            <td>${item.description}</td>
+            <td>${escapeHtml(item.description)}</td>
             <td>${item.quantity}</td>
             <td>${item.unitPrice.toLocaleString("fr-FR")} FCFA</td>
             <td>${item.total.toLocaleString("fr-FR")} FCFA</td>
@@ -205,7 +206,7 @@ const ModernBilling = () => {
     ${invoice.discount ? `<div class="total-row"><span class="total-label">Remise (${invoice.discount}%) :</span><span class="total-value">-${discountAmount.toLocaleString("fr-FR")} FCFA</span></div>` : ""}
     <div class="total-row grand-total"><span class="total-label">TOTAL :</span><span class="total-value">${total.toLocaleString("fr-FR")} FCFA</span></div>
   </div>
-  ${invoice.notes ? `<div style="margin-top:30px;"><h3>Notes :</h3><p>${invoice.notes}</p></div>` : ""}
+  ${invoice.notes ? `<div style="margin-top:30px;"><h3>Notes :</h3><p>${escapeHtml(invoice.notes).replace(/\n/g, "<br/>")}</p></div>` : ""}
 </body>
 </html>`;
   };

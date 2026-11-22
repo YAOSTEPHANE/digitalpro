@@ -7,10 +7,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Pages principales du site
   const routes = [
     '',
+    '/a-propos',
+    '/services',
+    '/sites-web',
+    '/design',
+    '/e-commerce',
+    '/technologies',
     '/contact',
     '/book',
     '/devis',
     '/facture',
+    '/faq',
+    '/retours',
   ]
 
   // Génération des entrées du sitemap
