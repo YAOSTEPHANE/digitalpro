@@ -21,6 +21,8 @@ import {
   ArrowRight,
   ArrowLeft,
   ShieldCheck,
+  Check,
+  Sparkles,
 } from "lucide-react";
 import LuxPageLayout from "@/components/lux-page-layout";
 import LuxSectionHeader from "@/components/lux-section-header";
@@ -123,6 +125,7 @@ function QuoteStudioInner() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const hasPrefill = Boolean(searchParams.get("estimate") || searchParams.get("offre"));
 
   const form = useForm<QuoteValues>({
     resolver: zodResolver(QuoteSchema),
@@ -255,6 +258,13 @@ function QuoteStudioInner() {
       {!submitted ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-8">
+            <div className="mb-3 h-1.5 w-full rounded-full bg-slate-200/80 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-[var(--brand-blue)] transition-all duration-300"
+                style={{ width: step === 1 ? "33.33%" : step === 2 ? "66.66%" : "100%" }}
+              />
+            </div>
+
             <div className="mb-6 grid grid-cols-3 gap-2">
               {[
                 { id: 1 as const, label: "Coordonnées" },
@@ -273,11 +283,14 @@ function QuoteStudioInner() {
                         ? "border-[var(--brand-blue)] bg-[var(--brand-blue)] text-white shadow-sm"
                         : done
                           ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                          : "border-slate-200 bg-white text-slate-600"
+                          : "border-slate-200 bg-white text-slate-600 hover:border-[var(--brand-blue)]/40"
                     }`}
                   >
-                    <div className="font-mono text-[10px] opacity-80">0{item.id}</div>
-                    <div className="text-xs sm:text-sm font-semibold truncate">{item.label}</div>
+                    <div className="flex items-center justify-between gap-1 font-mono text-[10px] opacity-85">
+                      <span>0{item.id}</span>
+                      {done ? <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> : null}
+                    </div>
+                    <div className="text-xs sm:text-sm font-semibold truncate mt-0.5">{item.label}</div>
                   </button>
                 );
               })}
@@ -687,41 +700,50 @@ function QuoteStudioInner() {
           </div>
 
           <aside className="lg:col-span-4 lg:sticky lg:top-28 space-y-5">
-            <div className="lux-section-premium !p-6 space-y-5">
-              <div>
-                <p className="lux-label mb-1">Synthèse live</p>
-                <h3 className="lux-heading text-2xl">Votre configuration</h3>
-              </div>
+            <div className="lux-section-premium !p-0 overflow-hidden">
+              <div className="h-1.5 w-full bg-[var(--brand-blue)]" aria-hidden />
+              <div className="p-6 space-y-5">
+                <div>
+                  <p className="lux-label mb-1">Synthèse live</p>
+                  <h3 className="lux-heading text-2xl">Votre configuration</h3>
+                  {hasPrefill ? (
+                    <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-[#eef2f9] border border-[rgba(81,102,153,0.22)] px-3 py-1 text-[11px] font-semibold text-[var(--brand-blue)]">
+                      <Sparkles className="w-3 h-3 shrink-0" />
+                      Pré-rempli depuis votre simulation
+                    </div>
+                  ) : null}
+                </div>
 
-              <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 text-xs md:text-sm">
-                <div className="flex justify-between gap-2">
-                  <span className="text-slate-500">Service</span>
-                  <span className="font-semibold text-slate-900 text-right">{watchedService}</span>
+                <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 text-xs md:text-sm">
+                  <div className="flex justify-between gap-2">
+                    <span className="text-slate-500">Service</span>
+                    <span className="font-semibold text-slate-900 text-right">{watchedService}</span>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <span className="text-slate-500">Nature</span>
+                    <span className="text-slate-900 text-right">{watchedType}</span>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <span className="text-slate-500">Enveloppe</span>
+                    <span className="font-semibold text-[var(--brand-blue)] text-right">
+                      {watchedBudget}
+                    </span>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <span className="text-slate-500">Échéance</span>
+                    <span className="text-slate-900 text-right">{watchedTimeline}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between gap-2">
-                  <span className="text-slate-500">Nature</span>
-                  <span className="text-slate-900 text-right">{watchedType}</span>
-                </div>
-                <div className="flex justify-between gap-2">
-                  <span className="text-slate-500">Enveloppe</span>
-                  <span className="font-semibold text-[var(--brand-blue)] text-right">
-                    {watchedBudget}
-                  </span>
-                </div>
-                <div className="flex justify-between gap-2">
-                  <span className="text-slate-500">Échéance</span>
-                  <span className="text-slate-900 text-right">{watchedTimeline}</span>
-                </div>
-              </div>
 
-              <div className="space-y-2 text-xs text-slate-600">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
-                  <span>Devis chiffré par lots envoyé sous 24h</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
-                  <span>Sans engagement ni frais cachés</span>
+                <div className="space-y-2 text-xs text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
+                    <span>Devis chiffré par lots envoyé sous 24h</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
+                    <span>Sans engagement ni frais cachés</span>
+                  </div>
                 </div>
               </div>
             </div>

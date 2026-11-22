@@ -1,7 +1,7 @@
 "use client";
- 
+
 import { cn } from "@/lib/utils";
- 
+
 import React, {
   createContext,
   useState,
@@ -10,11 +10,11 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
- 
+
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
- 
+
 export const CardContainer = ({
   children,
   className,
@@ -26,19 +26,27 @@ export const CardContainer = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
- 
+
+  const isMotionAllowed = () => {
+    if (typeof window === "undefined") return false;
+    return (
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !isMotionAllowed()) return;
     const { left, top, width, height } =
       containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 25;
-    const y = (e.clientY - top - height / 2) / 25;
+    const x = (e.clientX - left - width / 2) / 48;
+    const y = (e.clientY - top - height / 2) / 48;
     containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
   };
- 
+
   const handleMouseEnter = () => {
+    if (!isMotionAllowed()) return;
     setIsMouseEntered(true);
-    if (!containerRef.current) return;
   };
 
   const handleMouseLeave = () => {
@@ -54,7 +62,7 @@ export const CardContainer = ({
           containerClassName
         )}
         style={{
-          perspective: "1000px",
+          perspective: "1200px",
         }}
       >
         <div
@@ -76,7 +84,7 @@ export const CardContainer = ({
     </MouseEnterContext.Provider>
   );
 };
- 
+
 export const CardBody = ({
   children,
   className,
@@ -95,7 +103,7 @@ export const CardBody = ({
     </div>
   );
 };
- 
+
 export const CardItem = ({
   as: Tag = "div",
   children,
@@ -121,20 +129,25 @@ export const CardItem = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isMouseEntered] = useMouseEnter();
- 
+
   const handleAnimations = useCallback(() => {
     if (!ref.current) return;
+    const parsedZ =
+      typeof translateZ === "number" ? translateZ : parseFloat(String(translateZ));
+    const clampedZ = Number.isFinite(parsedZ)
+      ? Math.max(-16, Math.min(parsedZ, 16))
+      : 0;
     if (isMouseEntered) {
-      ref.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
+      ref.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${clampedZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
     } else {
       ref.current.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
     }
   }, [isMouseEntered, translateX, translateY, translateZ, rotateX, rotateY, rotateZ]);
-  
+
   useEffect(() => {
     handleAnimations();
   }, [handleAnimations]);
- 
+
   // Prevent invalid HTML like <p><div>... by substituting a div when Tag is 'p'
   const SafeTag: React.ElementType =
     typeof Tag === "string" && Tag.toLowerCase() === "p" ? "div" : Tag;
@@ -149,7 +162,7 @@ export const CardItem = ({
     </SafeTag>
   );
 };
- 
+
 // Create a hook to use the context
 export const useMouseEnter = () => {
   const context = useContext(MouseEnterContext);

@@ -51,29 +51,30 @@ export default function LuxPageLayout({
       <StarsBackground />
       <ModernNavbar />
       <main
+        id="main-content"
         className={`mx-auto relative z-10 w-full px-4 md:px-6 pt-24 sm:pt-28 xl:pt-36 pb-20 ${maxWidthClass[maxWidth]}`}
       >
         {breadcrumb ? (
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <div className="mb-7 flex flex-wrap items-center justify-between gap-3">
             <nav
               aria-label="Fil d'Ariane"
-              className="inline-flex items-center gap-2 rounded-full border border-[rgba(81,102,153,0.18)] bg-white/85 px-3.5 py-1.5 text-xs text-slate-600 shadow-xs backdrop-blur-md"
+              className="inline-flex items-center gap-2 rounded-full border border-[rgba(81,102,153,0.18)] bg-white/92 px-3.5 py-1.5 text-xs text-slate-600 shadow-xs backdrop-blur-md"
             >
               <Link
                 href="/"
-                className="inline-flex items-center gap-1.5 hover:text-[var(--brand-blue)] transition-colors"
+                className="inline-flex items-center gap-1.5 font-medium hover:text-[var(--brand-blue)] transition-colors"
               >
                 <Home className="h-3.5 w-3.5 text-[var(--brand-blue)]" />
                 <span>Accueil</span>
               </Link>
-              <ChevronRight className="h-3.5 w-3.5 opacity-60" />
+              <ChevronRight className="h-3.5 w-3.5 opacity-55" />
               <span className="text-slate-900 font-semibold">{breadcrumb}</span>
             </nav>
 
             <button
               type="button"
               onClick={() => window.dispatchEvent(new CustomEvent("digitalpro:open-search"))}
-              className="hidden sm:inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/85 px-3.5 py-1.5 text-xs text-slate-600 hover:border-[var(--brand-blue)] hover:text-slate-900 transition-colors shadow-2xs backdrop-blur-md"
+              className="hidden sm:inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/92 px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:border-[var(--brand-blue)] hover:text-slate-900 transition-colors shadow-xs backdrop-blur-md"
             >
               <Search className="h-3.5 w-3.5 text-[var(--brand-blue)]" />
               <span>Accès rapide</span>
@@ -89,20 +90,21 @@ export default function LuxPageLayout({
         {suggestions.length > 0 ? (
           <section
             aria-label="Continuer l'exploration"
-            className="mt-14 pt-10 border-t border-slate-200/80"
+            className="mt-16 pt-12 border-t border-slate-200/80"
           >
-            <div className="flex items-center justify-between gap-4 mb-5">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
               <div>
-                <p className="lux-label mb-1">Parcours recommandé</p>
-                <h2 className="font-display text-2xl font-semibold text-slate-900">
+                <p className="lux-label mb-1.5">Parcours recommandé</p>
+                <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
                   Continuer l&apos;exploration
                 </h2>
               </div>
               <Link
                 href="/services"
-                className="text-xs font-semibold text-[var(--brand-blue)] hover:text-slate-900 inline-flex items-center gap-1 transition-colors"
+                className="text-xs font-semibold text-[var(--brand-blue)] hover:text-slate-900 inline-flex items-center gap-1 transition-colors group w-fit"
               >
-                Tous les services <ArrowUpRight className="w-3.5 h-3.5" />
+                Tous les services
+                <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             </div>
 
@@ -113,7 +115,9 @@ export default function LuxPageLayout({
                   <Link
                     key={item.id}
                     href={item.href}
-                    className="group lux-card-interactive p-5 flex items-start justify-between gap-3"
+                    className={`group lux-card-interactive p-5 flex items-start justify-between gap-3 ${
+                      item.accent === "red" ? "lux-card-accent-red" : ""
+                    }`}
                   >
                     <div className="flex items-start gap-3">
                       <div
@@ -132,8 +136,8 @@ export default function LuxPageLayout({
                         />
                       </div>
                       <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-slate-900 group-hover:text-[var(--brand-blue)] transition-colors">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-display text-base font-bold text-slate-900 group-hover:text-[var(--brand-blue)] transition-colors">
                             {item.label}
                           </span>
                           {item.badge ? (
@@ -142,12 +146,12 @@ export default function LuxPageLayout({
                             </span>
                           ) : null}
                         </div>
-                        <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                        <p className="text-xs sm:text-[13px] text-slate-600 mt-1 leading-relaxed">
                           {item.description}
                         </p>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[var(--brand-blue)] shrink-0 mt-1 transition-colors" />
+                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[var(--brand-blue)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0 mt-1 transition-all" />
                   </Link>
                 );
               })}

@@ -13,7 +13,7 @@ export default function FAQPage() {
         title="Les réponses utiles pour avancer rapidement sur votre projet"
         description="Délais, budget, méthodes, intégrations de paiement et maintenance : retrouvez ici l'essentiel avant de lancer votre projet."
       />
-      <FAQS />
+      <FAQS hideHeader />
     </LuxPageLayout>
   );
 }

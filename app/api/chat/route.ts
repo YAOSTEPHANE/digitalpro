@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { chatbotConfig } from '@/lib/chatbot-config'
+import { createGeminiInteraction, type GeminiStep } from '@/lib/gemini'
 
 // Base de connaissances améliorée pour les réponses de fallback
 const knowledgeBase: { [key: string]: string | ((message: string) => string) } = {
@@ -117,54 +118,30 @@ async function getGeminiResponse(
   message: string,
   conversationHistory: Array<{role: string, content: string}> = []
 ): Promise<string | null> {
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY
-  
-  if (!GEMINI_API_KEY) {
-    return null
-  }
-
   try {
-    const messages = conversationHistory
-      .filter(msg => msg.role !== 'system')
-      .slice(-5)
-      .map(msg => ({
-        role: msg.role === 'assistant' ? 'model' : 'user',
-        parts: [{ text: msg.content }],
-      }))
-
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${chatbotConfig.aiConfig.gemini.model}:generateContent?key=${GEMINI_API_KEY}`,
+    const steps: GeminiStep[] = [
+      ...conversationHistory
+        .filter((msg) => msg.role !== 'system')
+        .slice(-5)
+        .map(
+          (msg): GeminiStep => ({
+            type: msg.role === 'assistant' ? 'model_output' : 'user_input',
+            content: [{ type: 'text', text: msg.content }],
+          })
+        ),
       {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [{ text: chatbotConfig.systemPrompt }],
-            },
-            ...messages,
-            {
-              parts: [{ text: message }],
-            },
-          ],
-          generationConfig: {
-            maxOutputTokens: chatbotConfig.aiConfig.gemini.maxTokens,
-            temperature: chatbotConfig.aiConfig.gemini.temperature,
-          },
-        }),
-      }
-    )
+        type: 'user_input',
+        content: [{ type: 'text', text: message }],
+      },
+    ]
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      console.error('Gemini API error:', response.status, errorData)
-      return null
-    }
-
-    const data = await response.json()
-    return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null
+    return await createGeminiInteraction({
+      model: chatbotConfig.aiConfig.gemini.model,
+      systemInstruction: chatbotConfig.systemPrompt,
+      input: steps,
+      thinkingLevel: chatbotConfig.aiConfig.gemini.thinkingLevel,
+      store: false,
+    })
   } catch (error) {
     console.error('Gemini API error:', error)
     return null

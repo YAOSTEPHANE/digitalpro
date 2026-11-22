@@ -99,6 +99,21 @@ const ServicesVideo = ({
     setCurrentTime(ratio * duration);
   };
 
+  const handleProgressKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!videoRef.current || !duration) return;
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      const nextTime = Math.max(0, videoRef.current.currentTime - 5);
+      videoRef.current.currentTime = nextTime;
+      setCurrentTime(nextTime);
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      const nextTime = Math.min(duration, videoRef.current.currentTime + 5);
+      videoRef.current.currentTime = nextTime;
+      setCurrentTime(nextTime);
+    }
+  };
+
   const handleFullscreen = () => {
     const target = videoRef.current ?? playerContainerRef.current;
     if (!target) return;
@@ -142,7 +157,7 @@ const ServicesVideo = ({
     <section id="showreel" className="relative w-full py-12 md:py-16 overflow-hidden px-2 scroll-mt-28">
       <div className="lux-section-premium lux-section-spotlight relative">
         <LuxSectionHeader
-          indexLabel="06"
+          indexLabel="07"
           label="Showreel"
           title={title}
           description={description}
@@ -212,16 +227,17 @@ const ServicesVideo = ({
                 {/* Barre de progression interactive */}
                 <div
                   onClick={handleSeek}
+                  onKeyDown={handleProgressKeyDown}
                   role="slider"
                   aria-label="Progression du showreel"
                   aria-valuemin={0}
                   aria-valuemax={Math.round(duration)}
                   aria-valuenow={Math.round(currentTime)}
                   tabIndex={0}
-                  className="absolute bottom-0 left-0 right-0 h-2 bg-white/20 cursor-pointer z-10 hover:h-2.5 transition-all"
+                  className="group/bar absolute bottom-0 left-0 right-0 h-2 bg-white/20 cursor-pointer z-10 hover:h-2.5 transition-all"
                 >
                   <div
-                    className="h-full bg-[var(--brand-red)] transition-all duration-150"
+                    className="h-full bg-[var(--brand-red)] transition-all duration-150 group-hover/bar:brightness-110"
                     style={{ width: `${progressPct}%` }}
                   />
                 </div>
@@ -289,8 +305,10 @@ const ServicesVideo = ({
             return (
               <LuxReveal key={card.title} delay={0.18 + index * 0.08}>
                 <div
-                  className={`lux-card-interactive p-6 h-full flex flex-col ${
-                    card.accent === "blue" ? "brand-border-blue" : "brand-border-red"
+                  className={`group lux-card-interactive p-6 h-full flex flex-col ${
+                    card.accent === "red"
+                      ? "lux-card-accent-red brand-border-red"
+                      : "brand-border-blue"
                   }`}
                 >
                   <div
@@ -304,7 +322,7 @@ const ServicesVideo = ({
                       }`}
                     />
                   </div>
-                  <h3 className="font-display text-xl font-semibold text-slate-900 mb-2">
+                  <h3 className="font-display text-xl font-bold text-slate-900 mb-2">
                     {card.title}
                   </h3>
                   <p className="text-slate-600 text-sm mb-4 leading-relaxed flex-grow">{card.text}</p>
@@ -312,7 +330,8 @@ const ServicesVideo = ({
                     href={card.href}
                     className={`text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-1.5 transition-colors ${card.linkClass}`}
                   >
-                    Explorer <ExternalLink className="w-3.5 h-3.5" />
+                    Explorer{" "}
+                    <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </Link>
                 </div>
               </LuxReveal>

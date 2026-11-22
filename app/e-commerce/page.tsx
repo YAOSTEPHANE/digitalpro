@@ -82,14 +82,14 @@ export default function ECommercePage() {
             {ecommerceFeatures.map((feat) => {
               const Icon = feat.icon;
               return (
-                <article key={feat.title} className="lux-card-interactive p-5 h-full">
+                <article key={feat.title} className="lux-card-subtle p-5 h-full">
                   <div className="lux-icon-badge w-fit mb-3">
-                    <Icon className="w-5 h-5 text-[var(--brand-blue-light)]" />
+                    <Icon className="w-5 h-5 text-[var(--brand-blue)]" />
                   </div>
-                  <h3 className="font-display text-lg font-semibold text-[var(--lux-champagne)] mb-1.5">
+                  <h3 className="font-display text-lg font-bold text-slate-900 mb-1.5">
                     {feat.title}
                   </h3>
-                  <p className="text-xs md:text-sm lux-muted leading-relaxed">{feat.text}</p>
+                  <p className="text-sm lux-muted leading-relaxed">{feat.text}</p>
                 </article>
               );
             })}

@@ -122,7 +122,7 @@ const ModernHero = () => {
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[5.25rem] font-semibold mb-6 leading-[0.98] tracking-tight max-w-5xl mx-auto"
+          className="font-display text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[5.25rem] font-extrabold mb-6 leading-[1.02] tracking-[-0.035em] max-w-5xl mx-auto"
         >
           <span className="lux-gradient-text">L&apos;excellence digitale</span>
           <br />
@@ -130,7 +130,7 @@ const ModernHero = () => {
           <span className="relative inline-block text-slate-900">
             marque
             <span
-              className="absolute -bottom-1 left-0 right-0 h-[3px] rounded-full bg-[var(--brand-red)]"
+              className="absolute -bottom-1 left-0 right-0 h-[3.5px] rounded-full bg-gradient-to-r from-[var(--brand-red)]/60 via-[var(--brand-red)] to-[var(--brand-red)]/60"
               aria-hidden
             />
           </span>
@@ -140,7 +140,7 @@ const ModernHero = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.18 }}
-          className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed font-normal"
+          className="lux-lead max-w-2xl mx-auto mb-10"
         >
           Nous concevons des plateformes web, applications SaaS et boutiques e-commerce
           d&apos;exception — direction artistique raffinée, vitesse irréprochable et parcours
@@ -167,10 +167,10 @@ const ModernHero = () => {
             Demander un devis sur mesure
           </Link>
           <a
-            href="#simulateur"
+            href="#nos-realisations"
             className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand-blue)] hover:text-slate-900 transition-colors"
           >
-            Simuler un budget
+            Voir nos réalisations
             <ArrowUpRight className="w-3.5 h-3.5" />
           </a>
         </motion.div>
@@ -183,17 +183,18 @@ const ModernHero = () => {
           className="flex flex-wrap items-center justify-center gap-2 mb-12"
         >
           {[
-            { label: "01 Réalisations", href: "#realisations" },
+            { label: "01 Savoir-faire", href: "#realisations" },
             { label: "02 Méthode", href: "#methode" },
             { label: "03 Comparatif", href: "#comparatif" },
-            { label: "04 Simulateur", href: "#simulateur" },
+            { label: "04 Nos réalisations", href: "#nos-realisations" },
             { label: "05 Offres -50%", href: "#offres" },
-            { label: "06 Showreel", href: "#showreel" },
+            { label: "06 Briefing IA", href: "#conseil" },
+            { label: "07 Showreel", href: "#showreel" },
           ].map((anchor) => (
             <a
               key={anchor.href}
               href={anchor.href}
-              className="rounded-full border border-slate-200/90 bg-white/80 px-3 py-1 text-[11px] font-medium text-slate-600 hover:border-[var(--brand-blue)] hover:bg-white hover:text-[var(--brand-blue)] transition-all shadow-2xs backdrop-blur-md"
+              className="rounded-full border border-slate-200/90 bg-white/85 px-3.5 py-1.5 text-[11px] font-semibold text-slate-600 hover:border-[var(--brand-blue)] hover:bg-white hover:text-[var(--brand-blue)] transition-all shadow-2xs backdrop-blur-md"
             >
               {anchor.label}
             </a>
@@ -213,7 +214,8 @@ const ModernHero = () => {
               <Link
                 key={card.title}
                 href={card.href}
-                className="group lux-card-interactive p-2.5 flex flex-col"
+                className={`group lux-card-interactive p-3 flex flex-col ${card.accent === "red" ? "lux-card-accent-red" : ""
+                  }`}
               >
                 <div className="relative overflow-hidden rounded-xl h-44 w-full">
                   <Image3D
@@ -240,14 +242,17 @@ const ModernHero = () => {
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center justify-between px-2 pt-3 pb-1.5">
+                <div className="flex items-center justify-between px-2 pt-3.5 pb-1.5">
                   <div className="flex items-start gap-2.5">
-                    <Icon className="w-4 h-4 text-[var(--brand-blue)] shrink-0 mt-0.5" />
+                    <Icon
+                      className={`w-4 h-4 shrink-0 mt-1 ${card.accent === "red" ? "text-[var(--brand-red)]" : "text-[var(--brand-blue)]"
+                        }`}
+                    />
                     <div>
-                      <span className="text-sm font-semibold text-slate-900 group-hover:text-[var(--brand-blue)] transition-colors block leading-snug">
+                      <span className="font-display text-base font-bold text-slate-900 group-hover:text-[var(--brand-blue)] transition-colors block leading-snug">
                         {card.title}
                       </span>
-                      <span className="text-[11px] text-slate-500 block mt-0.5">
+                      <span className="text-xs text-slate-500 block mt-0.5">
                         {card.subtitle}
                       </span>
                     </div>
@@ -271,13 +276,13 @@ const ModernHero = () => {
             return (
               <div
                 key={stat.label}
-                className="lux-card-interactive px-4 py-5 text-center flex flex-col items-center justify-center"
+                className="lux-card-kpi px-4 py-5 text-center flex flex-col items-center justify-center"
               >
                 <div className="mb-2.5 flex h-9 w-9 items-center justify-center rounded-xl border border-[rgba(81,102,153,0.18)] bg-[rgba(81,102,153,0.08)]">
                   <Icon className="w-4 h-4 text-[var(--brand-blue)]" />
                 </div>
                 <div className="lux-stat-number tabular-nums mb-1">{stat.number}</div>
-                <div className="text-xs md:text-sm text-slate-600">{stat.label}</div>
+                <div className="text-xs md:text-sm font-medium text-slate-600">{stat.label}</div>
               </div>
             );
           })}

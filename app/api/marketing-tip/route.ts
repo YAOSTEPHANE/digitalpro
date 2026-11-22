@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type { BrandAccent } from '@/lib/brand';
+import {
+  createGeminiInteraction,
+  DEFAULT_GEMINI_MODEL,
+  getGeminiApiKey,
+} from '@/lib/gemini';
 
 // Interface pour le conseil généré
 interface MarketingTip {
@@ -53,11 +58,9 @@ export async function GET(request: NextRequest) {
 
     // Appeler l'API Gemini si disponible, sinon utiliser un conseil généré localement
     let tip: MarketingTip;
+    const apiKey = getGeminiApiKey();
 
-    // Utiliser la clé API Gemini fournie
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyBeHODPwS3VpZsI7YgBQ7m8xUjduB9mOC4';
-
-    if (GEMINI_API_KEY) {
+    if (apiKey) {
       try {
         const prompt = `Tu es un expert en marketing digital. Génère un conseil pratique et actionnable en marketing digital pour le jour ${dayOfYear} de l'année.
 
@@ -78,202 +81,75 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
   "category": "${selectedCategory}"
 }`;
 
-        // Générer le texte du conseil avec Gemini
-        // Essayer d'abord avec gemini-1.5-flash (plus récent), puis gemini-pro en fallback
-        let geminiResponse;
-        let modelUsed = 'gemini-1.5-flash';
-        
-        try {
-          geminiResponse = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/${modelUsed}:generateContent?key=${GEMINI_API_KEY}`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
+        const responseText = await createGeminiInteraction({
+          model: DEFAULT_GEMINI_MODEL,
+          systemInstruction:
+            'Tu es un expert en marketing digital qui donne des conseils pratiques et actionnables en français. Réponds uniquement en JSON valide.',
+          input: prompt,
+          thinkingLevel: 'low',
+          store: false,
+          responseFormat: {
+            type: 'text',
+            mime_type: 'application/json',
+            schema: {
+              type: 'object',
+              properties: {
+                title: { type: 'string' },
+                content: { type: 'string' },
+                category: { type: 'string' },
               },
-              body: JSON.stringify({
-                contents: [
-                  {
-                    parts: [
-                      {
-                        text: `Tu es un expert en marketing digital qui donne des conseils pratiques et actionnables. Réponds toujours en JSON valide.\n\n${prompt}`,
-                      },
-                    ],
-                  },
-                ],
-                generationConfig: {
-                  temperature: 0.8,
-                  maxOutputTokens: 500,
-                  responseMimeType: 'application/json',
-                },
-              }),
-            }
-          );
+              required: ['title', 'content', 'category'],
+            },
+          },
+        });
 
-          // Si le modèle flash n'est pas disponible, essayer gemini-pro
-          if (!geminiResponse.ok && geminiResponse.status === 404) {
-            modelUsed = 'gemini-pro';
-            geminiResponse = await fetch(
-              `https://generativelanguage.googleapis.com/v1beta/models/${modelUsed}:generateContent?key=${GEMINI_API_KEY}`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  contents: [
-                    {
-                      parts: [
-                        {
-                          text: `Tu es un expert en marketing digital qui donne des conseils pratiques et actionnables. Réponds toujours en JSON valide.\n\n${prompt}`,
-                        },
-                      ],
-                    },
-                  ],
-                  generationConfig: {
-                    temperature: 0.8,
-                    maxOutputTokens: 500,
-                    responseMimeType: 'application/json',
-                  },
-                }),
-              }
-            );
-          }
-
-          if (!geminiResponse.ok) {
-            const errorData = await geminiResponse.json().catch(() => ({}));
-            throw new Error(`Gemini API error (${modelUsed}): ${geminiResponse.status} - ${JSON.stringify(errorData)}`);
-          }
-        } catch (fetchError: unknown) {
-          const errorMessage = fetchError instanceof Error ? fetchError.message : 'Unknown error';
-          throw new Error(`Gemini API fetch error: ${errorMessage}`);
-        }
-
-        const geminiData = await geminiResponse.json();
-        const responseText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        if (responseText) {
-          let aiTip;
-          try {
-            // Essayer de parser le JSON directement
-            aiTip = JSON.parse(responseText);
-          } catch {
-            // Si le JSON est dans un bloc de code, extraire le contenu
-            const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-              aiTip = JSON.parse(jsonMatch[0]);
-            } else {
-              throw new Error('Could not parse JSON from Gemini response');
-            }
-          }
-
-          // Générer une image avec Gemini (Imagen)
-          let generatedImage = categoryImages[selectedCategory] || categoryImages['Contenu'];
-
-          try {
-            // Générer des mots-clés pour l'image avec Gemini
-
-            // Utiliser Gemini pour générer une description d'image, puis utiliser Imagen ou une alternative
-            // Note: Gemini ne génère pas directement des images, on utilise une description améliorée
-            // Pour les images, on peut utiliser un service comme Unsplash avec des mots-clés générés
-            
-            // Générer des mots-clés pour l'image avec Gemini
-            let imageKeywordsResponse;
-            try {
-              // Essayer d'abord avec gemini-1.5-flash
-              imageKeywordsResponse = await fetch(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    contents: [
-                      {
-                        parts: [
-                          {
-                            text: `Génère 3-5 mots-clés en anglais pour rechercher une image sur Unsplash qui illustre le concept: "${aiTip.title}" en marketing digital. Réponds uniquement avec les mots-clés séparés par des virgules, sans autre texte.`,
-                          },
-                        ],
-                      },
-                    ],
-                    generationConfig: {
-                      temperature: 0.7,
-                      maxOutputTokens: 50,
-                    },
-                  }),
-                }
-              );
-
-              // Si le modèle flash n'est pas disponible, essayer gemini-pro
-              if (!imageKeywordsResponse.ok && imageKeywordsResponse.status === 404) {
-                imageKeywordsResponse = await fetch(
-                  `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
-                  {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      contents: [
-                        {
-                          parts: [
-                            {
-                              text: `Génère 3-5 mots-clés en anglais pour rechercher une image sur Unsplash qui illustre le concept: "${aiTip.title}" en marketing digital. Réponds uniquement avec les mots-clés séparés par des virgules, sans autre texte.`,
-                            },
-                          ],
-                        },
-                      ],
-                      generationConfig: {
-                        temperature: 0.7,
-                        maxOutputTokens: 50,
-                      },
-                    }),
-                  }
-                );
-              }
-            } catch (_imageKeywordsError) {
-              // Si la génération de mots-clés échoue, on continue avec l'image par défaut
-              imageKeywordsResponse = null;
-            }
-
-            if (imageKeywordsResponse && imageKeywordsResponse.ok) {
-              try {
-                const keywordsData = await imageKeywordsResponse.json();
-                const keywords = keywordsData.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || 'marketing digital technology';
-                // Utiliser Unsplash avec les mots-clés générés
-                generatedImage = `https://source.unsplash.com/800x600/?${encodeURIComponent(keywords)}`;
-              } catch (parseError) {
-                // En cas d'erreur de parsing, utiliser l'image par défaut
-                console.error('Error parsing image keywords:', parseError);
-              }
-            }
-          } catch (imageError) {
-            console.error('Error generating image keywords:', imageError);
-            // Utiliser l'image de fallback si la génération échoue
-          }
-
-          tip = {
-            ...aiTip,
-            day: dayOfYear,
-            image: generatedImage,
-            accent: dayOfYear % 2 === 0 ? "blue" : "red",
-          };
-        } else {
+        if (!responseText) {
           throw new Error('No response from Gemini');
         }
-      } catch (error: unknown) {
-        // Logger l'erreur seulement si ce n'est pas une erreur 404 (modèle non disponible)
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        if (errorMessage && !errorMessage.includes('404')) {
-          console.error('Gemini error, using fallback:', errorMessage);
+
+        let aiTip: {
+          title?: unknown;
+          content?: unknown;
+          category?: unknown;
+        };
+        try {
+          aiTip = JSON.parse(responseText);
+        } catch {
+          const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+          if (!jsonMatch) {
+            throw new Error('Could not parse JSON from Gemini response');
+          }
+          aiTip = JSON.parse(jsonMatch[0]);
         }
-        // Fallback vers génération locale
+
+        if (
+          typeof aiTip?.title !== 'string' ||
+          !aiTip.title.trim() ||
+          typeof aiTip?.content !== 'string' ||
+          !aiTip.content.trim()
+        ) {
+          throw new Error('Invalid tip structure returned by Gemini');
+        }
+
+        tip = {
+          title: aiTip.title.trim(),
+          content: aiTip.content.trim(),
+          category:
+            typeof aiTip.category === 'string' && aiTip.category.trim()
+              ? aiTip.category.trim()
+              : selectedCategory,
+          day: dayOfYear,
+          image: categoryImages[selectedCategory] || categoryImages['Contenu'],
+          accent: dayOfYear % 2 === 0 ? "blue" : "red",
+        };
+      } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error ? error.message : 'Unknown error';
+        console.error('Gemini error, using fallback:', errorMessage);
         tip = generateLocalTip(dayOfYear, selectedCategory, categoryImages);
       }
     } else {
-      // Génération locale sans API
+      // Génération locale sans clé Gemini valide
       tip = generateLocalTip(dayOfYear, selectedCategory, categoryImages);
     }
 

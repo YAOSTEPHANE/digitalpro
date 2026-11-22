@@ -16,6 +16,7 @@ import {
   Video,
   MapPin,
   ShieldCheck,
+  Check,
 } from "lucide-react";
 import LuxPageLayout from "@/components/lux-page-layout";
 import LuxSectionHeader from "@/components/lux-section-header";
@@ -211,12 +212,15 @@ export default function Book() {
                                 key={date.value}
                                 type="button"
                                 onClick={() => field.onChange(date.value)}
-                                className={`rounded-xl border p-3 text-center transition-all ${
+                                className={`relative rounded-xl border p-3 text-center transition-all ${
                                   active
                                     ? "border-[var(--brand-blue)] bg-[var(--brand-blue)] text-white shadow-md"
                                     : "border-slate-200 bg-slate-50 text-slate-700 hover:border-[var(--brand-blue)] hover:bg-white"
                                 }`}
                               >
+                                {active ? (
+                                  <Check className="w-3.5 h-3.5 text-white absolute top-2 right-2" />
+                                ) : null}
                                 <div
                                   className={`text-[10px] uppercase tracking-wider ${
                                     active ? "text-white/80" : "text-slate-500"
@@ -487,51 +491,54 @@ export default function Book() {
           </div>
 
           <aside className="lg:col-span-4 lg:sticky lg:top-28 space-y-5">
-            <div className="lux-section-premium !p-6 space-y-5">
-              <div>
-                <p className="lux-label mb-1">Récapitulatif</p>
-                <h3 className="lux-heading text-2xl">Votre session</h3>
-              </div>
+            <div className="lux-section-premium !p-0 overflow-hidden">
+              <div className="h-1.5 w-full bg-[var(--brand-blue)]" aria-hidden />
+              <div className="p-6 space-y-5">
+                <div>
+                  <p className="lux-label mb-1">Récapitulatif</p>
+                  <h3 className="lux-heading text-2xl">Votre session</h3>
+                </div>
 
-              <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 text-sm">
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-slate-500">Date</span>
-                  <span className="font-semibold text-slate-900 text-right capitalize">
-                    {selectedDateObj ? selectedDateObj.fullLabel : "À définir"}
-                  </span>
+                <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 text-sm">
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-slate-500">Date</span>
+                    <span className="font-semibold text-slate-900 text-right capitalize">
+                      {selectedDateObj ? selectedDateObj.fullLabel : "À définir"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-slate-500">Heure</span>
+                    <span className="font-mono font-semibold text-[var(--brand-blue)]">
+                      {selectedTimeValue} (GMT)
+                    </span>
+                  </div>
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-slate-500">Thématique</span>
+                    <span className="font-medium text-slate-900 text-right">
+                      {selectedServiceValue}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                    <span className="text-slate-500">Durée &amp; tarif</span>
+                    <span className="lux-chip !py-0.5 text-[11px] font-semibold">
+                      30 min · Offert
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-slate-500">Heure</span>
-                  <span className="font-mono font-semibold text-[var(--brand-blue)]">
-                    {selectedTimeValue} (GMT)
-                  </span>
-                </div>
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-slate-500">Thématique</span>
-                  <span className="font-medium text-slate-900 text-right">
-                    {selectedServiceValue}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
-                  <span className="text-slate-500">Durée &amp; tarif</span>
-                  <span className="lux-chip !py-0.5 text-[11px] font-semibold">
-                    30 min · Offert
-                  </span>
-                </div>
-              </div>
 
-              <div className="space-y-2.5 text-xs text-slate-600">
-                <div className="flex items-center gap-2">
-                  <Video className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
-                  <span>Visioconférence Google Meet ou appel direct</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
-                  <span>Ou en présentiel : Cocody Bvd Koffi Gadaud</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
-                  <span>Échange confidentiel sans engagement</span>
+                <div className="space-y-2.5 text-xs text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <Video className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
+                    <span>Visioconférence Google Meet ou appel direct</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
+                    <span>Ou en présentiel : Cocody Bvd Koffi Gadaud</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-[var(--brand-blue)] shrink-0" />
+                    <span>Échange confidentiel sans engagement</span>
+                  </div>
                 </div>
               </div>
             </div>

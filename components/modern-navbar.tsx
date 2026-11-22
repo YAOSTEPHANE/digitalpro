@@ -10,7 +10,7 @@ import {
   ArrowUpRight,
   Sparkles,
   Search,
-  Calculator,
+  Globe,
   Calendar,
 } from "lucide-react";
 import Link from "next/link";
@@ -143,11 +143,10 @@ const ModernNavbar = ({
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "border-b border-[rgba(81,102,153,0.18)] bg-white/95 backdrop-blur-2xl shadow-[0_10px_35px_rgba(15,23,42,0.08)]"
-            : "border-b border-[rgba(81,102,153,0.1)] bg-white/85 backdrop-blur-xl"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
+          ? "border-b border-[rgba(81,102,153,0.18)] bg-white/95 backdrop-blur-2xl shadow-[0_10px_35px_rgba(15,23,42,0.08)]"
+          : "border-b border-[rgba(81,102,153,0.1)] bg-white/85 backdrop-blur-xl"
+          }`}
       >
         <div
           className="lux-scroll-progress"
@@ -157,9 +156,8 @@ const ModernNavbar = ({
 
         {/* Barre supérieure d'informations studio (desktop XL) */}
         <div
-          className={`hidden xl:block border-b border-slate-200/70 transition-all duration-300 overflow-hidden ${
-            scrolled ? "max-h-0 opacity-0 border-b-0" : "max-h-14 opacity-100"
-          }`}
+          className={`hidden xl:block border-b border-slate-200/70 transition-all duration-300 overflow-hidden ${scrolled ? "max-h-0 opacity-0 border-b-0" : "max-h-14 opacity-100"
+            }`}
         >
           <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
             <div className="flex items-center justify-between py-2">
@@ -192,10 +190,10 @@ const ModernNavbar = ({
                 height={44}
               />
               <div className="flex flex-col leading-none">
-                <span className="font-display text-base sm:text-lg md:text-xl font-bold tracking-tight text-slate-900">
+                <span className="font-display text-base sm:text-lg md:text-xl font-extrabold tracking-tight text-slate-900">
                   digitalpro
                 </span>
-                <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.26em] text-[var(--brand-blue)] font-semibold mt-0.5">
+                <span className="text-[9px] uppercase tracking-[0.24em] text-[var(--brand-blue)] font-semibold mt-0.5">
                   Solutions
                 </span>
               </div>
@@ -212,11 +210,10 @@ const ModernNavbar = ({
                   onMouseLeave={scheduleCloseServicesMenu}
                 >
                   <div
-                    className={`relative flex items-center rounded-full transition-colors ${
-                      isServiceActive || isServicesOpen
-                        ? "bg-white text-[var(--brand-blue-dark)] shadow-xs font-semibold"
-                        : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
-                    }`}
+                    className={`relative flex items-center rounded-full transition-colors ${isServiceActive || isServicesOpen
+                      ? "bg-white text-[var(--brand-blue-dark)] shadow-xs font-semibold"
+                      : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
+                      }`}
                   >
                     <Link
                       href="/services"
@@ -232,9 +229,8 @@ const ModernNavbar = ({
                       className="pr-2.5 pl-0.5 py-1.5 text-[var(--brand-blue)] rounded-r-full"
                     >
                       <ChevronDown
-                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                          isServicesOpen ? "rotate-180" : ""
-                        }`}
+                        className={`w-3.5 h-3.5 transition-transform duration-200 ${isServicesOpen ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
                   </div>
@@ -248,9 +244,9 @@ const ModernNavbar = ({
                         transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                         className="absolute left-0 top-full pt-3 z-50"
                       >
-                        <div className="w-[620px] rounded-3xl border border-slate-200 bg-white/98 backdrop-blur-2xl p-4 shadow-[0_28px_70px_rgba(15,23,42,0.16)]">
-                          <div className="grid grid-cols-12 gap-3.5">
-                            <div className="col-span-7 grid grid-cols-1 gap-1.5">
+                        <div className="w-[650px] rounded-3xl border border-slate-200 bg-white/98 backdrop-blur-2xl p-5 shadow-[0_28px_70px_rgba(15,23,42,0.16)]">
+                          <div className="grid grid-cols-12 gap-4">
+                            <div className="col-span-7 grid grid-cols-1 gap-2">
                               {SERVICE_NAV_ITEMS.map((subItem) => {
                                 const Icon = subItem.icon;
                                 const active = pathname === subItem.href;
@@ -259,31 +255,28 @@ const ModernNavbar = ({
                                     key={subItem.id}
                                     href={subItem.href}
                                     onClick={() => setIsServicesOpen(false)}
-                                    className={`group flex items-start justify-between gap-3 p-2.5 rounded-2xl border transition-all ${
-                                      active
-                                        ? "border-[var(--brand-blue)] bg-[#eef2f9]"
-                                        : "border-transparent hover:border-slate-200 hover:bg-slate-50"
-                                    }`}
+                                    className={`group flex items-start justify-between gap-3 p-3 rounded-2xl border transition-all ${active
+                                      ? "border-[var(--brand-blue)] bg-[#eef2f9]"
+                                      : "border-transparent hover:border-slate-200 hover:bg-slate-50"
+                                      }`}
                                   >
                                     <div className="flex items-start gap-3">
                                       <div
-                                        className={`p-2 rounded-xl border shrink-0 ${
-                                          subItem.accent === "red"
-                                            ? "lux-icon-badge lux-icon-badge-red"
-                                            : "lux-icon-badge"
-                                        }`}
+                                        className={`p-2 rounded-xl border shrink-0 ${subItem.accent === "red"
+                                          ? "lux-icon-badge lux-icon-badge-red"
+                                          : "lux-icon-badge"
+                                          }`}
                                       >
                                         <Icon
-                                          className={`w-4 h-4 ${
-                                            subItem.accent === "red"
-                                              ? "text-[var(--brand-red)]"
-                                              : "text-[var(--brand-blue)]"
-                                          }`}
+                                          className={`w-4 h-4 ${subItem.accent === "red"
+                                            ? "text-[var(--brand-red)]"
+                                            : "text-[var(--brand-blue)]"
+                                            }`}
                                         />
                                       </div>
                                       <div>
                                         <div className="flex items-center gap-2">
-                                          <span className="text-sm font-semibold text-slate-900">
+                                          <span className="font-display text-sm font-bold text-slate-900">
                                             {subItem.label}
                                           </span>
                                           {subItem.badge ? (
@@ -292,7 +285,7 @@ const ModernNavbar = ({
                                             </span>
                                           ) : null}
                                         </div>
-                                        <div className="text-[11px] leading-snug text-slate-600 mt-0.5">
+                                        <div className="text-xs leading-snug text-slate-600 mt-0.5">
                                           {subItem.description}
                                         </div>
                                       </div>
@@ -303,28 +296,28 @@ const ModernNavbar = ({
                               })}
                             </div>
 
-                            <div className="col-span-5 flex flex-col justify-between rounded-2xl border border-slate-200 bg-gradient-to-br from-[#f8faff] to-[#eef2f9] p-4">
+                            <div className="col-span-5 flex flex-col justify-between rounded-2xl border border-slate-200 bg-gradient-to-br from-[#f8faff] to-[#eef2f9] p-5">
                               <div>
                                 <div className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--brand-blue)] border border-slate-200 mb-3">
                                   <Sparkles className="w-3 h-3 text-[var(--brand-red)]" />
                                   Studio Express
                                 </div>
-                                <h3 className="font-display text-lg font-semibold text-slate-900 leading-snug">
+                                <h3 className="font-display text-lg font-bold text-slate-900 leading-snug">
                                   Chiffrez votre projet en 30 secondes
                                 </h3>
-                                <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                                  Testez notre simulateur en direct ou planifiez un point de 30 min offert.
+                                <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                                  Parcourez nos 9 plateformes en production ou planifiez un point de 30 min offert.
                                 </p>
                               </div>
 
-                              <div className="space-y-2 mt-4">
+                              <div className="space-y-2.5 mt-4">
                                 <Link
-                                  href="/#simulateur"
+                                  href="/#nos-realisations"
                                   onClick={() => setIsServicesOpen(false)}
                                   className="lux-btn-primary w-full !py-2 !px-3 text-xs gap-1.5"
                                 >
-                                  <Calculator className="w-3.5 h-3.5" />
-                                  Simulateur de budget
+                                  <Globe className="w-3.5 h-3.5" />
+                                  Voir nos réalisations
                                 </Link>
                                 <Link
                                   href="/book"
@@ -363,11 +356,10 @@ const ModernNavbar = ({
                     <Link
                       key={link.href}
                       href={link.href}
-                      className={`relative px-3.5 py-1.5 text-sm font-medium transition-colors whitespace-nowrap rounded-full ${
-                        active
-                          ? "text-[var(--brand-blue-dark)] font-semibold"
-                          : "text-slate-600 hover:text-slate-950"
-                      }`}
+                      className={`relative px-3.5 py-1.5 text-sm font-medium transition-colors whitespace-nowrap rounded-full ${active
+                        ? "text-[var(--brand-blue-dark)] font-semibold"
+                        : "text-slate-600 hover:text-slate-950"
+                        }`}
                     >
                       {active ? (
                         <motion.span
@@ -378,7 +370,10 @@ const ModernNavbar = ({
                       ) : null}
                       <span className="relative z-10">{link.label}</span>
                       {active ? (
-                        <span className="relative z-10 block mx-auto mt-0.5 h-0.5 w-4 rounded-full bg-[var(--brand-red)]" />
+                        <span
+                          aria-hidden
+                          className="absolute bottom-1 left-1/2 -translate-x-1/2 z-10 h-1 w-1 rounded-full bg-[var(--brand-red)]"
+                        />
                       ) : null}
                     </Link>
                   );
@@ -411,9 +406,8 @@ const ModernNavbar = ({
 
                 <Link
                   href="/contact"
-                  className={`lux-btn-primary !px-5 !py-2 text-sm gap-1.5 ${
-                    pathname === "/contact" ? "ring-2 ring-[var(--brand-blue)]/30" : ""
-                  }`}
+                  className={`lux-btn-primary !px-5 !py-2 text-sm gap-1.5 ${pathname === "/contact" ? "ring-2 ring-[var(--brand-blue)]/30" : ""
+                    }`}
                 >
                   Contact
                   <ArrowUpRight className="w-3.5 h-3.5" />
@@ -448,11 +442,10 @@ const ModernNavbar = ({
                 onClick={() => setIsDropDownVisible((prev) => !prev)}
                 aria-label={isDropDownVisible ? "Fermer le menu" : "Ouvrir le menu"}
                 aria-expanded={isDropDownVisible}
-                className={`h-9 px-3 flex items-center gap-1.5 border transition-colors rounded-full shadow-xs text-xs font-semibold ${
-                  isDropDownVisible
-                    ? "border-[var(--brand-blue)] bg-[var(--brand-blue)] text-white"
-                    : "border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
-                }`}
+                className={`h-9 px-3 flex items-center gap-1.5 border transition-colors rounded-full shadow-xs text-xs font-semibold ${isDropDownVisible
+                  ? "border-[var(--brand-blue)] bg-[var(--brand-blue)] text-white"
+                  : "border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
+                  }`}
               >
                 {isDropDownVisible ? (
                   <>

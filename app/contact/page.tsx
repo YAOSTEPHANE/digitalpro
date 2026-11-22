@@ -166,7 +166,7 @@ export default function ContactForm() {
                 <span className="font-mono text-[10px] font-semibold text-[var(--brand-blue)] block mb-1.5">
                   0{index + 1}
                 </span>
-                <h2 className="text-lg font-semibold lux-heading mb-1.5">{item.title}</h2>
+                <h2 className="text-lg font-bold lux-heading mb-1.5">{item.title}</h2>
                 <p className="text-sm text-slate-600 leading-relaxed">{item.text}</p>
               </article>
             </LuxReveal>
@@ -186,7 +186,7 @@ export default function ContactForm() {
             </div>
 
             <div className="space-y-3.5">
-              <div className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
+              <div className="flex items-center justify-between gap-3 lux-card-subtle p-3.5">
                 <div className="flex items-start gap-3 min-w-0">
                   <div className="lux-icon-badge p-2.5 shrink-0">
                     <Mail className="w-4 h-4 text-[var(--brand-blue)]" />
@@ -215,7 +215,7 @@ export default function ContactForm() {
                 </button>
               </div>
 
-              <div className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
+              <div className="flex items-center justify-between gap-3 lux-card-subtle p-3.5">
                 <div className="flex items-start gap-3">
                   <div className="lux-icon-badge p-2.5 shrink-0">
                     <Phone className="w-4 h-4 text-[var(--brand-blue)]" />
@@ -244,7 +244,7 @@ export default function ContactForm() {
                 </button>
               </div>
 
-              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
+              <div className="flex items-start gap-3 lux-card-subtle p-3.5">
                 <div className="lux-icon-badge p-2.5 shrink-0">
                   <MapPin className="w-4 h-4 text-[var(--brand-blue)]" />
                 </div>
@@ -258,7 +258,7 @@ export default function ContactForm() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
+              <div className="flex items-start gap-3 lux-card-subtle p-3.5">
                 <div className="lux-icon-badge p-2.5 shrink-0">
                   <Clock className="w-4 h-4 text-[var(--brand-blue)]" />
                 </div>
@@ -291,8 +291,8 @@ export default function ContactForm() {
             </div>
           </div>
 
-          <div className="lux-section-premium !p-6">
-            <h3 className="text-lg font-semibold lux-heading mb-4">Pourquoi nous choisir ?</h3>
+          <div className="lux-section-tinted !p-6">
+            <h3 className="text-lg font-bold lux-heading mb-4">Pourquoi nous choisir ?</h3>
             <ul className="space-y-2.5">
               {[
                 "Réponse garantie sous 24h",

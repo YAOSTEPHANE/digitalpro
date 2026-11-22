@@ -77,18 +77,22 @@ const ModernGraphicDesign = () => {
           {services.map((service, index) => (
             <LuxReveal key={service.title} delay={index * 0.08} className="h-full flex">
               <CardContainer className="inter-var h-full w-full" containerClassName="w-full h-full">
-                <CardBody className="lux-card-interactive relative group/card w-full h-full p-6 md:p-7 flex flex-col">
-                  <CardItem translateZ="45" className="mb-4 w-full">
+                <CardBody
+                  className={`lux-card-interactive relative group/card w-full h-full p-6 md:p-7 flex flex-col ${
+                    service.accent === "red" ? "lux-card-accent-red" : ""
+                  }`}
+                >
+                  <CardItem translateZ="14" className="mb-4 w-full">
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3.5">
                         <div className={`p-3 rounded-xl ${accentSolidBgClass(service.accent)}`}>
                           <service.icon className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 block font-medium">
+                          <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 block font-semibold">
                             {service.tag}
                           </span>
-                          <h3 className="font-display text-2xl font-semibold text-slate-900">
+                          <h3 className="font-display text-2xl font-bold text-slate-900">
                             {service.title}
                           </h3>
                         </div>
@@ -96,7 +100,7 @@ const ModernGraphicDesign = () => {
                     </div>
                   </CardItem>
 
-                  <CardItem translateZ="55" className="mb-4 w-full">
+                  <CardItem translateZ="16" className="mb-4 w-full">
                     <Image3D
                       src={service.image}
                       alt={service.title}
@@ -106,15 +110,15 @@ const ModernGraphicDesign = () => {
                     />
                   </CardItem>
 
-                  <CardItem as="p" translateZ="45" className="text-slate-600 text-sm leading-relaxed mb-4 w-full">
+                  <CardItem as="p" translateZ="12" className="text-slate-600 text-sm leading-relaxed mb-4 w-full">
                     {service.description}
                   </CardItem>
 
-                  <CardItem translateZ="60" className="w-full space-y-1.5 mb-5 flex-grow">
+                  <CardItem translateZ="14" className="w-full space-y-1.5 mb-5 flex-grow">
                     {service.deliverables.map((item) => (
                       <div
                         key={item}
-                        className="flex items-center gap-2 text-xs text-slate-700"
+                        className="flex items-center gap-2 text-[13px] text-slate-700"
                       >
                         <Check className="w-3.5 h-3.5 text-[var(--brand-blue)] shrink-0" />
                         <span>{item}</span>
@@ -122,13 +126,13 @@ const ModernGraphicDesign = () => {
                     ))}
                   </CardItem>
 
-                  <CardItem translateZ="70" className="w-full mt-auto pt-3 border-t border-slate-100">
+                  <CardItem translateZ="16" className="w-full mt-auto pt-3 border-t border-slate-100">
                     <Link
                       href={`/devis?service=${encodeURIComponent("Conception UI/UX")}`}
-                      className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--brand-blue)] hover:text-slate-900 transition-colors"
+                      className="inline-flex items-center gap-2 group-hover/card:gap-2.5 text-xs font-semibold uppercase tracking-wider text-[var(--brand-blue)] hover:text-slate-900 transition-all"
                     >
                       Demander une direction artistique
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <ArrowRight className="w-3.5 h-3.5 group-hover/card:translate-x-0.5 transition-transform" />
                     </Link>
                   </CardItem>
                 </CardBody>

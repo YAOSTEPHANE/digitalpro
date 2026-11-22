@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import Image3D from "@/components/ui/image-3d";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
-import { Quote, Star, TrendingUp } from "lucide-react";
+import { ArrowRight, Quote, Star, TrendingUp } from "lucide-react";
 import LuxSectionHeader from "@/components/lux-section-header";
 import LuxReveal from "@/components/lux-reveal";
 
@@ -47,8 +48,8 @@ const ModernShopify = () => {
           {stores.map((store, index) => (
             <LuxReveal key={store.name} delay={index * 0.08} className="h-full flex">
               <CardContainer className="inter-var h-full w-full" containerClassName="w-full h-full">
-                <CardBody className="lux-card-interactive relative group/card w-full h-full p-6 flex flex-col">
-                  <CardItem translateZ="45" className="mb-5 w-full">
+                <CardBody className="lux-card-interactive lux-card-accent-red relative group/card w-full h-full p-6 flex flex-col">
+                  <CardItem translateZ="14" className="mb-5 w-full">
                     <div className="relative overflow-hidden rounded-xl">
                       <Image3D
                         src={store.image}
@@ -64,7 +65,7 @@ const ModernShopify = () => {
                     </div>
                   </CardItem>
 
-                  <CardItem translateZ="55" className="mb-4 w-full flex-grow">
+                  <CardItem translateZ="16" className="mb-4 w-full flex-grow">
                     <div className="flex items-center gap-1 mb-3">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
@@ -72,14 +73,14 @@ const ModernShopify = () => {
                     </div>
                     <div className="flex items-start gap-2.5">
                       <Quote className="w-6 h-6 text-[var(--brand-red)] flex-shrink-0 mt-0.5" />
-                      <p className="text-slate-700 text-sm md:text-base leading-relaxed">
+                      <p className="text-slate-700 text-sm md:text-[15px] leading-relaxed">
                         &ldquo;{store.quote}&rdquo;
                       </p>
                     </div>
                   </CardItem>
 
-                  <CardItem translateZ="65" className="w-full mt-auto pt-4 border-t border-slate-100">
-                    <p className="text-slate-900 font-semibold text-base">{store.name}</p>
+                  <CardItem translateZ="16" className="w-full mt-auto pt-4 border-t border-slate-100">
+                    <p className="font-display text-slate-900 font-bold text-base">{store.name}</p>
                     <p className="text-slate-500 text-xs mt-0.5">{store.role}</p>
                   </CardItem>
                 </CardBody>
@@ -87,6 +88,16 @@ const ModernShopify = () => {
             </LuxReveal>
           ))}
         </div>
+
+        <LuxReveal delay={0.18} className="mt-10 text-center">
+          <Link
+            href="/devis?service=E-commerce"
+            className="lux-btn-accent inline-flex items-center gap-2 text-sm px-7 py-3.5"
+          >
+            Lancer ma boutique e-commerce
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </LuxReveal>
       </div>
     </section>
   );

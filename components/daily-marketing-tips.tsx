@@ -203,6 +203,12 @@ const DailyMarketingTips = () => {
   const completedCount = currentTip.actions.filter(
     (_, idx) => checkedActions[`${currentIdx}-${idx}`]
   ).length;
+  const actionsProgressPct =
+    currentTip.actions.length > 0
+      ? Math.round((completedCount / currentTip.actions.length) * 100)
+      : 0;
+  const isAllActionsDone =
+    completedCount > 0 && completedCount === currentTip.actions.length;
 
   const handleCopyTip = async () => {
     try {
@@ -222,7 +228,7 @@ const DailyMarketingTips = () => {
     <section id="conseil" className="relative w-full py-12 md:py-16 overflow-hidden px-2 scroll-mt-28">
       <div className="lux-section-premium lux-section-spotlight relative">
         <LuxSectionHeader
-          indexLabel="05"
+          indexLabel="06"
           label="Briefing quotidien"
           title={`Marketing Digital — Jour ${dayOfYear}/365`}
           description="Des recommandations concrètes et une checklist actionnable pour accélérer votre acquisition."
@@ -320,7 +326,7 @@ const DailyMarketingTips = () => {
                       </div>
                     </div>
 
-                    <h3 className="font-display text-2xl md:text-3xl font-semibold text-slate-900 mb-3 leading-tight">
+                    <h3 className="font-display text-2xl md:text-3xl font-bold text-slate-900 mb-3 leading-tight">
                       {currentTip.title}
                     </h3>
 
@@ -328,31 +334,54 @@ const DailyMarketingTips = () => {
                       {currentTip.content}
                     </p>
 
-                    <div className="space-y-2 mb-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                      {currentTip.actions.map((action, actionIdx) => {
-                        const checked = Boolean(checkedActions[`${currentIdx}-${actionIdx}`]);
-                        return (
-                          <button
-                            key={action}
-                            type="button"
-                            onClick={() => toggleActionCheck(actionIdx)}
-                            className="w-full flex items-start gap-2.5 text-left text-xs md:text-sm transition-colors rounded-lg p-1 -mx-1 hover:bg-white"
+                    <div className="mb-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 space-y-3">
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-[11px] font-medium text-slate-600">
+                          <span>Progression du plan d&apos;action</span>
+                          <span
+                            className={`font-mono font-semibold tabular-nums ${
+                              isAllActionsDone ? "text-emerald-600" : "text-[var(--brand-blue)]"
+                            }`}
                           >
-                            {checked ? (
-                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                            ) : (
-                              <Circle className="w-4 h-4 text-[var(--brand-blue)] shrink-0 mt-0.5" />
-                            )}
-                            <span
-                              className={
-                                checked ? "line-through text-slate-400" : "text-slate-800"
-                              }
+                            {actionsProgressPct}%
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full rounded-full bg-slate-200/90 overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-300 ${
+                              isAllActionsDone ? "bg-emerald-500" : "bg-[var(--brand-blue)]"
+                            }`}
+                            style={{ width: `${actionsProgressPct}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        {currentTip.actions.map((action, actionIdx) => {
+                          const checked = Boolean(checkedActions[`${currentIdx}-${actionIdx}`]);
+                          return (
+                            <button
+                              key={action}
+                              type="button"
+                              onClick={() => toggleActionCheck(actionIdx)}
+                              className="w-full flex items-start gap-2.5 text-left text-xs md:text-sm transition-colors rounded-lg p-1.5 -mx-1 hover:bg-white"
                             >
-                              {action}
-                            </span>
-                          </button>
-                        );
-                      })}
+                              {checked ? (
+                                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                              ) : (
+                                <Circle className="w-4 h-4 text-[var(--brand-blue)] shrink-0 mt-0.5" />
+                              )}
+                              <span
+                                className={
+                                  checked ? "line-through text-slate-400" : "text-slate-800"
+                                }
+                              >
+                                {action}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-1.5 mb-6">
@@ -361,7 +390,7 @@ const DailyMarketingTips = () => {
                           key={`${tip.title}-${idx}`}
                           type="button"
                           onClick={() => setTipIndex(idx)}
-                          className={`rounded-full px-2.5 py-1 text-[10px] font-semibold transition-all ${
+                          className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
                             currentIdx === idx
                               ? "bg-[var(--brand-blue)] text-white"
                               : "bg-slate-100 text-slate-600 hover:bg-slate-200"

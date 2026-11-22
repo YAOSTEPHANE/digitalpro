@@ -57,31 +57,36 @@ const ModernBrands = () => {
           {brands.map((brand, index) => (
             <LuxReveal key={brand.name} delay={index * 0.08} className="h-full flex">
               <CardContainer className="inter-var h-full w-full" containerClassName="w-full h-full">
-                <CardBody className="lux-card-interactive relative group/card w-full h-full p-6 flex flex-col text-center">
-                  <CardItem translateZ="45" className="mb-4 mx-auto">
+                <CardBody
+                  className={`lux-card-interactive relative group/card w-full h-full p-6 flex flex-col text-center ${
+                    brand.accent === "red" ? "lux-card-accent-red" : ""
+                  }`}
+                >
+                  <CardItem translateZ="12" className="mb-4 mx-auto">
                     <div
-                      className={`w-16 h-16 rounded-2xl mx-auto flex items-center justify-center font-display text-2xl font-bold text-white shadow-md ${brand.accent === "red" ? "brand-bg-red" : "brand-bg-blue"
-                        }`}
+                      className={`w-16 h-16 rounded-2xl mx-auto flex items-center justify-center font-display text-2xl font-bold text-white shadow-md ${
+                        brand.accent === "red" ? "brand-bg-red" : "brand-bg-blue"
+                      }`}
                     >
                       {brand.monogram}
                     </div>
                   </CardItem>
 
-                  <CardItem translateZ="50" className="w-full mb-1">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 block mb-1 font-medium">
+                  <CardItem translateZ="14" className="w-full mb-1.5">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 block mb-1 font-semibold">
                       {brand.sector}
                     </span>
-                    <h3 className="font-display text-xl font-semibold text-slate-900">
+                    <h3 className="font-display text-xl font-bold text-slate-900">
                       {brand.name}
                     </h3>
                   </CardItem>
 
-                  <CardItem as="p" translateZ="45" className="text-slate-600 text-xs leading-relaxed mb-4 flex-grow w-full">
+                  <CardItem as="p" translateZ="12" className="text-slate-600 text-[13px] leading-relaxed mb-4 flex-grow w-full">
                     {brand.description}
                   </CardItem>
 
                   <CardItem
-                    translateZ="60"
+                    translateZ="16"
                     className="w-full pt-3 border-t border-slate-100 flex items-center justify-center gap-1.5"
                   >
                     <TrendingUp
@@ -114,8 +119,9 @@ const ModernBrands = () => {
           ].map((stat, index) => (
             <LuxReveal key={stat.label} delay={0.15 + index * 0.06}>
               <div
-                className={`lux-card-interactive p-5 text-center ${index % 2 === 0 ? "brand-border-blue" : "brand-border-red"
-                  }`}
+                className={`lux-card-kpi p-5 text-center ${
+                  index % 2 === 0 ? "brand-border-blue" : "brand-border-red"
+                }`}
               >
                 <stat.icon
                   className={`w-6 h-6 mx-auto mb-2.5 ${index % 2 === 0 ? "text-[var(--brand-blue)]" : "text-[var(--brand-red)]"

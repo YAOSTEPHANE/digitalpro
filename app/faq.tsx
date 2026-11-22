@@ -110,9 +110,23 @@ const CATEGORIES: { id: FaqCategory; label: string }[] = [
   { id: "support", label: "Support & Évolution" },
 ];
 
-const FAQS = () => {
+const FAQS = ({ hideHeader = false }: { hideHeader?: boolean }) => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<FaqCategory>("all");
+
+  const categoryCounts = useMemo(() => {
+    const counts: Record<FaqCategory, number> = {
+      all: FAQ_ITEMS.length,
+      methode: 0,
+      tarifs: 0,
+      technique: 0,
+      support: 0,
+    };
+    FAQ_ITEMS.forEach((item) => {
+      counts[item.category] += 1;
+    });
+    return counts;
+  }, []);
 
   const filteredItems = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -130,14 +144,16 @@ const FAQS = () => {
   return (
     <div className="space-y-8">
       <div className="lux-section-premium lux-section-spotlight w-full rounded-3xl">
-        <LuxSectionHeader
-          indexLabel="FAQ"
-          label="Base de connaissances"
-          title="Vous avez des questions ?"
-          description="Toutes les réponses essentielles sur notre méthode, nos délais, nos tarifs et notre accompagnement."
-          align="center"
-          accent="red"
-        />
+        {!hideHeader ? (
+          <LuxSectionHeader
+            indexLabel="FAQ"
+            label="Base de connaissances"
+            title="Vous avez des questions ?"
+            description="Toutes les réponses essentielles sur notre méthode, nos délais, nos tarifs et notre accompagnement."
+            align="center"
+            accent="red"
+          />
+        ) : null}
 
         <div className="max-w-3xl mx-auto mb-8 space-y-4">
           <div className="relative">
@@ -157,16 +173,28 @@ const FAQS = () => {
                 key={cat.id}
                 type="button"
                 onClick={() => setCategory(cat.id)}
-                className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all ${
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
                   category === cat.id
                     ? "lux-chip-active"
                     : "lux-chip hover:border-[var(--brand-blue)]"
                 }`}
               >
-                {cat.label}
+                <span>{cat.label}</span>
+                <span
+                  className={`font-mono text-[10px] ${
+                    category === cat.id ? "text-white/80" : "text-slate-500"
+                  }`}
+                >
+                  ({categoryCounts[cat.id]})
+                </span>
               </button>
             ))}
           </div>
+
+          <p className="text-center text-xs text-slate-500 tabular-nums">
+            {filteredItems.length} question{filteredItems.length > 1 ? "s" : ""} affichée
+            {filteredItems.length > 1 ? "s" : ""}
+          </p>
         </div>
 
         <div className="max-w-4xl mx-auto">
@@ -198,7 +226,7 @@ const FAQS = () => {
                   value={item.id}
                   className="lux-card-interactive px-5 md:px-6 border border-slate-200/90 rounded-2xl overflow-hidden"
                 >
-                  <AccordionTrigger className="lux-heading !text-base md:!text-lg font-semibold text-slate-900 hover:no-underline py-5">
+                  <AccordionTrigger className="lux-heading !text-base md:!text-lg font-bold text-slate-900 hover:no-underline py-5">
                     <div className="flex items-center gap-3.5 pr-4">
                       <span className="font-mono text-xs text-[var(--brand-blue)] shrink-0">
                         {String(idx + 1).padStart(2, "0")}
@@ -219,28 +247,30 @@ const FAQS = () => {
         </div>
       </div>
 
-      <div className="lux-section-premium flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div className="flex items-start gap-4">
-          <div className="lux-icon-badge p-3 shrink-0">
-            <MessageSquare className="w-5 h-5 text-[var(--brand-blue)]" />
+      <div className="lux-section-dark-cta">
+        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-xl border border-white/15 bg-white/10 shrink-0">
+              <MessageSquare className="w-5 h-5 text-sky-300" />
+            </div>
+            <div>
+              <h3 className="font-display text-xl md:text-2xl font-bold tracking-tight text-white">
+                Vous avez une question spécifique sur votre projet ?
+              </h3>
+              <p className="text-slate-300 text-sm mt-1">
+                Notre équipe vous répond sous 24 heures ou lors d&apos;un appel découverte offert de 30 minutes.
+              </p>
+            </div>
           </div>
-          <div>
-            <h3 className="lux-heading text-xl md:text-2xl">
-              Vous avez une question spécifique sur votre projet ?
-            </h3>
-            <p className="text-slate-600 text-sm mt-1">
-              Notre équipe vous répond sous 24 heures ou lors d&apos;un appel découverte offert de 30 minutes.
-            </p>
+          <div className="flex flex-wrap gap-3 shrink-0">
+            <Link href="/contact" className="lux-btn-dark-ghost !px-5 !py-2.5 text-sm">
+              Nous écrire
+            </Link>
+            <Link href="/book" className="lux-btn-light !px-5 !py-2.5 text-sm gap-2">
+              Réserver un appel
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-        </div>
-        <div className="flex flex-wrap gap-3 shrink-0">
-          <Link href="/contact" className="lux-btn-ghost !px-5 !py-2.5 text-sm">
-            Nous écrire
-          </Link>
-          <Link href="/book" className="lux-btn-primary !px-5 !py-2.5 text-sm gap-2">
-            Réserver un appel
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
       </div>
     </div>

@@ -62,9 +62,8 @@ STYLE DE COMMUNICATION:
     },
     // Google Gemini Configuration (alternative gratuite)
     gemini: {
-      model: 'gemini-pro',
-      maxTokens: 200,
-      temperature: 0.7,
+      model: 'gemini-4-hydrogen',
+      thinkingLevel: 'low' as const,
     },
   },
 }

@@ -11,7 +11,7 @@ import {
   MessageCircle,
   Copy,
   Check,
-  Calculator,
+  Globe,
   Calendar,
   FileText,
   X,
@@ -122,30 +122,30 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
 
         {/* Actions prioritaires 1-tap */}
         {!normalizedQuery ? (
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-2.5">
             <Link
               href="/devis"
               onClick={onClose}
-              className="flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-[rgba(204,38,40,0.2)] bg-white p-3 text-center shadow-2xs hover:border-[var(--brand-red)] transition-colors"
+              className="lux-card-interactive lux-card-accent-red min-h-[44px] flex flex-col items-center justify-center gap-1.5 p-3.5 text-center"
             >
               <FileText className="w-4 h-4 text-[var(--brand-red)]" />
-              <span className="text-[11px] font-semibold text-slate-900">Devis gratuit</span>
+              <span className="text-xs font-semibold text-slate-900">Devis gratuit</span>
             </Link>
             <Link
               href="/book"
               onClick={onClose}
-              className="flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-[rgba(81,102,153,0.2)] bg-white p-3 text-center shadow-2xs hover:border-[var(--brand-blue)] transition-colors"
+              className="lux-card-interactive min-h-[44px] flex flex-col items-center justify-center gap-1.5 p-3.5 text-center"
             >
               <Calendar className="w-4 h-4 text-[var(--brand-blue)]" />
-              <span className="text-[11px] font-semibold text-slate-900">RDV 30 min</span>
+              <span className="text-xs font-semibold text-slate-900">RDV 30 min</span>
             </Link>
             <Link
-              href="/#simulateur"
+              href="/#nos-realisations"
               onClick={onClose}
-              className="flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-[rgba(81,102,153,0.2)] bg-white p-3 text-center shadow-2xs hover:border-[var(--brand-blue)] transition-colors"
+              className="lux-card-interactive min-h-[44px] flex flex-col items-center justify-center gap-1.5 p-3.5 text-center"
             >
-              <Calculator className="w-4 h-4 text-[var(--brand-blue)]" />
-              <span className="text-[11px] font-semibold text-slate-900">Simulateur</span>
+              <Globe className="w-4 h-4 text-[var(--brand-blue)]" />
+              <span className="text-xs font-semibold text-slate-900">Réalisations</span>
             </Link>
           </div>
         ) : null}
@@ -197,7 +197,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-sm font-semibold text-slate-900">
+                        <span className="font-display text-sm font-bold text-slate-900">
                           {item.label}
                         </span>
                         {item.badge ? (
@@ -233,9 +233,9 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
                   <Link
                     href={item.href}
                     onClick={onClose}
-                    className={`group lux-card-interactive flex items-center justify-between p-3.5 ${
-                      active ? "border-[var(--brand-blue)] bg-[#eef2f9]" : ""
-                    }`}
+                    className={`group lux-card-interactive min-h-[44px] flex items-center justify-between p-3.5 ${
+                      item.accent === "red" ? "lux-card-accent-red" : ""
+                    } ${active ? "border-[var(--brand-blue)] bg-[#eef2f9]" : ""}`}
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="lux-icon-badge p-2 shrink-0">
@@ -243,7 +243,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-slate-900 group-hover:text-[var(--brand-blue)] transition-colors">
+                          <span className="font-display text-sm font-bold text-slate-900 group-hover:text-[var(--brand-blue)] transition-colors">
                             {item.label}
                           </span>
                           {item.badge ? (
@@ -252,7 +252,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
                             </span>
                           ) : null}
                         </div>
-                        <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                        <p className="text-xs text-slate-500 truncate mt-0.5">
                           {item.description}
                         </p>
                       </div>

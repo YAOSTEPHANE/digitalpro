@@ -155,7 +155,7 @@ const BlackFriday = () => {
 
   return (
     <section id="offres" className="relative w-full py-12 md:py-16 overflow-hidden px-2 scroll-mt-28">
-      <div className="lux-section-premium lux-section-spotlight relative">
+      <div className="lux-section-tinted lux-section-spotlight relative">
         <div className="relative z-10 max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: -16 }}
@@ -164,7 +164,9 @@ const BlackFriday = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-10"
           >
-            <div className="inline-flex items-center gap-2 brand-bg-red rounded-full px-4 py-1.5 mb-5 shadow-md">
+            <div className="inline-flex items-center gap-2.5 brand-bg-red rounded-full px-4 py-1.5 mb-5 shadow-md">
+              <span className="font-mono text-[10px] font-bold opacity-90">05</span>
+              <span className="h-3 w-px bg-white/30" aria-hidden />
               <Sparkles className="w-3.5 h-3.5 animate-pulse" />
               <span className="text-xs font-semibold uppercase tracking-[0.2em]">
                 Édition Privilège {currentYear}
@@ -177,7 +179,7 @@ const BlackFriday = () => {
               <span className="lux-gradient-text">Jusqu&apos;à 50% de Réduction</span>
             </h2>
 
-            <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto mt-3">
+            <p className="lux-lead max-w-2xl mx-auto mt-3">
               Lancez votre plateforme ou accélérez votre acquisition à conditions préférentielles
               pour une durée limitée.
             </p>
@@ -185,7 +187,7 @@ const BlackFriday = () => {
 
           {/* Compte à rebours + filtres + mode de paiement */}
           <div className="flex flex-col xl:flex-row items-center justify-between gap-5 mb-10">
-            <div className="lux-card-interactive px-5 py-4 flex flex-col sm:flex-row items-center gap-4">
+            <div className="lux-card-kpi px-5 py-4 flex flex-col sm:flex-row items-center gap-4">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-[var(--brand-red)]" />
                 <span className="text-xs uppercase tracking-[0.18em] text-[var(--brand-red)] font-semibold">
@@ -205,11 +207,11 @@ const BlackFriday = () => {
                         index % 2 === 0 ? "brand-bg-red" : "brand-bg-blue"
                       }`}
                     >
-                      <div className="text-lg md:text-xl font-bold text-white leading-none">
+                      <div className="font-mono text-lg md:text-xl font-bold text-white leading-none">
                         {String(item.value).padStart(2, "0")}
                       </div>
                     </div>
-                    <div className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider font-medium">
+                    <div className="text-[10px] text-slate-600 mt-1 uppercase tracking-wider font-medium">
                       {item.label}
                     </div>
                   </div>
@@ -287,8 +289,10 @@ const BlackFriday = () => {
                   className="group"
                 >
                   <div
-                    className={`lux-card-interactive overflow-hidden h-full flex flex-col ${
-                      offer.popular ? "ring-1 ring-[rgba(204,38,40,0.28)]" : ""
+                    className={`overflow-hidden h-full flex flex-col ${
+                      offer.popular
+                        ? "lux-card-featured lux-card-featured-red"
+                        : "lux-card-interactive lux-card-accent-red"
                     }`}
                   >
                     <div className="relative h-48 w-full overflow-hidden bg-slate-100 flex-shrink-0">
@@ -314,14 +318,14 @@ const BlackFriday = () => {
                     </div>
 
                     <div className="p-5 flex flex-col flex-grow">
-                      <h3 className="font-display text-xl font-semibold text-slate-900 mb-1">
+                      <h3 className="font-display text-xl font-bold text-slate-900 mb-1.5">
                         {offer.title}
                       </h3>
 
                       {paymentMode === "split" && splitAmount ? (
                         <div className="mb-3">
                           <div className="flex items-baseline gap-2">
-                            <span className="text-lg font-bold text-[var(--brand-blue)] tabular-nums">
+                            <span className="font-display text-lg font-bold text-[var(--brand-blue)] tabular-nums">
                               3 × {splitAmount.toLocaleString("fr-FR")} F
                             </span>
                             <span className="text-[11px] text-slate-500">/ mois</span>
@@ -332,7 +336,7 @@ const BlackFriday = () => {
                         </div>
                       ) : (
                         <div className="flex items-baseline gap-2.5 mb-3">
-                          <span className="text-xl font-bold text-[var(--brand-red)] tabular-nums">
+                          <span className="font-display text-2xl font-bold text-[var(--brand-red)] tabular-nums">
                             {offer.price}
                           </span>
                           <span className="text-xs text-slate-400 line-through tabular-nums">
@@ -341,7 +345,7 @@ const BlackFriday = () => {
                         </div>
                       )}
 
-                      <p className="text-slate-600 text-xs leading-relaxed mb-4">
+                      <p className="text-slate-600 text-[13px] leading-relaxed mb-4">
                         {offer.description}
                       </p>
 
@@ -375,7 +379,7 @@ const BlackFriday = () => {
             transition={{ duration: 0.55 }}
             className="text-center"
           >
-            <div className="lux-card-interactive p-7 md:p-10 max-w-4xl mx-auto">
+            <div className="lux-card-featured p-7 md:p-10 max-w-4xl mx-auto">
               <h3 className="lux-heading text-2xl md:text-4xl mb-3">
                 Besoin d&apos;un pack combiné sur mesure ?
               </h3>

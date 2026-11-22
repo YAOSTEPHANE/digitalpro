@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   Cpu,
@@ -189,33 +190,44 @@ export default function TechnologiesPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {currentGroup.items.map((item) => (
-              <article key={item.name} className="lux-card-interactive p-5 h-full flex flex-col">
-                <span className="lux-chip w-fit text-[10px] mb-3">{item.role}</span>
-                <h3 className="font-display text-xl font-semibold text-[var(--lux-champagne)] mb-2">
-                  {item.name}
-                </h3>
-                <p className="lux-muted text-sm leading-relaxed">{item.benefit}</p>
-              </article>
-            ))}
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeGroup}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.22 }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-4"
+            >
+              {currentGroup.items.map((item) => (
+                <article key={item.name} className="lux-card-interactive p-5 md:p-6 h-full flex flex-col">
+                  <span className="lux-chip w-fit text-[10px] mb-3">{item.role}</span>
+                  <h3 className="font-display text-xl font-bold text-slate-900 mb-2">
+                    {item.name}
+                  </h3>
+                  <p className="lux-muted text-sm leading-relaxed">{item.benefit}</p>
+                </article>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </section>
       </LuxReveal>
 
       {/* Principes techniques */}
       <LuxReveal className="mb-10">
-        <section className="lux-section-premium">
-          <h2 className="text-2xl font-semibold lux-heading mb-6">Nos principes d&apos;ingénierie</h2>
+        <section className="lux-section-tinted">
+          <h2 className="text-2xl md:text-3xl font-bold lux-heading mb-6">
+            Nos principes d&apos;ingénierie
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {principles.map((item) => {
               const Icon = item.icon;
               return (
                 <div key={item.title} className="lux-card-interactive p-5 h-full">
                   <div className="lux-icon-badge w-fit mb-3">
-                    <Icon className="w-4 h-4 text-[var(--brand-blue-light)]" />
+                    <Icon className="w-4 h-4 text-[var(--brand-blue)]" />
                   </div>
-                  <h3 className="font-display text-lg font-semibold text-[var(--lux-champagne)] mb-1.5">
+                  <h3 className="font-display text-lg font-bold text-slate-900 mb-1.5">
                     {item.title}
                   </h3>
                   <p className="lux-muted text-xs md:text-sm leading-relaxed">{item.text}</p>

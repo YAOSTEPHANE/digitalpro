@@ -106,6 +106,15 @@ export default function ModernFooter() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!activeLegal) return;
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setActiveLegal(null);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [activeLegal]);
+
   const copyValue = async (type: "email" | "phone", value: string) => {
     try {
       await navigator.clipboard.writeText(value);
@@ -158,21 +167,25 @@ export default function ModernFooter() {
 
         <div className="max-w-7xl mx-auto px-6 py-12 md:py-16 relative z-10">
           {/* Bandeau d'appel rapide */}
-          <div className="mb-12 rounded-2xl border border-slate-200 bg-white p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm">
-            <div>
-              <p className="lux-label mb-2">Collaboration sur mesure</p>
-              <h2 className="font-display text-2xl md:text-3xl font-semibold text-slate-900">
-                Un projet digital ambitieux à Abidjan ou à l&apos;international ?
-              </h2>
-            </div>
-            <div className="flex flex-wrap gap-3 shrink-0">
-              <Link href="/book" className="lux-btn-ghost !px-5 !py-2.5 text-sm">
-                Réserver 30 min
-              </Link>
-              <Link href="/devis" className="lux-btn-primary !px-5 !py-2.5 text-sm gap-2">
-                Demander un devis
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+          <div className="mb-12 lux-section-dark-cta !p-6 md:!p-9">
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.2em] font-semibold text-sky-300 mb-2">
+                  Collaboration sur mesure
+                </p>
+                <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight text-white">
+                  Un projet digital ambitieux à Abidjan ou à l&apos;international ?
+                </h2>
+              </div>
+              <div className="flex flex-wrap gap-3 shrink-0">
+                <Link href="/book" className="lux-btn-dark-ghost !px-5 !py-2.5 text-sm">
+                  Réserver 30 min
+                </Link>
+                <Link href="/devis" className="lux-btn-light !px-5 !py-2.5 text-sm gap-2">
+                  Demander un devis
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -217,7 +230,7 @@ export default function ModernFooter() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.08 }}
             >
-              <h3 className="text-slate-900 font-semibold mb-4 text-lg font-display">
+              <h3 className="text-slate-900 font-bold tracking-tight mb-4 text-lg font-display">
                 Services
               </h3>
               <ul className="space-y-2.5">
@@ -256,7 +269,7 @@ export default function ModernFooter() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.16 }}
             >
-              <h3 className="text-slate-900 font-semibold mb-4 text-lg font-display">
+              <h3 className="text-slate-900 font-bold tracking-tight mb-4 text-lg font-display">
                 Liens Utiles
               </h3>
               <ul className="space-y-2.5">
@@ -299,11 +312,11 @@ export default function ModernFooter() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.24 }}
             >
-              <h3 className="text-slate-900 font-semibold mb-4 text-lg font-display">
+              <h3 className="text-slate-900 font-bold tracking-tight mb-4 text-lg font-display">
                 Contact direct
               </h3>
               <ul className="space-y-3">
-                <li className="flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs shadow-2xs">
+                <li className="flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs sm:text-[13px] shadow-2xs">
                   <a
                     href="mailto:digitalprosolutions27@gmail.com"
                     className="flex items-center gap-2 text-slate-700 hover:text-[var(--brand-blue)] transition-colors truncate"
@@ -324,7 +337,7 @@ export default function ModernFooter() {
                     )}
                   </button>
                 </li>
-                <li className="flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs shadow-2xs">
+                <li className="flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs sm:text-[13px] shadow-2xs">
                   <a
                     href="tel:+2250748976031"
                     className="flex items-center gap-2 text-slate-700 hover:text-[var(--brand-blue)] transition-colors"
@@ -345,7 +358,7 @@ export default function ModernFooter() {
                     )}
                   </button>
                 </li>
-                <li className="flex items-start gap-2.5 text-slate-600 text-xs px-1 pt-1">
+                <li className="flex items-start gap-2.5 text-slate-600 text-xs sm:text-[13px] px-1 pt-1">
                   <MapPin className="w-4 h-4 text-[var(--brand-red)] mt-0.5 shrink-0" />
                   <span>
                     Bvd Koffi Gadaud, Cocody
@@ -502,7 +515,7 @@ export default function ModernFooter() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/45 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/45 backdrop-blur-sm p-4"
             onClick={() => setActiveLegal(null)}
           >
             <motion.div

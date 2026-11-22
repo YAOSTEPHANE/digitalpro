@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Figma, Compass, PenTool, Sparkles } from "lucide-react";
+import { ArrowRight, Figma, Compass, PenTool, Sparkles, Check, Copy } from "lucide-react";
+import { toast } from "sonner";
 import LuxPageLayout from "@/components/lux-page-layout";
 import LuxSectionHeader from "@/components/lux-section-header";
 import LuxReveal from "@/components/lux-reveal";
@@ -35,6 +37,19 @@ const creativeSteps = [
 ];
 
 export default function DesignPage() {
+  const [copiedHex, setCopiedHex] = useState<string | null>(null);
+
+  const handleCopyHex = async (name: string, hex: string) => {
+    try {
+      await navigator.clipboard.writeText(hex);
+      setCopiedHex(hex);
+      toast.success(`Couleur ${name} (${hex}) copiée !`);
+      setTimeout(() => setCopiedHex(null), 1800);
+    } catch {
+      toast.error("Copie automatique impossible.");
+    }
+  };
+
   return (
     <LuxPageLayout breadcrumb="Design & UI/UX">
       <LuxSectionHeader
@@ -71,12 +86,14 @@ export default function DesignPage() {
               {creativeSteps.map((step) => {
                 const Icon = step.icon;
                 return (
-                  <div key={step.num} className="lux-card-interactive p-4">
+                  <div key={step.num} className="lux-card-subtle p-4">
                     <div className="flex items-center justify-between mb-2">
                       <Icon className="w-4 h-4 text-[var(--brand-blue)]" />
-                      <span className="font-mono text-[10px] text-slate-500">{step.num}</span>
+                      <span className="font-mono text-[10px] font-semibold text-slate-500">
+                        {step.num}
+                      </span>
                     </div>
-                    <h3 className="text-sm font-semibold text-slate-900">{step.title}</h3>
+                    <h3 className="font-display text-sm font-bold text-slate-900">{step.title}</h3>
                     <p className="text-xs text-slate-600 mt-1 leading-snug">{step.text}</p>
                   </div>
                 );
@@ -95,32 +112,51 @@ export default function DesignPage() {
               <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500 mb-2 font-semibold">
                 Typographie &amp; Hiérarchie
               </p>
-              <div className="font-display text-3xl text-slate-900 font-semibold">
-                Cormorant Garamond · Titre Éditorial
+              <div className="font-display text-2xl md:text-3xl text-slate-900 font-bold tracking-tight">
+                Bricolage Grotesque · Titre Éditorial
               </div>
-              <div className="text-sm text-slate-600 mt-1">
-                Outfit Geometric Sans — Lisibilité UI, interfaces et données chiffrées.
+              <div className="text-sm text-slate-600 mt-1.5">
+                Plus Jakarta Sans — Lisibilité UI, interfaces et données chiffrées.
+              </div>
+              <div className="font-mono text-xs text-[var(--brand-blue)] mt-1">
+                JetBrains Mono — Indices techniques, métriques &amp; code.
               </div>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500 mb-2 font-semibold">
-                Discipline Chromatique
-              </p>
-              <div className="grid grid-cols-4 gap-2.5">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500 font-semibold">
+                  Discipline Chromatique
+                </p>
+                <span className="text-[10px] text-slate-400">Cliquer pour copier</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 {[
                   { name: "Porcelain", hex: "#F7F9FC", cls: "bg-[#F7F9FC] text-slate-900 border-slate-200" },
                   { name: "Cobalt", hex: "#516699", cls: "bg-[#516699] text-white border-[#516699]" },
                   { name: "Crimson", hex: "#CC2628", cls: "bg-[#CC2628] text-white border-[#CC2628]" },
                   { name: "Ink", hex: "#0F172A", cls: "bg-[#0F172A] text-white border-[#0F172A]" },
-                ].map((swatch) => (
-                  <div
-                    key={swatch.name}
-                    className={`rounded-xl border p-3 text-[10px] font-mono ${swatch.cls}`}
-                  >
-                    <div className="font-semibold">{swatch.name}</div>
-                    <div className="opacity-80 mt-1">{swatch.hex}</div>
-                  </div>
-                ))}
+                ].map((swatch) => {
+                  const isCopied = copiedHex === swatch.hex;
+                  return (
+                    <button
+                      key={swatch.name}
+                      type="button"
+                      onClick={() => handleCopyHex(swatch.name, swatch.hex)}
+                      aria-label={`Copier la couleur ${swatch.name} ${swatch.hex}`}
+                      className={`group/swatch rounded-xl border p-3 text-left text-[10px] font-mono transition-transform hover:-translate-y-0.5 ${swatch.cls}`}
+                    >
+                      <div className="flex items-center justify-between gap-1 font-semibold">
+                        <span>{swatch.name}</span>
+                        {isCopied ? (
+                          <Check className="w-3 h-3 shrink-0" />
+                        ) : (
+                          <Copy className="w-3 h-3 opacity-55 group-hover/swatch:opacity-100 shrink-0 transition-opacity" />
+                        )}
+                      </div>
+                      <div className="opacity-80 mt-1">{isCopied ? "Copié !" : swatch.hex}</div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

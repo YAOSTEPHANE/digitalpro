@@ -69,7 +69,11 @@ export default function ServicesPage() {
             const Icon = track.icon;
             return (
               <LuxReveal key={track.title} delay={index * 0.06}>
-                <article className="lux-card-interactive p-5 md:p-6 h-full flex flex-col">
+                <article
+                  className={`lux-card-interactive p-5 md:p-6 h-full flex flex-col ${
+                    track.accent === "red" ? "lux-card-accent-red" : ""
+                  }`}
+                >
                   <div className="flex items-center justify-between mb-4">
                     <div
                       className={`lux-icon-badge ${
@@ -79,16 +83,22 @@ export default function ServicesPage() {
                       <Icon
                         className={`w-5 h-5 ${
                           track.accent === "red"
-                            ? "text-[var(--brand-red-light)]"
-                            : "text-[var(--brand-blue-light)]"
+                            ? "text-[var(--brand-red)]"
+                            : "text-[var(--brand-blue)]"
                         }`}
                       />
                     </div>
-                    <span className="font-mono text-xs lux-muted">{track.num}</span>
+                    <span className="font-mono text-xs font-semibold text-slate-500">{track.num}</span>
                   </div>
-                  <h2 className="text-xl font-semibold lux-heading mb-2">{track.title}</h2>
+                  <h2 className="text-xl font-bold lux-heading mb-2">{track.title}</h2>
                   <p className="lux-muted text-sm leading-relaxed flex-grow">{track.points}</p>
-                  <div className="mt-4 pt-3 border-t border-slate-200 text-[11px] font-medium text-[var(--brand-blue)]">
+                  <div
+                    className={`mt-4 pt-3 border-t border-slate-100 text-xs font-semibold ${
+                      track.accent === "red"
+                        ? "text-[var(--brand-red)]"
+                        : "text-[var(--brand-blue)]"
+                    }`}
+                  >
                     {track.metric}
                   </div>
                 </article>
@@ -103,28 +113,30 @@ export default function ServicesPage() {
       </div>
 
       <LuxReveal delay={0.1} className="mt-10">
-        <section className="lux-section-premium flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-blue-light)] mb-2">
-              <ShieldCheck className="w-4 h-4" />
-              Engagement Digitalpro
+        <section className="lux-section-dark-cta">
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-300 mb-2.5">
+                <ShieldCheck className="w-4 h-4" />
+                Engagement Digitalpro
+              </div>
+              <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">
+                Vous hésitez sur le bon périmètre pour votre entreprise ?
+              </h2>
+              <p className="text-slate-300 text-sm md:text-base leading-relaxed">
+                Réservez une session stratégique gratuite de 30 minutes : nous cadrons vos priorités
+                et vous recommandons uniquement les leviers utiles.
+              </p>
             </div>
-            <h2 className="lux-heading text-2xl md:text-3xl mb-2">
-              Vous hésitez sur le bon périmètre pour votre entreprise ?
-            </h2>
-            <p className="lux-muted text-sm md:text-base">
-              Réservez une session stratégique gratuite de 30 minutes : nous cadrons vos priorités
-              et vous recommandons uniquement les leviers utiles.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3 shrink-0">
-            <Link href="/book" className="lux-btn-primary gap-2 text-sm">
-              Consultation gratuite
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link href="/facture" className="lux-btn-ghost text-sm">
-              Voir les tarifs
-            </Link>
+            <div className="flex flex-wrap gap-3 shrink-0">
+              <Link href="/book" className="lux-btn-light gap-2 text-sm">
+                Consultation gratuite
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link href="/facture" className="lux-btn-dark-ghost text-sm">
+                Voir les tarifs
+              </Link>
+            </div>
           </div>
         </section>
       </LuxReveal>

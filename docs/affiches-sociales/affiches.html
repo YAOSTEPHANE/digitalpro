@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Affiches Publicitaires — Digitalpro Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --blue: #516699;
+      --blue-dark: #2c3c66;
+      --blue-soft: #eef2f9;
+      --red: #cc2628;
+      --red-soft: #fdf0f0;
+      --porcelain: #f7f9fc;
+      --ink: #0f172a;
+      --muted: #475569;
+      --border: rgba(81, 102, 153, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #cbd5e1;
+      font-family: "Outfit", "Segoe UI", sans-serif;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      padding: 40px;
+      align-items: center;
+    }
+
+    .serif {
+      font-family: "Cormorant Garamond", Georgia, serif;
+    }
+
+    .poster {
+      position: relative;
+      overflow: hidden;
+      background-color: var(--porcelain);
+      background-image:
+        radial-gradient(ellipse 75% 48% at 15% 4%, rgba(81, 102, 153, 0.16), transparent 60%),
+        radial-gradient(ellipse 55% 42% at 92% 18%, rgba(204, 38, 40, 0.09), transparent 58%),
+        radial-gradient(ellipse 70% 45% at 85% 92%, rgba(81, 102, 153, 0.12), transparent 60%);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .poster-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(81, 102, 153, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(81, 102, 153, 0.06) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: radial-gradient(ellipse 92% 88% at 50% 42%, #000 40%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .top-stripe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: var(--blue);
+      z-index: 10;
+    }
+
+    .top-stripe::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 28%;
+      height: 100%;
+      background: var(--red);
+    }
+
+    .inner {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Brand Bar */
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand-id {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-box {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      padding: 6px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .brand-name {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      color: var(--blue);
+      margin-top: 5px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.94);
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .dot-green {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+    }
+
+    .pill-red {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--red);
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      box-shadow: 0 12px 28px rgba(204, 38, 40, 0.28);
+    }
+
+    .pill-blue {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue);
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      box-shadow: 0 12px 28px rgba(81, 102, 153, 0.3);
+    }
+
+    /* Device Frames */
+    .browser-frame {
+      background: #ffffff;
+      border-radius: 22px;
+      border: 1.5px solid rgba(81, 102, 153, 0.24);
+      overflow: hidden;
+      box-shadow:
+        0 30px 70px rgba(15, 23, 42, 0.16),
+        0 6px 20px rgba(81, 102, 153, 0.1);
+    }
+
+    .browser-bar {
+      height: 36px;
+      background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+      border-bottom: 1px solid rgba(81, 102, 153, 0.16);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .dots {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .dots i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .url-bar {
+      background: #ffffff;
+      border: 1px solid rgba(81, 102, 153, 0.16);
+      border-radius: 999px;
+      padding: 3px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-dark);
+      letter-spacing: 0.02em;
+    }
+
+    .browser-frame img.screen {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .phone-frame {
+      background: #0f172a;
+      border-radius: 32px;
+      padding: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      box-shadow:
+        0 32px 68px rgba(15, 23, 42, 0.28),
+        0 0 0 1px rgba(81, 102, 153, 0.25);
+    }
+
+    .phone-screen {
+      border-radius: 23px;
+      overflow: hidden;
+      background: #ffffff;
+      position: relative;
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 68px;
+      height: 16px;
+      background: #0f172a;
+      border-radius: 999px;
+      z-index: 4;
+    }
+
+    .phone-screen img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    /* Bottom Conversion Card */
+    .cta-dark-card {
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 55px rgba(15, 23, 42, 0.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-dark-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 88% 20%, rgba(81, 102, 153, 0.35), transparent 55%);
+      pointer-events: none;
+    }
+
+    .qr-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.24);
+      flex-shrink: 0;
+    }
+
+    .qr-card img {
+      width: 92px;
+      height: 92px;
+      display: block;
+    }
+
+    .qr-card span {
+      font-size: 9.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink);
+    }
+
+    /* ============================================================
+       POSTER 1 : FEED PORTRAIT 1080 x 1350 (Instagram / FB / LinkedIn)
+       ============================================================ */
+    #poster-portrait {
+      width: 1080px;
+      height: 1350px;
+    }
+
+    #poster-portrait .inner {
+      padding: 52px 54px 48px;
+    }
+
+    #poster-portrait .hero-copy {
+      margin-top: 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      color: var(--blue);
+      margin-bottom: 14px;
+    }
+
+    .eyebrow-line {
+      width: 28px;
+      height: 2.5px;
+      background: var(--red);
+      border-radius: 99px;
+    }
+
+    #poster-portrait h1 {
+      font-size: 68px;
+      line-height: 0.98;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.025em;
+    }
+
+    .accent-word {
+      position: relative;
+      display: inline-block;
+      font-style: italic;
+      color: var(--blue-dark);
+    }
+
+    .accent-word::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 2px;
+      height: 5px;
+      border-radius: 99px;
+      background: var(--red);
+    }
+
+    #poster-portrait .lead {
+      margin-top: 16px;
+      font-size: 20px;
+      line-height: 1.45;
+      color: var(--muted);
+      max-width: 820px;
+    }
+
+    #poster-portrait .stage {
+      position: relative;
+      flex: 1;
+      margin-top: 30px;
+      margin-bottom: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #poster-portrait .browser-frame {
+      width: 820px;
+      transform: translateX(-48px) translateY(-10px);
+    }
+
+    #poster-portrait .browser-frame img.screen {
+      height: 472px;
+    }
+
+    #poster-portrait .phone-frame {
+      position: absolute;
+      right: 12px;
+      bottom: 14px;
+      width: 242px;
+      z-index: 6;
+    }
+
+    #poster-portrait .phone-screen img {
+      height: 470px;
+    }
+
+    .float-badge-top {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      z-index: 8;
+    }
+
+    .float-badge-bottom {
+      position: absolute;
+      left: 8px;
+      bottom: 26px;
+      z-index: 8;
+    }
+
+    .pillars-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .pillar-chip {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 13px 14px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .pillar-chip b {
+      display: block;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .pillar-chip span {
+      display: block;
+      font-size: 11.5px;
+      color: var(--blue);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .pillar-chip:nth-child(even) span {
+      color: var(--red);
+    }
+
+    #poster-portrait .cta-dark-card {
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .cta-url {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.05;
+      margin-top: 4px;
+    }
+
+    .cta-meta {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 15px;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+
+    .cta-meta strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .cta-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--red);
+      color: #ffffff;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    /* ============================================================
+       POSTER 2 : CARRE 1080 x 1080 (Offres & Simulateur)
+       ============================================================ */
+    #poster-square {
+      width: 1080px;
+      height: 1080px;
+    }
+
+    #poster-square .inner {
+      padding: 46px 50px 44px;
+    }
+
+    .sq-main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.04fr 0.96fr;
+      gap: 34px;
+      align-items: center;
+      margin: 26px 0 24px;
+    }
+
+    #poster-square h1 {
+      font-size: 58px;
+      line-height: 0.98;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.025em;
+    }
+
+    .price-highlight {
+      color: var(--red);
+      font-style: italic;
+    }
+
+    .sq-desc {
+      margin-top: 14px;
+      font-size: 17.5px;
+      line-height: 1.48;
+      color: var(--muted);
+    }
+
+    .check-list {
+      margin-top: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 11px 15px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.035);
+    }
+
+    .check-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .check-item:nth-child(even) .check-icon {
+      background: var(--red);
+    }
+
+    .kpi-trio {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .kpi-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .kpi-box b {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--blue-dark);
+      display: block;
+      line-height: 1;
+    }
+
+    .kpi-box span {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .sq-visual {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .sq-visual .browser-frame img.screen {
+      height: 360px;
+    }
+
+    .sq-floating-card {
+      background: #ffffff;
+      border: 1.5px solid rgba(204, 38, 40, 0.25);
+      border-radius: 18px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+    }
+
+    .sq-floating-card b {
+      font-size: 15px;
+      color: var(--ink);
+      display: block;
+    }
+
+    .sq-floating-card span {
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    #poster-square .cta-dark-card {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    /* ============================================================
+       POSTER 3 : STORY / STATUT WHATSAPP 1080 x 1920 (Ratio 9:16)
+       ============================================================ */
+    #poster-story {
+      width: 1080px;
+      height: 1920px;
+    }
+
+    #poster-story .inner {
+      padding: 132px 54px 132px;
+      justify-content: space-between;
+    }
+
+    .story-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .story-copy {
+      text-align: center;
+      margin-top: 28px;
+    }
+
+    .story-copy h1 {
+      font-size: 76px;
+      line-height: 0.96;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.025em;
+    }
+
+    .story-copy p {
+      margin: 20px auto 0;
+      font-size: 22px;
+      line-height: 1.45;
+      color: var(--muted);
+      max-width: 820px;
+    }
+
+    .story-stage {
+      position: relative;
+      height: 760px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 22px 0;
+    }
+
+    .story-stage .browser-frame {
+      width: 830px;
+      transform: translateX(-20px) translateY(-95px);
+    }
+
+    .story-stage .browser-frame img.screen {
+      height: 470px;
+    }
+
+    .story-stage .phone-frame {
+      position: absolute;
+      bottom: 10px;
+      right: 26px;
+      width: 280px;
+      z-index: 6;
+    }
+
+    .story-stage .phone-screen img {
+      height: 540px;
+    }
+
+    .story-offer-card {
+      position: absolute;
+      left: 16px;
+      bottom: 42px;
+      z-index: 7;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 22px;
+      padding: 20px 24px;
+      width: 580px;
+      box-shadow: 0 24px 52px rgba(15, 23, 42, 0.14);
+    }
+
+    .story-offer-card .tag {
+      display: inline-block;
+      background: var(--red-soft);
+      color: var(--red);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 10px;
+    }
+
+    .story-offer-card h2 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.05;
+    }
+
+    .story-offer-card p {
+      font-size: 15.5px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .story-pills {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .story-stat {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+    }
+
+    .story-stat b {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--blue-dark);
+      line-height: 1;
+      display: block;
+    }
+
+    .story-stat:nth-child(2) b {
+      color: var(--red);
+    }
+
+    .story-stat span {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+      display: block;
+      margin-top: 5px;
+    }
+
+    #poster-story .cta-dark-card {
+      padding: 28px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    #poster-story .qr-card img {
+      width: 112px;
+      height: 112px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =================================================================
+       AFFICHE 1 : FEED PORTRAIT 1080 x 1350 (Instagram / Facebook / LinkedIn)
+       ================================================================= -->
+  <section id="poster-portrait" class="poster">
+    <div class="top-stripe"></div>
+    <div class="poster-grid"></div>
+    <div class="inner">
+      <header class="brand-bar">
+        <div class="brand-id">
+          <div class="logo-box">
+            <img src="assets/logo.png" alt="Logo Digitalpro Solutions" />
+          </div>
+          <div>
+            <div class="brand-name">digitalpro</div>
+            <div class="brand-sub">Solutions · Abidjan</div>
+          </div>
+        </div>
+        <div class="status-pill">
+          <span class="dot-green"></span>
+          Nouveau Site En Ligne
+        </div>
+      </header>
+
+      <div class="hero-copy">
+        <div class="eyebrow">
+          <span class="eyebrow-line"></span>
+          Agence d&apos;ingénierie digitale · Côte d&apos;Ivoire
+        </div>
+        <h1 class="serif">
+          Propulsez votre marque avec un site qui <span class="accent-word">convertit</span>
+        </h1>
+        <p class="lead">
+          Plateformes web rapides, boutiques e-commerce &amp; direction artistique sur mesure pour transformer vos visiteurs en clients.
+        </p>
+      </div>
+
+      <div class="stage">
+        <span class="pill-blue float-badge-top">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          Score Lighthouse 99/100
+        </span>
+        <span class="pill-red float-badge-bottom">Offre Lancement · Jusqu&apos;à -50%</span>
+
+        <div class="browser-frame">
+          <div class="browser-bar">
+            <div class="dots">
+              <i style="background:#cc2628"></i>
+              <i style="background:#516699"></i>
+              <i style="background:#cbd5e1"></i>
+            </div>
+            <div class="url-bar">https://www.digitalpro-solutions.com</div>
+            <div style="width:42px"></div>
+          </div>
+          <img class="screen" src="assets/site-desktop-hero.png" alt="Aperçu desktop digitalpro-solutions.com" />
+        </div>
+
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <img src="assets/site-mobile-hero.png" alt="Aperçu mobile digitalpro-solutions.com" />
+          </div>
+        </div>
+      </div>
+
+      <div class="pillars-4">
+        <div class="pillar-chip">
+          <b>Sites Web &amp; SaaS</b>
+          <span>Dès 100.000 FCFA</span>
+        </div>
+        <div class="pillar-chip">
+          <b>E-commerce Complet</b>
+          <span>Wave · OM · Stripe</span>
+        </div>
+        <div class="pillar-chip">
+          <b>UI/UX &amp; Identité</b>
+          <span>Prototypes Figma</span>
+        </div>
+        <div class="pillar-chip">
+          <b>SEO &amp; Acquisition</b>
+          <span>Suivi ROI &amp; IA</span>
+        </div>
+      </div>
+
+      <footer class="cta-dark-card">
+        <div>
+          <span class="cta-kicker">Simulateur &amp; Devis Gratuit En Ligne</span>
+          <div class="cta-url">www.digitalpro-solutions.com</div>
+          <div class="cta-meta">
+            <span><strong>+225 07 48 97 60 31</strong></span>
+            <span>•</span>
+            <span>Cocody, Abidjan &amp; International</span>
+          </div>
+        </div>
+        <div class="qr-card">
+          <img src="assets/qr-site.png" alt="QR code vers digitalpro-solutions.com" />
+          <span>Visiter le site</span>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       AFFICHE 2 : FORMAT CARRE 1080 x 1080 (Offres & Simulateur)
+       ================================================================= -->
+  <section id="poster-square" class="poster">
+    <div class="top-stripe"></div>
+    <div class="poster-grid"></div>
+    <div class="inner">
+      <header class="brand-bar">
+        <div class="brand-id">
+          <div class="logo-box">
+            <img src="assets/logo.png" alt="Logo Digitalpro Solutions" />
+          </div>
+          <div>
+            <div class="brand-name">digitalpro</div>
+            <div class="brand-sub">Studio Digital · Cocody</div>
+          </div>
+        </div>
+        <div class="pill-red">Édition Privilège · -50%</div>
+      </header>
+
+      <div class="sq-main">
+        <div>
+          <div class="eyebrow">
+            <span class="eyebrow-line"></span>
+            Web · Mobile · Growth
+          </div>
+          <h1 class="serif">
+            Votre site pro dès <span class="price-highlight">100.000 F</span>
+          </h1>
+          <p class="sq-desc">
+            Découvrez notre nouvelle plateforme avec simulateur de budget en direct et démos interactives.
+          </p>
+
+          <div class="check-list">
+            <div class="check-item">
+              <span class="check-icon">✓</span>
+              <span>Site Vitrine Prestige livré rapidement</span>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">✓</span>
+              <span>Boutique Wave, Orange Money &amp; Visa</span>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">✓</span>
+              <span>Simulateur de devis instantané en 30s</span>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">✓</span>
+              <span>Paiement échelonné possible en 3×</span>
+            </div>
+          </div>
+
+          <div class="kpi-trio">
+            <div class="kpi-box">
+              <b>350+</b>
+              <span>Projets livrés</span>
+            </div>
+            <div class="kpi-box">
+              <b>48h</b>
+              <span>Démarrage</span>
+            </div>
+            <div class="kpi-box">
+              <b>92%</b>
+              <span>Objectifs atteints</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sq-visual">
+          <div class="browser-frame">
+            <div class="browser-bar">
+              <div class="dots">
+                <i style="background:#cc2628"></i>
+                <i style="background:#516699"></i>
+                <i style="background:#cbd5e1"></i>
+              </div>
+              <div class="url-bar">digitalpro-solutions.com/#simulateur</div>
+              <div style="width:24px"></div>
+            </div>
+            <img class="screen" src="assets/site-simulator.png" alt="Simulateur interactif Digitalpro" />
+          </div>
+
+          <div class="sq-floating-card">
+            <div>
+              <b>Testez nos réalisations en direct</b>
+              <span>Immobilier, SaaS caisse &amp; boutiques e-commerce</span>
+            </div>
+            <span class="pill-blue" style="padding:8px 14px; font-size:11px;">Live Demo</span>
+          </div>
+        </div>
+      </div>
+
+      <footer class="cta-dark-card">
+        <div>
+          <span class="cta-kicker">Réservez 30 min d&apos;audit offert</span>
+          <div class="cta-url" style="font-size:34px;">digitalpro-solutions.com/devis</div>
+          <div class="cta-meta" style="margin-top:6px;">
+            <span><strong>+225 07 48 97 60 31</strong> · WhatsApp &amp; Appels</span>
+          </div>
+        </div>
+        <div class="qr-card">
+          <img src="assets/qr-devis.png" alt="QR Code Devis" />
+          <span>Devis Express</span>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       AFFICHE 3 : FORMAT STORY / STATUT 1080 x 1920 (Ratio 9:16)
+       ================================================================= -->
+  <section id="poster-story" class="poster">
+    <div class="top-stripe"></div>
+    <div class="poster-grid"></div>
+    <div class="inner">
+      <header class="story-header">
+        <div class="brand-id">
+          <div class="logo-box" style="width:74px; height:74px;">
+            <img src="assets/logo.png" alt="Logo Digitalpro" />
+          </div>
+          <div>
+            <div class="brand-name" style="font-size:36px;">digitalpro</div>
+            <div class="brand-sub">Solutions · Abidjan</div>
+          </div>
+        </div>
+        <div class="pill-red">Site Officiel</div>
+      </header>
+
+      <div class="story-copy">
+        <div class="eyebrow" style="justify-content:center;">
+          <span class="eyebrow-line"></span>
+          Design · Développement · Growth
+          <span class="eyebrow-line" style="background:var(--blue);"></span>
+        </div>
+        <h1 class="serif">
+          L&apos;excellence digitale<br />à portée de <span class="accent-word">marque</span>
+        </h1>
+        <p>
+          Explorez notre site, testez nos démos en direct et chiffrez votre futur projet en moins d&apos;une minute.
+        </p>
+      </div>
+
+      <div class="story-stage">
+        <div class="browser-frame">
+          <div class="browser-bar">
+            <div class="dots">
+              <i style="background:#cc2628"></i>
+              <i style="background:#516699"></i>
+              <i style="background:#cbd5e1"></i>
+            </div>
+            <div class="url-bar">www.digitalpro-solutions.com</div>
+            <div style="width:40px"></div>
+          </div>
+          <img class="screen" src="assets/site-desktop-hero.png" alt="Site Digitalpro Desktop" />
+        </div>
+
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <img src="assets/site-mobile-hero.png" alt="Site Digitalpro Mobile" />
+          </div>
+        </div>
+
+        <div class="story-offer-card">
+          <span class="tag">Campagne Lancement · -50%</span>
+          <h2>Site Vitrine, E-commerce &amp; App</h2>
+          <p>
+            Wave · Orange Money · Cartes bancaires · SEO Google &amp; Assistant IA inclus selon vos besoins.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <div class="story-pills">
+          <div class="story-stat">
+            <b>350+</b>
+            <span>Lancements</span>
+          </div>
+          <div class="story-stat">
+            <b>-50%</b>
+            <span>Offre Privilège</span>
+          </div>
+          <div class="story-stat">
+            <b>99/100</b>
+            <span>Vitesse Web</span>
+          </div>
+        </div>
+
+        <footer class="cta-dark-card">
+          <div>
+            <span class="cta-kicker">Passez à l&apos;action maintenant</span>
+            <div class="cta-url" style="font-size:40px;">digitalpro-solutions.com</div>
+            <div class="cta-meta" style="font-size:17px;">
+              <span><strong>+225 07 48 97 60 31</strong></span>
+              <span>•</span>
+              <span>Abidjan, Cocody</span>
+            </div>
+          </div>
+          <div class="qr-card">
+            <img src="assets/qr-site.png" alt="QR Code Site Digitalpro" />
+            <span>Scannez-moi</span>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

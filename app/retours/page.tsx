@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -225,14 +226,14 @@ export default function RetoursPage() {
           const Icon = stat.icon;
           return (
             <LuxReveal key={stat.label} delay={index * 0.06}>
-              <div className="lux-card-interactive p-5 md:p-6 text-center">
+              <div className="lux-card-kpi p-5 md:p-6 text-center">
                 <div className="lux-icon-badge inline-flex mb-3">
                   <Icon className="w-6 h-6 text-[var(--brand-blue)]" />
                 </div>
-                <div className="text-3xl md:text-4xl font-bold lux-heading mb-1 tabular-nums">
+                <div className="lux-stat-number mb-1">
                   {stat.value}
                 </div>
-                <div className="text-xs md:text-sm text-slate-600">{stat.label}</div>
+                <div className="text-xs md:text-sm font-medium text-slate-600">{stat.label}</div>
               </div>
             </LuxReveal>
           );
@@ -265,9 +266,12 @@ export default function RetoursPage() {
               <div key={row.stars} className="flex items-center gap-3 text-xs">
                 <span className="w-8 font-mono font-semibold text-slate-900">{row.stars}★</span>
                 <div className="flex-1 h-2 rounded-full bg-slate-200 overflow-hidden">
-                  <div
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${row.pct}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
                     className="h-full rounded-full bg-[var(--brand-blue)]"
-                    style={{ width: `${row.pct}%` }}
                   />
                 </div>
                 <span className="w-10 text-right font-mono text-slate-600 tabular-nums">
@@ -306,16 +310,20 @@ export default function RetoursPage() {
       <div className="grid md:grid-cols-2 gap-5 mb-16">
         {filteredReviews.map((testimonial, index) => (
           <LuxReveal key={testimonial.id} delay={index * 0.05}>
-            <article className="lux-card-interactive p-6 md:p-7 h-full flex flex-col justify-between">
+            <article
+              className={`lux-card-interactive p-6 md:p-7 h-full flex flex-col justify-between ${
+                index % 2 === 1 ? "lux-card-accent-red" : ""
+              }`}
+            >
               <div>
                 <div className="flex items-start justify-between gap-4 mb-4">
                   <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 rounded-2xl lux-icon-badge flex items-center justify-center text-[var(--brand-blue)] font-bold text-base shrink-0">
+                    <div className="w-12 h-12 rounded-2xl lux-icon-badge flex items-center justify-center text-[var(--brand-blue)] font-display font-bold text-base shrink-0">
                       {testimonial.avatar}
                     </div>
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="text-lg font-semibold lux-heading">{testimonial.name}</h3>
+                        <h3 className="text-lg font-bold lux-heading">{testimonial.name}</h3>
                         <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
                           <BadgeCheck className="w-3 h-3" />
                           Vérifié
@@ -324,7 +332,13 @@ export default function RetoursPage() {
                       <p className="text-xs text-slate-500">{testimonial.company}</p>
                     </div>
                   </div>
-                  <Quote className="w-6 h-6 text-[var(--brand-blue)]/30 shrink-0" />
+                  <Quote
+                    className={`w-6 h-6 shrink-0 ${
+                      index % 2 === 1
+                        ? "text-[var(--brand-red)]/30"
+                        : "text-[var(--brand-blue)]/30"
+                    }`}
+                  />
                 </div>
 
                 <div className="flex items-center justify-between gap-2 mb-3">
@@ -336,7 +350,7 @@ export default function RetoursPage() {
                   <span className="lux-chip !text-[10px] !py-0.5">{testimonial.service}</span>
                 </div>
 
-                <p className="text-slate-700 text-sm md:text-base leading-relaxed">
+                <p className="text-slate-700 text-sm md:text-[15px] leading-relaxed">
                   &ldquo;{testimonial.message}&rdquo;
                 </p>
               </div>

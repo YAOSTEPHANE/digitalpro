@@ -445,10 +445,8 @@ const ModernBilling = () => {
               {plans.map((plan, index) => (
                 <LuxReveal key={plan.name} delay={index * 0.08} className="h-full flex">
                   <div
-                    className={`relative w-full h-full flex flex-col lux-card-interactive p-6 md:p-8 ${
-                      plan.popular
-                        ? "border-[var(--brand-blue)] ring-1 ring-[var(--brand-blue)]/25 shadow-lg"
-                        : ""
+                    className={`relative w-full h-full flex flex-col p-6 md:p-8 ${
+                      plan.popular ? "lux-card-featured" : "lux-card-interactive"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2 mb-4">
@@ -463,8 +461,8 @@ const ModernBilling = () => {
                       ) : null}
                     </div>
 
-                    <h3 className="lux-heading text-3xl font-semibold mb-2">{plan.name}</h3>
-                    <div className="text-3xl font-bold text-[var(--brand-blue)] tabular-nums mb-3">
+                    <h3 className="lux-heading text-3xl font-bold mb-2">{plan.name}</h3>
+                    <div className="font-display text-3xl font-bold text-[var(--brand-blue)] tabular-nums mb-3">
                       {plan.price}
                     </div>
                     <p className="text-sm text-slate-600 leading-relaxed mb-6">{plan.description}</p>
@@ -526,7 +524,7 @@ const ModernBilling = () => {
                     ["Révisions illimitées & Chef de projet", false, false, true],
                     ["Support prioritaire 24h", false, true, true],
                   ].map(([label, b, p, e]) => (
-                    <tr key={String(label)}>
+                    <tr key={String(label)} className="hover:bg-slate-50/90 transition-colors">
                       <td className="py-3 pr-4 text-slate-800">{label}</td>
                       {[b, p, e].map((has, i) => (
                         <td key={i} className="py-3 px-4">
@@ -754,76 +752,79 @@ const ModernBilling = () => {
             </div>
 
             {/* Aperçu live de la facture */}
-            <aside className="xl:col-span-5 xl:sticky xl:top-28 rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_55px_rgba(15,23,42,0.08)] space-y-5">
-              <div className="flex items-start justify-between border-b border-slate-200 pb-4">
-                <div>
-                  <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--brand-blue)] font-semibold">
-                    Aperçu Temps Réel
-                  </span>
-                  <h3 className="font-display text-2xl font-bold text-slate-900 mt-0.5">
-                    digitalpro solutions
-                  </h3>
-                  <p className="text-[11px] text-slate-500">Cocody, Abidjan · Côte d&apos;Ivoire</p>
-                </div>
-                <span className="lux-chip font-mono text-[10px]">PROFORMA</span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 text-xs">
-                <div>
-                  <p className="text-slate-500 mb-1">Facturé à :</p>
-                  <p className="font-semibold text-slate-900">
-                    {clientInfo.name || "Nom du client"}
-                  </p>
-                  <p className="text-slate-600 truncate">{clientInfo.email || "email@client.com"}</p>
-                  {clientInfo.phone ? <p className="text-slate-600">{clientInfo.phone}</p> : null}
-                </div>
-                <div className="text-right">
-                  <p className="text-slate-500 mb-1">Échéance :</p>
-                  <p className="font-mono text-slate-900 font-medium">
-                    {invoiceSettings.dueDate
-                      ? new Date(invoiceSettings.dueDate).toLocaleDateString("fr-FR")
-                      : "À réception"}
-                  </p>
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-3.5 space-y-2 text-xs">
-                {invoiceItems.map((item, idx) => (
-                  <div key={idx} className="flex items-center justify-between gap-2">
-                    <span className="text-slate-800 truncate">
-                      {item.quantity}x {item.description || `Prestation #${idx + 1}`}
+            <aside className="xl:col-span-5 xl:sticky xl:top-28 rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-[0_20px_55px_rgba(15,23,42,0.08)]">
+              <div className="h-1.5 w-full bg-[var(--brand-blue)]" aria-hidden />
+              <div className="p-6 space-y-5">
+                <div className="flex items-start justify-between border-b border-slate-200 pb-4">
+                  <div>
+                    <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--brand-blue)] font-semibold">
+                      Aperçu Temps Réel
                     </span>
-                    <span className="font-mono font-semibold text-slate-900 shrink-0 tabular-nums">
-                      {item.total.toLocaleString("fr-FR")} F
-                    </span>
+                    <h3 className="font-display text-2xl font-bold text-slate-900 mt-0.5">
+                      digitalpro solutions
+                    </h3>
+                    <p className="text-[11px] text-slate-500">Cocody, Abidjan · Côte d&apos;Ivoire</p>
                   </div>
-                ))}
-              </div>
-
-              <div className="space-y-1.5 text-xs pt-2 border-t border-slate-200">
-                <div className="flex justify-between text-slate-600">
-                  <span>Sous-total</span>
-                  <span className="tabular-nums">{subtotal.toLocaleString("fr-FR")} FCFA</span>
+                  <span className="lux-chip font-mono text-[10px]">PROFORMA</span>
                 </div>
-                {invoiceSettings.tax > 0 ? (
+
+                <div className="grid grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <p className="text-slate-500 mb-1">Facturé à :</p>
+                    <p className="font-semibold text-slate-900">
+                      {clientInfo.name || "Nom du client"}
+                    </p>
+                    <p className="text-slate-600 truncate">{clientInfo.email || "email@client.com"}</p>
+                    {clientInfo.phone ? <p className="text-slate-600">{clientInfo.phone}</p> : null}
+                  </div>
+                  <div className="text-right">
+                    <p className="text-slate-500 mb-1">Échéance :</p>
+                    <p className="font-mono text-slate-900 font-medium">
+                      {invoiceSettings.dueDate
+                        ? new Date(invoiceSettings.dueDate).toLocaleDateString("fr-FR")
+                        : "À réception"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3.5 space-y-2 text-xs">
+                  {invoiceItems.map((item, idx) => (
+                    <div key={idx} className="flex items-center justify-between gap-2">
+                      <span className="text-slate-800 truncate">
+                        {item.quantity}x {item.description || `Prestation #${idx + 1}`}
+                      </span>
+                      <span className="font-mono font-semibold text-slate-900 shrink-0 tabular-nums">
+                        {item.total.toLocaleString("fr-FR")} F
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-1.5 text-xs pt-2 border-t border-slate-200">
                   <div className="flex justify-between text-slate-600">
-                    <span>TVA ({invoiceSettings.tax}%)</span>
-                    <span className="tabular-nums">{taxAmount.toLocaleString("fr-FR")} FCFA</span>
+                    <span>Sous-total</span>
+                    <span className="tabular-nums">{subtotal.toLocaleString("fr-FR")} FCFA</span>
                   </div>
-                ) : null}
-                {invoiceSettings.discount > 0 ? (
-                  <div className="flex justify-between text-slate-600">
-                    <span>Remise ({invoiceSettings.discount}%)</span>
-                    <span className="tabular-nums">
-                      -{discountAmount.toLocaleString("fr-FR")} FCFA
+                  {invoiceSettings.tax > 0 ? (
+                    <div className="flex justify-between text-slate-600">
+                      <span>TVA ({invoiceSettings.tax}%)</span>
+                      <span className="tabular-nums">{taxAmount.toLocaleString("fr-FR")} FCFA</span>
+                    </div>
+                  ) : null}
+                  {invoiceSettings.discount > 0 ? (
+                    <div className="flex justify-between text-slate-600">
+                      <span>Remise ({invoiceSettings.discount}%)</span>
+                      <span className="tabular-nums">
+                        -{discountAmount.toLocaleString("fr-FR")} FCFA
+                      </span>
+                    </div>
+                  ) : null}
+                  <div className="flex justify-between items-baseline pt-3 border-t border-slate-200">
+                    <span className="text-sm font-bold text-slate-900">TOTAL TTC</span>
+                    <span className="font-display text-2xl font-bold text-[var(--brand-red)] tabular-nums">
+                      {total.toLocaleString("fr-FR")} FCFA
                     </span>
                   </div>
-                ) : null}
-                <div className="flex justify-between items-baseline pt-3 border-t border-slate-200">
-                  <span className="text-sm font-bold text-slate-900">TOTAL TTC</span>
-                  <span className="text-2xl font-bold text-[var(--brand-red)] tabular-nums">
-                    {total.toLocaleString("fr-FR")} FCFA
-                  </span>
                 </div>
               </div>
             </aside>
@@ -839,19 +840,19 @@ const ModernBilling = () => {
             className="max-w-5xl mx-auto space-y-6"
           >
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="lux-card-interactive p-5">
+              <div className="lux-card-kpi p-5">
                 <p className="text-xs text-slate-500 mb-1">Volume total facturé</p>
                 <p className="font-display text-2xl font-bold text-slate-900 tabular-nums">
                   {historySummary.totalBilled.toLocaleString("fr-FR")} FCFA
                 </p>
               </div>
-              <div className="lux-card-interactive p-5">
+              <div className="lux-card-kpi p-5">
                 <p className="text-xs text-slate-500 mb-1">Factures réglées</p>
                 <p className="font-display text-2xl font-bold text-emerald-600 tabular-nums">
                   {historySummary.paidCount}
                 </p>
               </div>
-              <div className="lux-card-interactive p-5">
+              <div className="lux-card-kpi p-5">
                 <p className="text-xs text-slate-500 mb-1">En attente / suivi</p>
                 <p className="font-display text-2xl font-bold text-[var(--brand-blue)] tabular-nums">
                   {historySummary.pendingCount}

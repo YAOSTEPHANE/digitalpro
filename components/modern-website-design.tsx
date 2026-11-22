@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
@@ -69,7 +70,7 @@ const webProjects: WebProject[] = [
     summary:
       "Expérience éditoriale minimaliste avec transitions fluides, galeries immersives et prise de rendez-vous privé intégrée.",
     lighthouse: "99/100",
-    stack: ["Framer Motion", "Cormorant", "Booking"],
+    stack: ["Framer Motion", "Design System", "Booking"],
     outcomes: ["Temps de chargement < 0.8s", "+140% de demandes qualifiées"],
   },
   {
@@ -114,6 +115,15 @@ const ModernWebsiteDesign = () => {
   const [filter, setFilter] = useState<WebCategory>("all");
   const [selectedProject, setSelectedProject] = useState<WebProject | null>(null);
 
+  useEffect(() => {
+    if (!selectedProject) return;
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedProject(null);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [selectedProject]);
+
   const visibleProjects =
     filter === "all" ? webProjects : webProjects.filter((p) => p.category === filter);
 
@@ -154,7 +164,16 @@ const ModernWebsiteDesign = () => {
           {visibleProjects.map((project, index) => (
             <LuxReveal key={project.id} delay={index * 0.06}>
               <article
+                role="button"
+                tabIndex={0}
                 onClick={() => setSelectedProject(project)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setSelectedProject(project);
+                  }
+                }}
+                aria-label={`Consulter l'étude de cas : ${project.title}`}
                 className="lux-card-interactive overflow-hidden h-full flex flex-col cursor-pointer group"
               >
                 <div className="lux-browser-chrome justify-between !py-2">
@@ -184,18 +203,22 @@ const ModernWebsiteDesign = () => {
                 </div>
 
                 <div className="p-5 flex flex-col flex-grow">
-                  <h3 className="font-display text-xl font-semibold text-slate-900 group-hover:text-[var(--brand-blue)] transition-colors mb-2">
+                  <h3 className="font-display text-xl font-bold text-slate-900 group-hover:text-[var(--brand-blue)] transition-colors mb-2">
                     {project.title}
                   </h3>
                   <p className="text-slate-600 text-sm leading-relaxed mb-4 flex-grow">
                     {project.summary}
                   </p>
-                  <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-100">
+                  <div className="flex flex-wrap gap-1.5 pb-3.5 border-b border-slate-100">
                     {project.stack.map((tech) => (
                       <span key={tech} className="lux-chip !text-[10px] !px-2.5 !py-0.5">
                         {tech}
                       </span>
                     ))}
+                  </div>
+                  <div className="pt-3 flex items-center justify-between text-xs font-semibold text-[var(--brand-blue)] group-hover:text-slate-900 transition-colors">
+                    <span>Voir l&apos;étude de cas</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </article>
@@ -233,7 +256,7 @@ const ModernWebsiteDesign = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/45 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/45 backdrop-blur-sm p-4"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
@@ -241,7 +264,7 @@ const ModernWebsiteDesign = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 12 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-[0_28px_75px_rgba(15,23,42,0.22)]"
+              className="w-full max-w-2xl rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-[0_28px_75px_rgba(15,23,42,0.22)] max-h-[90vh] overflow-y-auto custom-scrollbar"
             >
               <div className="lux-browser-chrome justify-between">
                 <div className="flex items-center gap-2">
@@ -259,11 +282,20 @@ const ModernWebsiteDesign = () => {
                   <X className="w-4 h-4" />
                 </button>
               </div>
+              <div className="relative h-44 sm:h-52 w-full bg-slate-100">
+                <Image
+                  src={selectedProject.image}
+                  alt={selectedProject.title}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/55 via-transparent to-transparent pointer-events-none" />
+                <span className="absolute bottom-3 left-6 inline-flex items-center rounded-full bg-white/95 px-3 py-1 text-[11px] font-mono font-semibold text-[var(--brand-blue)] shadow-xs backdrop-blur-md">
+                  Performance {selectedProject.lighthouse}
+                </span>
+              </div>
               <div className="p-6 md:p-8 space-y-5">
                 <div>
-                  <span className="lux-chip text-[11px] mb-2 inline-block">
-                    Performance {selectedProject.lighthouse}
-                  </span>
                   <h3 className="lux-heading text-2xl md:text-3xl">{selectedProject.title}</h3>
                   <p className="text-slate-600 text-sm mt-2 leading-relaxed">
                     {selectedProject.summary}

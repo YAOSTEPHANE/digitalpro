@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/next"
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Outfit } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Chatbot from "@/components/chatbot";
 import ModernFooter from "@/components/modern-footer";
@@ -8,16 +8,28 @@ import { defaultMetadata } from "@/lib/seo";
 import StructuredData from "@/components/structured-data";
 import { Toaster } from "@/components/ui/sonner";
 
-const displayFont = Cormorant_Garamond({
-  subsets: ["latin"],
+const displayFont = localFont({
+  src: "./fonts/bricolage-grotesque.woff2",
   variable: "--font-display",
-  weight: ["400", "500", "600", "700"],
+  weight: "400 800",
+  style: "normal",
+  display: "swap",
 });
 
-const bodyFont = Outfit({
-  subsets: ["latin"],
+const bodyFont = localFont({
+  src: "./fonts/plus-jakarta-sans.woff2",
   variable: "--font-body",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: "400 700",
+  style: "normal",
+  display: "swap",
+});
+
+const monoFont = localFont({
+  src: "./fonts/jetbrains-mono.woff2",
+  variable: "--font-mono-face",
+  weight: "400 600",
+  style: "normal",
+  display: "swap",
 });
 
 export const metadata: Metadata = defaultMetadata;
@@ -28,13 +40,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${displayFont.variable} ${bodyFont.variable}`}>
+    <html
+      lang="fr"
+      className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable}`}
+    >
       <body className="lux-theme font-body antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-[var(--brand-blue)] focus:px-4 focus:py-2 focus:text-xs focus:font-semibold focus:text-white focus:shadow-lg"
+        >
+          Aller au contenu principal
+        </a>
         <StructuredData />
-            {children}
-            <ModernFooter />
-            <Chatbot />
-            <Toaster />
+        {children}
+        <ModernFooter />
+        <Chatbot />
+        <Toaster />
         <Analytics />
       </body>
     </html>

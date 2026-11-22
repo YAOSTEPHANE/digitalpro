@@ -275,7 +275,7 @@ export default function CommandPalette({ open, onOpenChange }: CommandPalettePro
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Rechercher un service, tarif, simulateur, devis ou action..."
+                placeholder="Rechercher un service, réalisation, tarif, devis ou action..."
                 className="flex-1 bg-transparent text-sm sm:text-base text-slate-900 placeholder:text-slate-400 outline-none"
               />
               {query ? (

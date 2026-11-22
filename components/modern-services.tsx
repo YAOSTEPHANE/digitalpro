@@ -103,24 +103,28 @@ const ModernServices = () => {
           {services.map((service, index) => (
             <LuxReveal key={service.title} delay={index * 0.06} className="h-full flex">
               <CardContainer className="inter-var h-full w-full" containerClassName="w-full h-full">
-                <CardBody className="lux-card-interactive relative group/card w-full h-full p-6 flex flex-col">
-                  <CardItem translateZ="40" className="w-full mb-4 flex items-center justify-between gap-2">
+                <CardBody
+                  className={`lux-card-interactive relative group/card w-full h-full p-6 flex flex-col ${
+                    service.accent === "red" ? "lux-card-accent-red" : ""
+                  }`}
+                >
+                  <CardItem translateZ="14" className="w-full mb-4 flex items-center justify-between gap-2">
                     <div className="flex items-center gap-3">
                       <div className={`p-2.5 rounded-xl flex-shrink-0 ${accentSolidBgClass(service.accent)}`}>
                         <service.icon className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 block font-medium">
+                        <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 block font-semibold">
                           {service.tag}
                         </span>
-                        <h3 className="font-display text-xl font-semibold text-slate-900">
+                        <h3 className="font-display text-xl font-bold text-slate-900">
                           {service.title}
                         </h3>
                       </div>
                     </div>
                   </CardItem>
 
-                  <CardItem translateZ="50" className="mb-4 w-full flex-shrink-0">
+                  <CardItem translateZ="16" className="mb-4 w-full flex-shrink-0">
                     <div className="relative overflow-hidden rounded-xl">
                       <Image3D
                         src={service.image}
@@ -132,15 +136,15 @@ const ModernServices = () => {
                     </div>
                   </CardItem>
 
-                  <CardItem as="p" translateZ="45" className="text-slate-600 text-sm leading-relaxed mb-4 w-full">
+                  <CardItem as="p" translateZ="12" className="text-slate-600 text-sm leading-relaxed mb-4 w-full">
                     {service.description}
                   </CardItem>
 
-                  <CardItem translateZ="55" className="w-full mb-5 space-y-1.5 flex-grow">
+                  <CardItem translateZ="14" className="w-full mb-5 space-y-1.5 flex-grow">
                     {service.deliverables.map((item) => (
                       <div
                         key={item}
-                        className="flex items-center gap-2 text-xs text-slate-700"
+                        className="flex items-center gap-2 text-[13px] text-slate-700"
                       >
                         <Check className="w-3.5 h-3.5 text-[var(--brand-blue)] shrink-0" />
                         <span>{item}</span>
@@ -148,12 +152,12 @@ const ModernServices = () => {
                     ))}
                   </CardItem>
 
-                  <CardItem translateZ="70" className="w-full mt-auto pt-3 border-t border-slate-100 flex items-center gap-2">
+                  <CardItem translateZ="16" className="w-full mt-auto pt-3 border-t border-slate-100 flex items-center gap-2">
                     <Link
                       href={service.link}
-                      className={`flex-1 flex items-center justify-center gap-2 text-white text-xs font-semibold py-2.5 px-4 rounded-full transition-all duration-300 hover:scale-[1.02] ${accentSolidBgClass(
-                        service.accent
-                      )}`}
+                      className={`flex-1 gap-2 !py-2.5 !px-4 text-xs ${
+                        service.accent === "red" ? "lux-btn-accent" : "lux-btn-primary"
+                      }`}
                     >
                       Explorer
                       <ArrowRight className="w-3.5 h-3.5" />

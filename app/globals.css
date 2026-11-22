@@ -6,8 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-body), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono-face), "Cascadia Mono", Consolas, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -52,8 +52,8 @@
 
 :root {
   --radius: 0.875rem;
-  --font-geist-sans: var(--font-body), "Segoe UI", sans-serif;
-  --font-geist-mono: "Cascadia Mono", "Fira Code", Consolas, monospace;
+  --font-geist-sans: var(--font-body), system-ui, -apple-system, sans-serif;
+  --font-geist-mono: var(--font-mono-face), "Cascadia Mono", Consolas, monospace;
 
   /* Palette logo Digitalpro — bleu primaire, rouge accent (jamais mélangés) */
   --brand-blue: #516699;
@@ -122,23 +122,40 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body), system-ui, sans-serif;
+    font-optical-sizing: auto;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     background:
       radial-gradient(ellipse 85% 48% at 50% -10%, rgba(81, 102, 153, 0.11), transparent 58%),
       radial-gradient(ellipse 45% 35% at 96% 4%, rgba(204, 38, 40, 0.05), transparent 48%),
       var(--lux-bg);
   }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
   a {
     @apply no-underline;
   }
-  a:focus {
-    @apply outline-none ring-0;
+  a:focus:not(:focus-visible),
+  button:focus:not(:focus-visible) {
+    outline: none;
+  }
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--brand-blue);
+    outline-offset: 2px;
+    border-radius: 6px;
   }
 }
 
 @layer utilities {
   .font-display {
-    font-family: var(--font-display), Georgia, serif;
+    font-family: var(--font-display), system-ui, sans-serif;
+    letter-spacing: -0.025em;
   }
 
   .font-body {
@@ -207,14 +224,20 @@
   }
 
   .lux-label {
-    @apply text-[11px] uppercase tracking-[0.3em] font-semibold;
+    @apply text-[11px] uppercase tracking-[0.18em] font-semibold;
     color: var(--brand-blue);
   }
 
   .lux-heading {
-    font-family: var(--font-display), Georgia, serif;
-    @apply font-semibold tracking-tight;
+    font-family: var(--font-display), system-ui, sans-serif;
+    @apply font-bold tracking-[-0.028em];
     color: var(--lux-ink);
+    text-wrap: balance;
+  }
+
+  .lux-lead {
+    @apply text-base md:text-[1.0625rem] leading-[1.68];
+    color: var(--lux-muted);
   }
 
   .lux-muted {
@@ -222,7 +245,7 @@
   }
 
   .lux-btn-primary {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300;
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[rgba(81,102,153,0.4)];
     color: #ffffff;
     background-color: var(--brand-blue);
     box-shadow: 0 10px 26px rgba(81, 102, 153, 0.26);
@@ -235,7 +258,7 @@
   }
 
   .lux-btn-accent {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300;
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[rgba(204,38,40,0.4)];
     color: #ffffff;
     background-color: var(--brand-red);
     box-shadow: 0 10px 26px rgba(204, 38, 40, 0.24);
@@ -248,17 +271,40 @@
   }
 
   .lux-btn-ghost {
-    @apply inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold transition-all duration-300;
+    @apply inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[rgba(81,102,153,0.35)];
     border-color: rgba(81, 102, 153, 0.28);
     color: var(--lux-ink);
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
   }
 
   .lux-btn-ghost:hover {
+    transform: translateY(-1px);
     border-color: var(--brand-blue);
     background: #eef2f9;
     color: var(--brand-blue-dark);
+  }
+
+  .lux-btn-light {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 bg-white text-slate-950 hover:bg-slate-100 active:scale-[0.98];
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.25);
+  }
+
+  .lux-btn-light:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.32);
+  }
+
+  .lux-btn-dark-ghost {
+    @apply inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold text-white transition-all duration-300 active:scale-[0.98];
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .lux-btn-dark-ghost:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.18);
   }
 
   .lux-chip {
@@ -317,13 +363,13 @@
 
   .lux-section-premium {
     @apply rounded-[1.75rem] md:rounded-[2.25rem] border p-6 md:p-10 lg:p-12 backdrop-blur-2xl relative overflow-hidden;
-    border-color: rgba(81, 102, 153, 0.16);
+    border-color: rgba(81, 102, 153, 0.14);
     background:
-      linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(246, 249, 254, 0.94) 60%, rgba(240, 244, 251, 0.96) 100%);
+      linear-gradient(160deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 249, 254, 0.95) 60%, rgba(240, 244, 251, 0.96) 100%);
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.95) inset,
-      0 24px 64px rgba(15, 23, 42, 0.06),
-      0 4px 20px rgba(81, 102, 153, 0.05);
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 2px 6px rgba(15, 23, 42, 0.03),
+      0 24px 60px -16px rgba(15, 23, 42, 0.08);
   }
 
   .lux-section-premium::before {
@@ -331,6 +377,35 @@
     position: absolute;
     inset: 0;
     background: radial-gradient(ellipse 65% 40% at 50% -10%, rgba(81, 102, 153, 0.07), transparent 62%);
+    pointer-events: none;
+  }
+
+  .lux-section-tinted {
+    @apply rounded-[1.75rem] md:rounded-[2.25rem] border p-6 md:p-10 lg:p-12 backdrop-blur-2xl relative overflow-hidden;
+    border-color: rgba(81, 102, 153, 0.18);
+    background: linear-gradient(160deg, #f2f6fd 0%, #e9f0fa 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.92) inset,
+      0 2px 6px rgba(15, 23, 42, 0.03),
+      0 24px 56px -16px rgba(81, 102, 153, 0.1);
+  }
+
+  .lux-section-dark-cta {
+    @apply rounded-[1.75rem] md:rounded-[2.25rem] border p-7 md:p-12 relative overflow-hidden text-white;
+    border-color: rgba(255, 255, 255, 0.12);
+    background: linear-gradient(135deg, #0f172a 0%, #172546 58%, #1e315c 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.12) inset,
+      0 28px 70px -18px rgba(15, 23, 42, 0.38);
+  }
+
+  .lux-section-dark-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 55% 60% at 10% 0%, rgba(81, 102, 153, 0.32), transparent 62%),
+      radial-gradient(ellipse 45% 50% at 95% 100%, rgba(204, 38, 40, 0.18), transparent 58%);
     pointer-events: none;
   }
 
@@ -351,12 +426,13 @@
   }
 
   .lux-card-interactive {
-    @apply rounded-2xl border backdrop-blur-xl transition-all duration-400 relative overflow-hidden;
-    border-color: rgba(81, 102, 153, 0.16);
-    background: linear-gradient(165deg, #ffffff 0%, #f8faff 100%);
+    @apply rounded-[1.35rem] border backdrop-blur-xl transition-all duration-300 relative overflow-hidden;
+    border-color: rgba(81, 102, 153, 0.15);
+    background: linear-gradient(165deg, #ffffff 0%, #fafcff 100%);
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.9) inset,
-      0 10px 30px rgba(15, 23, 42, 0.045);
+      0 1px 0 rgba(255, 255, 255, 0.94) inset,
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 10px 28px -10px rgba(15, 23, 42, 0.07);
   }
 
   .lux-card-interactive::before {
@@ -364,26 +440,140 @@
     position: absolute;
     inset: 0;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.35s ease;
     background: radial-gradient(
       340px circle at var(--mx, 50%) var(--my, 20%),
-      rgba(81, 102, 153, 0.08),
+      rgba(81, 102, 153, 0.075),
       transparent 65%
     );
     pointer-events: none;
   }
 
+  .lux-card-interactive::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2.5px;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: linear-gradient(90deg, transparent, var(--brand-blue), transparent);
+    pointer-events: none;
+  }
+
   .lux-card-interactive:hover {
-    transform: translateY(-3px);
-    border-color: rgba(81, 102, 153, 0.36);
+    transform: translateY(-4px);
+    border-color: rgba(81, 102, 153, 0.34);
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.95) inset,
-      0 20px 44px rgba(15, 23, 42, 0.08),
-      0 0 28px rgba(81, 102, 153, 0.1);
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 20px 44px -12px rgba(15, 23, 42, 0.1),
+      0 0 26px rgba(81, 102, 153, 0.1);
+  }
+
+  .lux-card-interactive:focus-within {
+    box-shadow:
+      0 0 0 2px rgba(81, 102, 153, 0.28),
+      0 16px 36px -12px rgba(15, 23, 42, 0.08);
   }
 
   .lux-card-interactive:hover::before {
     opacity: 1;
+  }
+
+  .lux-card-interactive:hover::after,
+  .lux-card-interactive:focus-within::after {
+    opacity: 1;
+  }
+
+  .lux-card-accent-red::after {
+    background: linear-gradient(90deg, transparent, var(--brand-red), transparent);
+  }
+
+  .lux-card-accent-red:hover {
+    border-color: rgba(204, 38, 40, 0.34);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 20px 44px -12px rgba(15, 23, 42, 0.1),
+      0 0 24px rgba(204, 38, 40, 0.09);
+  }
+
+  .lux-card-featured {
+    @apply rounded-[1.35rem] border backdrop-blur-xl transition-all duration-300 relative overflow-hidden;
+    border-color: rgba(81, 102, 153, 0.32);
+    background: linear-gradient(165deg, #ffffff 0%, #f1f5fe 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 16px 38px -12px rgba(81, 102, 153, 0.18);
+  }
+
+  .lux-card-featured::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 3px;
+    z-index: 20;
+    opacity: 1;
+    background: linear-gradient(90deg, var(--brand-blue), #7187bc);
+    pointer-events: none;
+  }
+
+  .lux-card-featured:hover {
+    transform: translateY(-4px);
+    border-color: rgba(81, 102, 153, 0.48);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 22px 48px -12px rgba(81, 102, 153, 0.24);
+  }
+
+  .lux-card-featured-red {
+    border-color: rgba(204, 38, 40, 0.32);
+    background: linear-gradient(165deg, #ffffff 0%, #fff6f6 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 16px 38px -12px rgba(204, 38, 40, 0.16);
+  }
+
+  .lux-card-featured-red::after {
+    background: linear-gradient(90deg, var(--brand-red), #e2494b);
+  }
+
+  .lux-card-featured-red:hover {
+    border-color: rgba(204, 38, 40, 0.48);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 22px 48px -12px rgba(204, 38, 40, 0.22);
+  }
+
+  .lux-card-kpi {
+    @apply rounded-2xl border backdrop-blur-xl transition-all duration-300 relative overflow-hidden;
+    border-color: rgba(81, 102, 153, 0.16);
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.98) 0%, #f5f8fd 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.95) inset,
+      0 8px 24px -8px rgba(15, 23, 42, 0.07);
+  }
+
+  .lux-card-kpi:hover {
+    transform: translateY(-2px);
+    border-color: rgba(81, 102, 153, 0.3);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.95) inset,
+      0 14px 30px -10px rgba(81, 102, 153, 0.14);
+  }
+
+  .lux-card-subtle {
+    @apply rounded-2xl border transition-all duration-200;
+    border-color: rgba(226, 232, 240, 0.9);
+    background: rgba(248, 250, 252, 0.85);
+  }
+
+  .lux-card-subtle:hover {
+    border-color: rgba(81, 102, 153, 0.26);
+    background: rgba(255, 255, 255, 0.94);
   }
 
   .lux-grid-backdrop {
@@ -553,8 +743,8 @@
   }
 
   .lux-stat-number {
-    font-family: var(--font-display), Georgia, serif;
-    @apply text-3xl md:text-4xl font-semibold;
+    font-family: var(--font-display), system-ui, sans-serif;
+    @apply text-3xl md:text-4xl font-bold tracking-[-0.03em] tabular-nums;
     background: linear-gradient(180deg, #0f172a 0%, var(--brand-blue) 100%);
     -webkit-background-clip: text;
     background-clip: text;
