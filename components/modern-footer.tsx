@@ -18,9 +18,11 @@ import {
   X,
   ShieldCheck,
   ArrowRight,
+  Cookie,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { useCookieConsent } from "@/components/cookie-consent-provider";
 import { siteVersionLabel } from "@/lib/version";
 
 type LegalModalType = "mentions" | "confidentialite" | "cgv" | null;
@@ -63,6 +65,10 @@ const LEGAL_CONTENT: Record<
         heading: "Vos droits",
         body: "Vous pouvez demander l'accès, la rectification ou la suppression de vos coordonnées à tout moment par email à digitalprosolutions27@gmail.com.",
       },
+      {
+        heading: "Cookies & consentement",
+        body: "Les traceurs non essentiels (mesure d'audience, contenus externes, préférences locales) nécessitent votre accord préalable, valable 6 mois et modifiable à tout moment sur la page /cookies.",
+      },
     ],
   },
   cgv: {
@@ -91,6 +97,7 @@ export default function ModernFooter() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [copiedField, setCopiedField] = useState<"email" | "phone" | null>(null);
   const [activeLegal, setActiveLegal] = useState<LegalModalType>(null);
+  const { hasConsent, savePreferences, openPreferences } = useCookieConsent();
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
@@ -425,17 +432,51 @@ export default function ModernFooter() {
               </a>
             </div>
             <div className="relative w-full h-56 md:h-64 rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-xs">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.5!2d-4.0269!3d5.3603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMjEnMzcuMSJOIDTCsDAxJzM2LjgiVw!5e0!3m2!1sfr!2sci!4v1234567890123!5m2!1sfr!2sci"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="w-full h-full"
-                title="Localisation digitalpro solutions - Bvd Koffi Gadaud, Cocody, Abidjan"
-              />
+              {hasConsent("external") ? (
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.5!2d-4.0269!3d5.3603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMjEnMzcuMSJOIDTCsDAxJzM2LjgiVw!5e0!3m2!1sfr!2sci!4v1234567890123!5m2!1sfr!2sci"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full"
+                  title="Localisation digitalpro solutions - Bvd Koffi Gadaud, Cocody, Abidjan"
+                />
+              ) : (
+                <div className="flex h-full w-full flex-col items-center justify-center bg-slate-50/90 px-4 py-5 text-center">
+                  <div className="lux-icon-badge mb-2.5 p-2.5 text-[var(--brand-blue)]">
+                    <MapPin className="h-4 w-4" />
+                  </div>
+                  <p className="font-display text-sm font-semibold text-slate-900">
+                    Carte Google Maps bloquée par vos préférences cookies
+                  </p>
+                  <p className="mt-1 max-w-md text-xs leading-relaxed text-slate-600">
+                    Ce contenu externe dépose des cookies Google pour afficher la localisation interactive du studio à Cocody, Abidjan.
+                  </p>
+                  <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        savePreferences({ external: true });
+                        toast.success("Google Maps autorisé.");
+                      }}
+                      className="rounded-full bg-[var(--brand-blue)] px-4 py-2 text-xs font-semibold text-white hover:bg-[var(--brand-blue-light)] transition-colors cursor-pointer"
+                    >
+                      Autoriser et afficher la carte
+                    </button>
+                    <button
+                      type="button"
+                      onClick={openPreferences}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-xs font-medium text-slate-700 hover:border-slate-300 hover:text-slate-900 transition-colors cursor-pointer"
+                    >
+                      <Cookie className="h-3.5 w-3.5 text-[var(--brand-blue)]" />
+                      <span>Personnaliser les cookies</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -465,6 +506,20 @@ export default function ModernFooter() {
                     {item.label}
                   </button>
                 ))}
+                <Link
+                  href="/cookies"
+                  className="text-slate-600 hover:text-[var(--brand-blue)] transition-colors"
+                >
+                  Politique cookies
+                </Link>
+                <button
+                  type="button"
+                  onClick={openPreferences}
+                  className="inline-flex items-center gap-1.5 text-slate-600 hover:text-[var(--brand-blue)] transition-colors cursor-pointer"
+                >
+                  <Cookie className="h-3.5 w-3.5" />
+                  <span>Gérer les cookies</span>
+                </button>
               </div>
             </div>
           </div>

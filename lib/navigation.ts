@@ -16,6 +16,7 @@ import {
   Play,
   Compass,
   Users,
+  Cookie,
 } from "lucide-react";
 
 export interface NavItem {
@@ -174,6 +175,23 @@ export const SECONDARY_NAV_ITEMS: NavItem[] = [
     accent: "red",
     icon: Mail,
     keywords: ["contact", "email", "message", "telephone", "abidjan"],
+  },
+  {
+    id: "cookies",
+    label: "Politique cookies",
+    description: "Gestion RGPD, traceurs & préférences de confidentialité",
+    href: "/cookies",
+    badge: "RGPD",
+    accent: "blue",
+    icon: Cookie,
+    keywords: [
+      "cookies",
+      "rgpd",
+      "confidentialite",
+      "traceurs",
+      "consentement",
+      "vie privee",
+    ],
   },
 ];
 

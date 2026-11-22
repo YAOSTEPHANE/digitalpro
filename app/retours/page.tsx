@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Star, Award, Users, Heart, Send, BadgeCheck, Quote } from "lucide-react";
+import { useCookieConsent } from "@/components/cookie-consent-provider";
 
 const luxInput =
   "bg-white border-slate-200 text-slate-900 placeholder:text-slate-400";
@@ -122,8 +123,11 @@ export default function RetoursPage() {
   const [hoverRating, setHoverRating] = useState(0);
   const [serviceFilter, setServiceFilter] = useState("Tous");
   const [reviews, setReviews] = useState<Testimonial[]>(initialTestimonials);
+  const { hasConsent } = useCookieConsent();
+  const allowPreferences = hasConsent("preferences");
 
   useEffect(() => {
+    if (!allowPreferences) return;
     try {
       const saved = localStorage.getItem("digitalpro_reviews");
       if (saved) {
@@ -135,7 +139,7 @@ export default function RetoursPage() {
     } catch {
       // Ignore storage error
     }
-  }, []);
+  }, [allowPreferences]);
 
   const form = useForm<ReviewFormValues>({
     resolver: zodResolver(reviewSchema),
@@ -183,16 +187,18 @@ export default function RetoursPage() {
 
       setReviews((prev) => [newReview, ...prev]);
 
-      try {
-        const existingSaved = JSON.parse(
-          localStorage.getItem("digitalpro_reviews") || "[]"
-        ) as Testimonial[];
-        localStorage.setItem(
-          "digitalpro_reviews",
-          JSON.stringify([newReview, ...existingSaved])
-        );
-      } catch {
-        // Ignore storage errors
+      if (allowPreferences) {
+        try {
+          const existingSaved = JSON.parse(
+            localStorage.getItem("digitalpro_reviews") || "[]"
+          ) as Testimonial[];
+          localStorage.setItem(
+            "digitalpro_reviews",
+            JSON.stringify([newReview, ...existingSaved])
+          );
+        } catch {
+          // Ignore storage errors
+        }
       }
 
       toast.success("Merci ! Votre avis vient d'être ajouté à notre mur de témoignages.");

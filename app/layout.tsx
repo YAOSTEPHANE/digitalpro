@@ -1,8 +1,10 @@
-import { Analytics } from "@vercel/analytics/next"
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Chatbot from "@/components/chatbot";
+import ConsentAnalytics from "@/components/consent-analytics";
+import CookieBanner from "@/components/cookie-banner";
+import { CookieConsentProvider } from "@/components/cookie-consent-provider";
 import ModernFooter from "@/components/modern-footer";
 import { defaultMetadata } from "@/lib/seo";
 import StructuredData from "@/components/structured-data";
@@ -52,11 +54,14 @@ export default function RootLayout({
           Aller au contenu principal
         </a>
         <StructuredData />
-        {children}
-        <ModernFooter />
-        <Chatbot />
-        <Toaster />
-        <Analytics />
+        <CookieConsentProvider>
+          {children}
+          <ModernFooter />
+          <Chatbot />
+          <Toaster />
+          <CookieBanner />
+          <ConsentAnalytics />
+        </CookieConsentProvider>
       </body>
     </html>
   );

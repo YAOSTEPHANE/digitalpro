@@ -18,6 +18,18 @@ import {
   invoiceRequestSchema,
   quoteRequestSchema,
 } from "../lib/api-schemas.ts";
+import {
+  COOKIE_CONSENT_MAX_AGE_SECONDS,
+  COOKIE_CONSENT_NAME,
+  COOKIE_CONSENT_VERSION,
+  DEFAULT_COOKIE_PREFERENCES,
+  buildClearCookieString,
+  buildSetCookieString,
+  createCookieConsent,
+  parseCookieConsent,
+  parseCookieConsentFromHeader,
+  serializeCookieConsent,
+} from "../lib/cookies.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -211,4 +223,68 @@ test("Repository cleanup, optimized logo, and referenced public assets are intac
     }
   }
   assert.deepEqual(missingAssets, []);
+});
+
+test("Cookie consent helpers serialize, parse, validate versions, and format flags safely", () => {
+  assert.equal(DEFAULT_COOKIE_PREFERENCES.necessary, true);
+  assert.equal(DEFAULT_COOKIE_PREFERENCES.preferences, false);
+  assert.equal(DEFAULT_COOKIE_PREFERENCES.analytics, false);
+  assert.equal(DEFAULT_COOKIE_PREFERENCES.external, false);
+  assert.equal(DEFAULT_COOKIE_PREFERENCES.version, COOKIE_CONSENT_VERSION);
+
+  const prefs = createCookieConsent(
+    { preferences: true, analytics: false, external: true },
+    new Date("2026-11-22T12:00:00.000Z")
+  );
+  assert.equal(prefs.necessary, true);
+  assert.equal(prefs.preferences, true);
+  assert.equal(prefs.analytics, false);
+  assert.equal(prefs.external, true);
+  assert.equal(prefs.updatedAt, "2026-11-22T12:00:00.000Z");
+
+  const encoded = serializeCookieConsent(prefs);
+  assert.deepEqual(parseCookieConsent(encoded), prefs);
+
+  const header = `foo=bar; ${COOKIE_CONSENT_NAME}=${encoded}; other=1`;
+  assert.deepEqual(parseCookieConsentFromHeader(header), prefs);
+
+  // Version mismatch or malformed JSON must invalidate consent
+  const oldVersion = encodeURIComponent(
+    JSON.stringify({ ...prefs, version: COOKIE_CONSENT_VERSION + 99 })
+  );
+  assert.equal(parseCookieConsent(oldVersion), null);
+  assert.equal(parseCookieConsent("%E0%A4%A"), null);
+  assert.equal(parseCookieConsent("not-json"), null);
+
+  const setCookieHttp = buildSetCookieString(prefs);
+  assert.ok(setCookieHttp.includes(`${COOKIE_CONSENT_NAME}=${encoded}`));
+  assert.ok(setCookieHttp.includes("Path=/"));
+  assert.ok(setCookieHttp.includes(`Max-Age=${COOKIE_CONSENT_MAX_AGE_SECONDS}`));
+  assert.ok(setCookieHttp.includes("SameSite=Lax"));
+  assert.equal(setCookieHttp.includes("Secure"), false);
+
+  const setCookieHttps = buildSetCookieString(prefs, { secure: true });
+  assert.ok(setCookieHttps.includes("; Secure"));
+
+  const cleared = buildClearCookieString({ secure: true });
+  assert.ok(cleared.includes("Max-Age=0"));
+  assert.ok(cleared.includes("; Secure"));
+});
+
+test("Root layout and footer gate analytics and external embeds behind cookie consent", () => {
+  const layoutText = fs.readFileSync(path.join(ROOT, "app", "layout.tsx"), "utf8");
+  assert.ok(layoutText.includes("CookieConsentProvider"));
+  assert.ok(layoutText.includes("ConsentAnalytics"));
+  assert.equal(layoutText.includes("@vercel/analytics/next"), false);
+
+  const footerText = fs.readFileSync(
+    path.join(ROOT, "components", "modern-footer.tsx"),
+    "utf8"
+  );
+  assert.ok(footerText.includes('hasConsent("external")'));
+  assert.ok(footerText.includes('href="/cookies"'));
+  assert.equal(
+    fs.existsSync(path.join(ROOT, "app", "cookies", "page.tsx")),
+    true
+  );
 });

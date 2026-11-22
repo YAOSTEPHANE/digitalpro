@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/facture',
     '/faq',
     '/retours',
+    '/cookies',
   ]
 
   // Génération des entrées du sitemap

@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   RotateCcw,
 } from "lucide-react";
+import { useCookieConsent } from "@/components/cookie-consent-provider";
 
 type ChatSource = "openai" | "gemini" | "fallback";
 
@@ -44,6 +45,7 @@ export default function Chatbot() {
   const [activeSource, setActiveSource] = useState<ChatSource | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [hasShownWelcome, setHasShownWelcome] = useState(false);
+  const { showBanner } = useCookieConsent();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -170,7 +172,7 @@ export default function Chatbot() {
   return (
     <>
       {/* Notification de bienvenue */}
-      {isMounted && showNotification && !isOpen && (
+      {isMounted && showNotification && !isOpen && !showBanner && (
         <div className="fixed bottom-24 left-6 z-50 w-80 max-w-[calc(100vw-3rem)] rounded-2xl border border-slate-200 bg-white/98 p-4 shadow-[0_20px_50px_rgba(15,23,42,0.14)] backdrop-blur-2xl animate-slide-up">
           <div className="flex items-start gap-3">
             <div className="lux-icon-badge flex-shrink-0 p-2.5 text-[var(--brand-blue)]">

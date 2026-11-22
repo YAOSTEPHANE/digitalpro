@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import LuxSectionHeader from "@/components/lux-section-header";
 import LuxReveal from "@/components/lux-reveal";
+import { useCookieConsent } from "@/components/cookie-consent-provider";
 import { escapeHtml } from "@/lib/security";
 
 const luxFieldClass =
@@ -81,8 +82,11 @@ const ModernBilling = () => {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "paid" | "pending" | "overdue">("all");
+  const { hasConsent } = useCookieConsent();
+  const allowPreferences = hasConsent("preferences");
 
   useEffect(() => {
+    if (!allowPreferences) return;
     const savedInvoices = localStorage.getItem("invoices");
     if (savedInvoices) {
       try {
@@ -92,11 +96,13 @@ const ModernBilling = () => {
         console.error("Erreur lors du chargement des factures:", error);
       }
     }
-  }, []);
+  }, [allowPreferences]);
 
   const persistInvoices = (updated: Invoice[]) => {
     setInvoices(updated);
-    localStorage.setItem("invoices", JSON.stringify(updated));
+    if (allowPreferences) {
+      localStorage.setItem("invoices", JSON.stringify(updated));
+    }
   };
 
   const toggleInvoiceStatus = (id: string) => {
