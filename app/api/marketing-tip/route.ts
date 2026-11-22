@@ -42,18 +42,18 @@ export async function GET(request: NextRequest) {
 
     // Images par catégorie
     const categoryImages: Record<string, string> = {
-      'Réseaux Sociaux': 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop',
-      'SEO': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
-      'Email Marketing': 'https://images.unsplash.com/photo-1593642532400-2682810df47a?w=800&h=600&fit=crop',
-      'Contenu': 'https://images.unsplash.com/photo-1432888622747-4eb9a8f2d70a?w=800&h=600&fit=crop',
-      'Publicité': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
-      'Analytics': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
-      'Stratégie': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop',
-      'Mobile': 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop',
-      'E-commerce': 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
-      'Vidéo': 'https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=800&h=600&fit=crop',
-      'Influence Marketing': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop',
-      'Marketing Automation': 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=600&fit=crop',
+      'Réseaux Sociaux': '/images/studio/social-media-ads.webp',
+      'SEO': '/images/studio/web-architecture.webp',
+      'Email Marketing': '/images/studio/content-creation.webp',
+      'Contenu': '/images/studio/content-creation.webp',
+      'Publicité': '/images/studio/social-media-ads.webp',
+      'Analytics': '/images/studio/analytics-growth.webp',
+      'Stratégie': '/images/studio/business-strategy.webp',
+      'Mobile': '/images/studio/mobile-apps.webp',
+      'E-commerce': '/images/studio/ecommerce-commerce.webp',
+      'Vidéo': '/images/studio/content-creation.webp',
+      'Influence Marketing': '/images/studio/social-media-ads.webp',
+      'Marketing Automation': '/images/studio/ui-ux-studio.webp',
     };
 
     // Appeler l'API Gemini si disponible, sinon utiliser un conseil généré localement
@@ -156,14 +156,14 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact:
     return NextResponse.json(tip);
   } catch (error) {
     console.error('Error generating marketing tip:', error);
-    
+
     // Fallback en cas d'erreur
     const fallbackTip: MarketingTip = {
       title: 'Optimisez votre présence digitale',
       content: 'La cohérence est la clé du succès en marketing digital. Publiez régulièrement du contenu de qualité, engagez avec votre communauté et analysez vos performances pour améliorer continuellement votre stratégie.',
       category: 'Stratégie',
       day: 1,
-      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop',
+      image: '/images/studio/business-strategy.webp',
       accent: "blue",
     };
 

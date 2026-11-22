@@ -24,7 +24,7 @@ interface OfferItem {
 
 const offers: OfferItem[] = [
   {
-    image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop",
+    image: "/images/studio/site-vitrine.webp",
     title: "Site Vitrine Prestige",
     category: "web",
     originalPrice: "200.000 F",
@@ -36,7 +36,7 @@ const offers: OfferItem[] = [
     deliverables: ["Design sur mesure", "Hébergement guidé", "Livraison 5 jours"],
   },
   {
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+    image: "/images/studio/web-architecture.webp",
     title: "Application Web",
     category: "web",
     originalPrice: "600.000 F",
@@ -48,7 +48,7 @@ const offers: OfferItem[] = [
     deliverables: ["Next.js & React", "Base de données", "Monitoring inclus"],
   },
   {
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
+    image: "/images/studio/ecommerce-commerce.webp",
     title: "E-commerce App",
     category: "web",
     originalPrice: "3.000.000 F",
@@ -59,7 +59,7 @@ const offers: OfferItem[] = [
     deliverables: ["Checkout optimisé", "Catalogue illimité", "Formation équipe"],
   },
   {
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop",
+    image: "/images/studio/mobile-apps.webp",
     title: "Application Mobile",
     category: "web",
     originalPrice: "1.000.000 F",
@@ -70,7 +70,7 @@ const offers: OfferItem[] = [
     deliverables: ["iOS & Android", "UI native", "Publication stores"],
   },
   {
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop",
+    image: "/images/studio/social-media-ads.webp",
     title: "Publicité Réseaux Sociaux",
     category: "growth",
     originalPrice: "600.000 F",
@@ -81,7 +81,7 @@ const offers: OfferItem[] = [
     deliverables: ["Ciblage avancé", "Visuels & copies", "Rapport mensuel"],
   },
   {
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+    image: "/images/studio/analytics-growth.webp",
     title: "Tracking & Analytics",
     category: "growth",
     originalPrice: "600.000 F",
@@ -92,7 +92,7 @@ const offers: OfferItem[] = [
     deliverables: ["Events conversion", "Dashboards clairs", "Audit attribution"],
   },
   {
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
+    image: "/images/studio/branding-identity.webp",
     title: "Pack Affiche & Branding",
     category: "growth",
     originalPrice: "400.000 F",
@@ -103,7 +103,7 @@ const offers: OfferItem[] = [
     deliverables: ["Sources HD & Print", "Formats stories/feed", "Charte cohérente"],
   },
   {
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop",
+    image: "/images/studio/cloud-maintenance.webp",
     title: "Maintenance & Infogérance",
     category: "growth",
     originalPrice: "Contrat dédié",
@@ -203,9 +203,8 @@ const BlackFriday = () => {
                 ].map((item, index) => (
                   <div key={item.label} className="text-center">
                     <div
-                      className={`rounded-xl px-3 py-2 min-w-[52px] tabular-nums ${
-                        index % 2 === 0 ? "brand-bg-red" : "brand-bg-blue"
-                      }`}
+                      className={`rounded-xl px-3 py-2 min-w-[52px] tabular-nums ${index % 2 === 0 ? "brand-bg-red" : "brand-bg-blue"
+                        }`}
                     >
                       <div className="font-mono text-lg md:text-xl font-bold text-white leading-none">
                         {String(item.value).padStart(2, "0")}
@@ -230,11 +229,10 @@ const BlackFriday = () => {
                     key={tab.id}
                     type="button"
                     onClick={() => setFilter(tab.id)}
-                    className={`rounded-full border px-4 py-2 text-xs font-semibold transition-all ${
-                      filter === tab.id
+                    className={`rounded-full border px-4 py-2 text-xs font-semibold transition-all ${filter === tab.id
                         ? "lux-chip-active-red"
                         : "lux-chip hover:border-[rgba(81,102,153,0.45)]"
-                    }`}
+                      }`}
                   >
                     {tab.label}
                   </button>
@@ -249,22 +247,20 @@ const BlackFriday = () => {
                 <button
                   type="button"
                   onClick={() => setPaymentMode("cash")}
-                  className={`rounded-full px-3 py-1.5 text-[11px] font-semibold transition-all ${
-                    paymentMode === "cash"
+                  className={`rounded-full px-3 py-1.5 text-[11px] font-semibold transition-all ${paymentMode === "cash"
                       ? "bg-[var(--brand-blue)] text-white"
                       : "text-slate-600 hover:text-slate-900"
-                  }`}
+                    }`}
                 >
                   Tarif direct
                 </button>
                 <button
                   type="button"
                   onClick={() => setPaymentMode("split")}
-                  className={`rounded-full px-3 py-1.5 text-[11px] font-semibold transition-all ${
-                    paymentMode === "split"
+                  className={`rounded-full px-3 py-1.5 text-[11px] font-semibold transition-all ${paymentMode === "split"
                       ? "bg-[var(--brand-blue)] text-white"
                       : "text-slate-600 hover:text-slate-900"
-                  }`}
+                    }`}
                 >
                   3× sans frais
                 </button>
@@ -289,11 +285,10 @@ const BlackFriday = () => {
                   className="group"
                 >
                   <div
-                    className={`overflow-hidden h-full flex flex-col ${
-                      offer.popular
+                    className={`overflow-hidden h-full flex flex-col ${offer.popular
                         ? "lux-card-featured lux-card-featured-red"
                         : "lux-card-interactive lux-card-accent-red"
-                    }`}
+                      }`}
                   >
                     <div className="relative h-48 w-full overflow-hidden bg-slate-100 flex-shrink-0">
                       <Image3D

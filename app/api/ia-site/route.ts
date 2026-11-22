@@ -1,45 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 interface SiteRequest {
-  type: string
-  style: string
-  colors: string[]
-  features: string[]
-  description: string
-  businessName?: string
-  businessType?: string
+    type: string
+    style: string
+    colors: string[]
+    features: string[]
+    description: string
+    businessName?: string
+    businessType?: string
 }
 
 // Fonction pour générer le code HTML/CSS/JS du site avec fonctionnalités avancées
 function generateSiteCode(request: SiteRequest): string {
-  const { style, colors, features, description, businessName, businessType } = request
-  
-  // Couleurs par défaut si non spécifiées
-  const primaryColor = colors[0] || '#ef4444'
-  const secondaryColor = colors[1] || '#3b82f6'
-  const accentColor = colors[2] || '#fbbf24'
-  
-  // Convertir les couleurs hex en RGB pour les effets
-  const hexToRgb = (hex: string) => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : { r: 239, g: 68, b: 68 }
-  }
-  
-  const primaryRgb = hexToRgb(primaryColor)
-  const secondaryRgb = hexToRgb(secondaryColor)
-  
-  const isDark = style === 'sombre'
-  const bgColor = isDark ? '#0a0a0a' : '#ffffff'
-  const textColor = isDark ? '#ffffff' : '#1a1a1a'
-  const cardBg = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)'
-  const borderColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-  
-  // Génération du HTML avec fonctionnalités avancées
-  const html = `<!DOCTYPE html>
+    const { style, colors, features, description, businessName, businessType } = request
+
+    // Couleurs par défaut si non spécifiées
+    const primaryColor = colors[0] || '#ef4444'
+    const secondaryColor = colors[1] || '#3b82f6'
+    const accentColor = colors[2] || '#fbbf24'
+
+    // Convertir les couleurs hex en RGB pour les effets
+    const hexToRgb = (hex: string) => {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : { r: 239, g: 68, b: 68 }
+    }
+
+    const primaryRgb = hexToRgb(primaryColor)
+    const secondaryRgb = hexToRgb(secondaryColor)
+
+    const isDark = style === 'sombre'
+    const bgColor = isDark ? '#0a0a0a' : '#ffffff'
+    const textColor = isDark ? '#ffffff' : '#1a1a1a'
+    const cardBg = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)'
+    const borderColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+
+    // Génération du HTML avec fonctionnalités avancées
+    const html = `<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -88,10 +88,10 @@ function generateSiteCode(request: SiteRequest): string {
             left: 0;
             width: 100%;
             height: 100%;
-            background: ${isDark 
-              ? `radial-gradient(circle at 20% 50%, rgba(var(--primary-rgb), 0.1) 0%, transparent 50%),
+            background: ${isDark
+            ? `radial-gradient(circle at 20% 50%, rgba(var(--primary-rgb), 0.1) 0%, transparent 50%),
                  radial-gradient(circle at 80% 80%, rgba(var(--secondary-rgb), 0.1) 0%, transparent 50%)`
-              : `radial-gradient(circle at 20% 50%, rgba(var(--primary-rgb), 0.05) 0%, transparent 50%),
+            : `radial-gradient(circle at 20% 50%, rgba(var(--primary-rgb), 0.05) 0%, transparent 50%),
                  radial-gradient(circle at 80% 80%, rgba(var(--secondary-rgb), 0.05) 0%, transparent 50%)`};
             z-index: -1;
             animation: backgroundMove 20s ease-in-out infinite;
@@ -115,9 +115,9 @@ function generateSiteCode(request: SiteRequest): string {
             left: 0;
             right: 0;
             z-index: 1000;
-            background: ${isDark 
-              ? 'rgba(10, 10, 10, 0.8)' 
-              : 'rgba(255, 255, 255, 0.8)'};
+            background: ${isDark
+            ? 'rgba(10, 10, 10, 0.8)'
+            : 'rgba(255, 255, 255, 0.8)'};
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--border);
@@ -904,23 +904,23 @@ function generateSiteCode(request: SiteRequest): string {
             <h2 class="section-title">Galerie</h2>
             <p class="section-subtitle">Découvrez nos réalisations</p>
             <div class="gallery-grid">
-                <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800')">
-                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400" alt="Projet 1" loading="lazy">
+                <div class="gallery-item" onclick="openLightbox('/images/studio/web-architecture.webp')">
+                    <img src="/images/studio/web-architecture.webp" alt="Projet 1" loading="lazy">
                 </div>
-                <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800')">
-                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400" alt="Projet 2" loading="lazy">
+                <div class="gallery-item" onclick="openLightbox('/images/studio/mobile-apps.webp')">
+                    <img src="/images/studio/mobile-apps.webp" alt="Projet 2" loading="lazy">
                 </div>
-                <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800')">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" alt="Projet 3" loading="lazy">
+                <div class="gallery-item" onclick="openLightbox('/images/studio/analytics-growth.webp')">
+                    <img src="/images/studio/analytics-growth.webp" alt="Projet 3" loading="lazy">
                 </div>
-                <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800')">
-                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400" alt="Projet 4" loading="lazy">
+                <div class="gallery-item" onclick="openLightbox('/images/studio/ui-ux-studio.webp')">
+                    <img src="/images/studio/ui-ux-studio.webp" alt="Projet 4" loading="lazy">
                 </div>
-                <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800')">
-                    <img src="https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=400" alt="Projet 5" loading="lazy">
+                <div class="gallery-item" onclick="openLightbox('/images/studio/branding-identity.webp')">
+                    <img src="/images/studio/branding-identity.webp" alt="Projet 5" loading="lazy">
                 </div>
-                <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1551434678-e076c223a692?w=800')">
-                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=400" alt="Projet 6" loading="lazy">
+                <div class="gallery-item" onclick="openLightbox('/images/studio/content-creation.webp')">
+                    <img src="/images/studio/content-creation.webp" alt="Projet 6" loading="lazy">
                 </div>
             </div>
         </div>
@@ -1149,33 +1149,33 @@ function generateSiteCode(request: SiteRequest): string {
 </body>
 </html>`
 
-  return html
+    return html
 }
 
 export async function POST(request: NextRequest) {
-  try {
-    const body: SiteRequest = await request.json()
-    
-    // Validation
-    if (!body.type || !body.style || !body.description) {
-      return NextResponse.json(
-        { error: 'Champs requis manquants' },
-        { status: 400 }
-      )
+    try {
+        const body: SiteRequest = await request.json()
+
+        // Validation
+        if (!body.type || !body.style || !body.description) {
+            return NextResponse.json(
+                { error: 'Champs requis manquants' },
+                { status: 400 }
+            )
+        }
+
+        // Génération du code
+        const code = generateSiteCode(body)
+
+        return NextResponse.json({
+            code,
+            success: true
+        })
+    } catch (error) {
+        console.error('IA Site API error:', error)
+        return NextResponse.json(
+            { error: 'Erreur lors de la génération du site' },
+            { status: 500 }
+        )
     }
-    
-    // Génération du code
-    const code = generateSiteCode(body)
-    
-    return NextResponse.json({ 
-      code,
-      success: true 
-    })
-  } catch (error) {
-    console.error('IA Site API error:', error)
-    return NextResponse.json(
-      { error: 'Erreur lors de la génération du site' },
-      { status: 500 }
-    )
-  }
 }

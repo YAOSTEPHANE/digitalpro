@@ -40,7 +40,7 @@ const webProjects: WebProject[] = [
     title: "NY Immobilier — Portail Biens & Contacts",
     category: "corporate",
     categoryLabel: "Portail Corporate",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=550&fit=crop",
+    image: "/images/studio/business-strategy.webp",
     summary:
       "Plateforme immobilière complète avec moteur de recherche multicritères, fiches biens haute définition et tunnel de prise de contact.",
     lighthouse: "98/100",
@@ -53,7 +53,7 @@ const webProjects: WebProject[] = [
     title: "Infinitecore — SaaS Point de Vente",
     category: "saas",
     categoryLabel: "Application SaaS",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=550&fit=crop",
+    image: "/images/studio/web-architecture.webp",
     summary:
       "Interface de gestion commerciale et d'encaissement temps réel conçue pour la rapidité en boutique et le suivi multi-caisses.",
     lighthouse: "99/100",
@@ -66,7 +66,7 @@ const webProjects: WebProject[] = [
     title: "Maison Ébène — Vitrine Luxe & Architecture",
     category: "vitrine",
     categoryLabel: "Site Vitrine",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=550&fit=crop",
+    image: "/images/studio/site-vitrine.webp",
     summary:
       "Expérience éditoriale minimaliste avec transitions fluides, galeries immersives et prise de rendez-vous privé intégrée.",
     lighthouse: "99/100",
@@ -78,7 +78,7 @@ const webProjects: WebProject[] = [
     title: "Nexus Conseil — Portail B2B & Reporting",
     category: "corporate",
     categoryLabel: "Portail Corporate",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=550&fit=crop",
+    image: "/images/studio/analytics-growth.webp",
     summary:
       "Portail institutionnel sécurisé intégrant espace documentaire client, simulateur d'honoraires et prise de brief en ligne.",
     lighthouse: "97/100",
@@ -90,7 +90,7 @@ const webProjects: WebProject[] = [
     title: "PulseFlow — Tableau de Bord SaaS",
     category: "saas",
     categoryLabel: "Application SaaS",
-    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=550&fit=crop",
+    image: "/images/studio/ui-ux-studio.webp",
     summary:
       "Application web de pilotage opérationnel avec graphiques interactifs, gestion des rôles et notifications automatiques.",
     lighthouse: "99/100",
@@ -102,7 +102,7 @@ const webProjects: WebProject[] = [
     title: "Riviera Suites — Réservation Directe",
     category: "vitrine",
     categoryLabel: "Site Vitrine",
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=550&fit=crop",
+    image: "/images/studio/ecommerce-commerce.webp",
     summary:
       "Site vitrine haute conversion avec galerie immersive, disponibilité en direct et tunnel de réservation sans commission.",
     lighthouse: "98/100",
@@ -149,11 +149,10 @@ const ModernWebsiteDesign = () => {
               key={tab.id}
               type="button"
               onClick={() => setFilter(tab.id)}
-              className={`rounded-full border px-4 py-2 text-xs font-semibold transition-all ${
-                filter === tab.id
+              className={`rounded-full border px-4 py-2 text-xs font-semibold transition-all ${filter === tab.id
                   ? "lux-chip-active"
                   : "lux-chip hover:border-[var(--brand-blue)]"
-              }`}
+                }`}
             >
               {tab.label}
             </button>

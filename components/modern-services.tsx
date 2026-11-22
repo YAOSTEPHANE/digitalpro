@@ -25,7 +25,7 @@ const services = [
     tag: "Sites & Plateformes",
     description: "Sites vitrines prestige, portails corporate et applications web Next.js ultra-rapides.",
     deliverables: ["Architecture SEO native", "Score Lighthouse 95+", "Interface responsive"],
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+    image: "/images/studio/web-architecture.webp",
     accent: "blue" as BrandAccent,
     link: "/sites-web",
     devisService: "Développement de site web",
@@ -36,7 +36,7 @@ const services = [
     tag: "iOS & Android",
     description: "Applications mobiles et solutions métier temps réel conçues pour l'usage quotidien.",
     deliverables: ["Expérience tactile fluide", "Notifications push", "Synchronisation API"],
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop",
+    image: "/images/studio/mobile-apps.webp",
     accent: "red" as BrandAccent,
     link: "/devis?service=Développement+d'application+mobile",
     devisService: "Développement d'application mobile",
@@ -47,7 +47,7 @@ const services = [
     tag: "Acquisition",
     description: "Référencement Google, campagnes Meta/TikTok Ads et pilotage analytique orienté ROI.",
     deliverables: ["Audit mots-clés & technique", "Tracking GA4 / Pixel", "Rapports de conversion"],
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+    image: "/images/studio/analytics-growth.webp",
     accent: "blue" as BrandAccent,
     link: "/devis?service=SEO+%26+Référencement",
     devisService: "SEO & Référencement",
@@ -58,7 +58,7 @@ const services = [
     tag: "Direction Artistique",
     description: "Design centré utilisateur, identités de marque distinctives et prototypes Figma.",
     deliverables: ["Design System cohérent", "Prototypage interactif", "Identité & charte"],
-    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop",
+    image: "/images/studio/ui-ux-studio.webp",
     accent: "red" as BrandAccent,
     link: "/design",
     devisService: "Conception UI/UX",
@@ -69,7 +69,7 @@ const services = [
     tag: "Vente en ligne",
     description: "Boutiques Shopify et plateformes sur mesure optimisées pour le panier moyen.",
     deliverables: ["Wave / Orange Money / Cartes", "Checkout en 1 page", "Relance paniers"],
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop",
+    image: "/images/studio/ecommerce-commerce.webp",
     accent: "blue" as BrandAccent,
     link: "/e-commerce",
     devisService: "E-commerce",
@@ -80,7 +80,7 @@ const services = [
     tag: "Fiabilité 24/7",
     description: "Support technique réactif, sécurité continue, sauvegardes et évolutions mensuelles.",
     deliverables: ["Monitoring proactif", "Sauvegardes chiffrées", "Interventions prioritaires"],
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
+    image: "/images/studio/cloud-maintenance.webp",
     accent: "red" as BrandAccent,
     link: "/technologies",
     devisService: "Maintenance informatique",
@@ -104,9 +104,8 @@ const ModernServices = () => {
             <LuxReveal key={service.title} delay={index * 0.06} className="h-full flex">
               <CardContainer className="inter-var h-full w-full" containerClassName="w-full h-full">
                 <CardBody
-                  className={`lux-card-interactive relative group/card w-full h-full p-6 flex flex-col ${
-                    service.accent === "red" ? "lux-card-accent-red" : ""
-                  }`}
+                  className={`lux-card-interactive relative group/card w-full h-full p-6 flex flex-col ${service.accent === "red" ? "lux-card-accent-red" : ""
+                    }`}
                 >
                   <CardItem translateZ="14" className="w-full mb-4 flex items-center justify-between gap-2">
                     <div className="flex items-center gap-3">
@@ -155,9 +154,8 @@ const ModernServices = () => {
                   <CardItem translateZ="16" className="w-full mt-auto pt-3 border-t border-slate-100 flex items-center gap-2">
                     <Link
                       href={service.link}
-                      className={`flex-1 gap-2 !py-2.5 !px-4 text-xs ${
-                        service.accent === "red" ? "lux-btn-accent" : "lux-btn-primary"
-                      }`}
+                      className={`flex-1 gap-2 !py-2.5 !px-4 text-xs ${service.accent === "red" ? "lux-btn-accent" : "lux-btn-primary"
+                        }`}
                     >
                       Explorer
                       <ArrowRight className="w-3.5 h-3.5" />

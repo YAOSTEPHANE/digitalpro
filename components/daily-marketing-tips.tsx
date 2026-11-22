@@ -34,7 +34,7 @@ const marketingTips = [
     category: "Réseaux Sociaux",
     icon: Share2,
     accent: "blue" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop",
+    image: "/images/studio/social-media-ads.webp",
     actions: [
       "Planifier 3 publications piliers par semaine",
       "Répondre aux commentaires dans les 2 premières heures",
@@ -49,7 +49,7 @@ const marketingTips = [
     category: "Contenu",
     icon: Lightbulb,
     accent: "red" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1432888622747-4eb9a8f2d70a?w=800&h=600&fit=crop",
+    image: "/images/studio/content-creation.webp",
     actions: [
       "Transformer vos questions clients fréquentes en guides",
       "Illustrer chaque conseil par un cas concret local",
@@ -64,7 +64,7 @@ const marketingTips = [
     category: "Analytics",
     icon: BarChart3,
     accent: "blue" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+    image: "/images/studio/analytics-growth.webp",
     actions: [
       "Vérifier le taux de conversion mobile vs desktop",
       "Identifier les pages à fort rebond",
@@ -79,7 +79,7 @@ const marketingTips = [
     category: "Stratégie",
     icon: Target,
     accent: "red" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop",
+    image: "/images/studio/business-strategy.webp",
     actions: [
       "Fixer un objectif mensuel de leads qualifiés",
       "Allouer le budget selon le ROI observé",
@@ -94,7 +94,7 @@ const marketingTips = [
     category: "SEO",
     icon: TrendingUp,
     accent: "blue" as BrandAccent,
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+    image: "/images/studio/web-architecture.webp",
     actions: [
       "Viser un LCP mobile sous les 1.5 secondes",
       "Structurer H1/H2 autour des requêtes clients",
@@ -339,18 +339,16 @@ const DailyMarketingTips = () => {
                         <div className="flex items-center justify-between text-[11px] font-medium text-slate-600">
                           <span>Progression du plan d&apos;action</span>
                           <span
-                            className={`font-mono font-semibold tabular-nums ${
-                              isAllActionsDone ? "text-emerald-600" : "text-[var(--brand-blue)]"
-                            }`}
+                            className={`font-mono font-semibold tabular-nums ${isAllActionsDone ? "text-emerald-600" : "text-[var(--brand-blue)]"
+                              }`}
                           >
                             {actionsProgressPct}%
                           </span>
                         </div>
                         <div className="h-1.5 w-full rounded-full bg-slate-200/90 overflow-hidden">
                           <div
-                            className={`h-full rounded-full transition-all duration-300 ${
-                              isAllActionsDone ? "bg-emerald-500" : "bg-[var(--brand-blue)]"
-                            }`}
+                            className={`h-full rounded-full transition-all duration-300 ${isAllActionsDone ? "bg-emerald-500" : "bg-[var(--brand-blue)]"
+                              }`}
                             style={{ width: `${actionsProgressPct}%` }}
                           />
                         </div>
@@ -390,11 +388,10 @@ const DailyMarketingTips = () => {
                           key={`${tip.title}-${idx}`}
                           type="button"
                           onClick={() => setTipIndex(idx)}
-                          className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
-                            currentIdx === idx
+                          className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${currentIdx === idx
                               ? "bg-[var(--brand-blue)] text-white"
                               : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                          }`}
+                            }`}
                         >
                           {idx === 0 ? "Aujourd'hui" : tip.category}
                         </button>

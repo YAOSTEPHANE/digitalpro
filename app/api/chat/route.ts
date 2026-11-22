@@ -2,27 +2,37 @@ import { NextRequest, NextResponse } from 'next/server'
 import { chatbotConfig } from '@/lib/chatbot-config'
 import { createGeminiInteraction, type GeminiStep } from '@/lib/gemini'
 
+type ChatSource = 'openai' | 'gemini' | 'fallback'
+
 // Base de connaissances améliorée pour les réponses de fallback
 const knowledgeBase: { [key: string]: string | ((message: string) => string) } = {
   'bonjour': 'Bonjour ! 👋 Je suis l\'assistant virtuel de digitalpro solutions. Comment puis-je vous aider aujourd\'hui ?',
   'salut': 'Salut ! Je suis là pour répondre à vos questions sur nos services digitaux.',
-  'services': 'Nous proposons plusieurs services : SEO et référencement naturel, gestion des médias sociaux, développement web, conception UI/UX, développement mobile et création de boutiques e-commerce Shopify. Lequel vous intéresse ?',
-  'seo': 'Le SEO (Search Engine Optimization) permet d\'améliorer votre visibilité sur les moteurs de recherche. Nous optimisons votre site pour qu\'il apparaisse en première page de Google et attirer plus de clients. Voulez-vous en savoir plus ou obtenir un devis ?',
-  'référencement': 'Le référencement naturel (SEO) est essentiel pour attirer des clients. Nous analysons votre site, optimisons le contenu et améliorons votre classement dans les résultats de recherche. Contactez-nous pour discuter de vos besoins !',
+  'audit': 'Nous proposons un audit express gratuit (performance, SEO, UI/UX et conversion) pour analyser les points de blocage de votre site. Envoyez-nous votre URL via /contact ou réservez un créneau de 30 min sur /book.',
+  'services': 'Nous proposons plusieurs services : SEO et référencement naturel, gestion des médias sociaux, développement web, conception UI/UX, développement mobile, e-commerce & Shopify et maintenance cloud. Lequel vous intéresse ?',
+  'seo': 'Le SEO (Search Engine Optimization) permet d\'améliorer votre visibilité sur les moteurs de recherche. Nous optimisons votre site pour qu\'il apparaisse en première page de Google et attirer plus de clients. Voulez-vous un audit ou une estimation sur /devis ?',
+  'référencement': 'Le référencement naturel (SEO) est essentiel pour attirer des clients. Nous analysons votre site, optimisons le contenu et améliorons votre classement dans les résultats de recherche. Contactez-nous via /contact ou /book pour en discuter !',
   'médias sociaux': 'Nous gérons vos réseaux sociaux (Facebook, Instagram, LinkedIn, etc.), créons du contenu engageant et gérons vos publicités pour augmenter votre visibilité et votre communauté.',
   'réseaux sociaux': 'Nous créons et publions du contenu régulier sur vos réseaux sociaux, interagissons avec votre communauté et gérons vos campagnes publicitaires pour maximiser votre portée.',
+  'réalisation': 'Vous pouvez découvrir nos 9 projets clients déployés (sites vitrines, plateformes SaaS, POS, éducation et e-commerce) directement dans la section #nos-realisations sur la page d\'accueil.',
+  'realisation': 'Vous pouvez découvrir nos 9 projets clients déployés (sites vitrines, plateformes SaaS, POS, éducation et e-commerce) directement dans la section #nos-realisations sur la page d\'accueil.',
+  'portfolio': 'Nos principales réalisations en ligne sont regroupées dans la section #nos-realisations de notre page d\'accueil, avec liens directs vers chaque projet.',
+  'e-commerce': 'Nous concevons des boutiques en ligne Shopify et sur mesure avec paiement Mobile Money (Wave, Orange Money, MTN MoMo) et cartes bancaires. Estimez votre projet sur /devis.',
+  'boutique': 'Nous créons des boutiques e-commerce rapides et optimisées pour la conversion avec gestion de catalogue et paiement en ligne. Demandez votre chiffrage sur /devis.',
+  'mobile': 'Nous développons des applications mobiles iOS & Android et solutions métier connectées temps réel. Décrivez votre besoin sur /devis ou prenez rendez-vous sur /book.',
   'développement web': 'Nous créons des sites web modernes, responsives et performants. Que ce soit un site vitrine, un e-commerce ou une application web sur mesure, nous adaptons la solution à vos besoins.',
-  'site web': 'Nous développons des sites web professionnels adaptés à vos besoins. Nos sites sont rapides, sécurisés et optimisés pour le référencement. Voulez-vous discuter de votre projet ?',
-  'prix': 'Nos tarifs varient selon vos besoins et la complexité du projet. Pour obtenir un devis personnalisé gratuit, n\'hésitez pas à nous contacter via le formulaire de contact ou à prendre rendez-vous pour une consultation.',
-  'tarif': 'Chaque projet est unique. Contactez-nous pour discuter de vos besoins et obtenir un devis adapté à votre budget. Nous proposons des solutions pour tous les budgets.',
-  'contact': 'Vous pouvez nous contacter de plusieurs façons : via le formulaire de contact sur notre site, par email à digitalprosolutions27@gmail.com, par téléphone au +225 07 48 97 60 31, ou prendre rendez-vous pour une consultation gratuite.',
-  'devis': 'Pour obtenir un devis personnalisé, remplissez le formulaire de contact avec vos besoins détaillés ou prenez rendez-vous. Nous vous répondrons rapidement avec une estimation adaptée à votre projet.',
-  'combien': 'Nos prix dépendent de la complexité de votre projet. Contactez-nous pour discuter de vos besoins et obtenir un devis gratuit et personnalisé.',
-  'aide': 'Je suis là pour vous aider ! Posez-moi vos questions sur nos services (SEO, médias sociaux, développement web), nos tarifs, ou comment nous pouvons vous accompagner dans votre projet digital.',
+  'site web': 'Nous développons des sites web professionnels adaptés à vos besoins. Nos sites sont rapides, sécurisés et optimisés pour le référencement. Estimez votre projet sur /devis !',
+  'prix': 'Nos tarifs varient selon vos besoins et la complexité du projet. Obtenez un chiffrage gratuit sur /devis, contactez-nous via /contact ou réservez une consultation de 30 min sur /book.',
+  'tarif': 'Chaque projet est unique. Obtenez une estimation sur /devis ou réservez un échange gratuit sur /book pour adapter la solution à votre budget.',
+  'contact': 'Vous pouvez nous contacter via /contact, par email à digitalprosolutions27@gmail.com, par téléphone au +225 07 48 97 60 31, ou prendre rendez-vous sur /book.',
+  'devis': 'Pour obtenir un devis personnalisé et gratuit, utilisez notre simulateur sur /devis ou décrivez vos besoins sur /contact. Nous vous répondons rapidement avec une estimation détaillée ou lors d\'un appel (/book).',
+  'combien': 'Nos tarifs dépendent de la complexité de votre projet. Lancez votre estimation gratuite sur /devis ou échangeons 30 min en visio via /book.',
+  'aide': 'Je suis là pour vous aider ! Posez-moi vos questions sur nos services (SEO, réseaux sociaux, développement web, mobile, e-commerce), nos réalisations ou notre simulateur /devis.',
   'adresse': `Notre agence est située à ${chatbotConfig.companyInfo.location}. Vous pouvez nous contacter par email ou téléphone pour plus d'informations.`,
   'email': `Vous pouvez nous contacter par email à ${chatbotConfig.companyInfo.email}. Nous répondons généralement dans les 24 heures.`,
   'téléphone': `Vous pouvez nous appeler au ${chatbotConfig.companyInfo.phone}. Nous sommes disponibles pour discuter de votre projet.`,
-  'rendez-vous': 'Vous pouvez prendre rendez-vous pour une consultation gratuite de 30 minutes via notre calendrier en ligne. Cliquez sur "Prendre rendez-vous" dans le menu ou visitez la page /book.',
+  'rendez-vous': 'Vous pouvez prendre rendez-vous pour une consultation gratuite de 30 minutes via notre calendrier en ligne sur /book.',
+  'rdv': 'Réservez votre consultation gratuite de 30 minutes en ligne dès maintenant sur /book.',
 }
 
 // Fonction pour trouver la meilleure réponse basée sur les mots-clés (fallback intelligent)
@@ -113,27 +123,63 @@ async function getOpenAIResponse(
   }
 }
 
+function buildGeminiSteps(
+  message: string,
+  conversationHistory: Array<{ role: string; content: string }> = []
+): GeminiStep[] {
+  const normalized = conversationHistory
+    .filter(
+      (msg): msg is { role: 'user' | 'assistant'; content: string } =>
+        (msg.role === 'user' || msg.role === 'assistant') &&
+        typeof msg.content === 'string' &&
+        msg.content.trim().length > 0
+    )
+    .slice(-6)
+    .map((msg) => ({
+      role: msg.role,
+      text: msg.content.trim(),
+    }))
+
+  while (normalized.length > 0 && normalized[0].role !== 'user') {
+    normalized.shift()
+  }
+
+  const steps: GeminiStep[] = []
+  for (const item of normalized) {
+    const stepType: GeminiStep['type'] =
+      item.role === 'assistant' ? 'model_output' : 'user_input'
+    const lastStep = steps[steps.length - 1]
+    if (lastStep && lastStep.type === stepType) {
+      lastStep.content[0].text += `\n\n${item.text}`
+    } else {
+      steps.push({
+        type: stepType,
+        content: [{ type: 'text', text: item.text }],
+      })
+    }
+  }
+
+  const trimmedMessage = message.trim()
+  const lastStep = steps[steps.length - 1]
+  if (lastStep && lastStep.type === 'user_input') {
+    lastStep.content[0].text += `\n\n${trimmedMessage}`
+  } else {
+    steps.push({
+      type: 'user_input',
+      content: [{ type: 'text', text: trimmedMessage }],
+    })
+  }
+
+  return steps
+}
+
 // Intégration avec Google Gemini (alternative gratuite)
 async function getGeminiResponse(
   message: string,
   conversationHistory: Array<{role: string, content: string}> = []
 ): Promise<string | null> {
   try {
-    const steps: GeminiStep[] = [
-      ...conversationHistory
-        .filter((msg) => msg.role !== 'system')
-        .slice(-5)
-        .map(
-          (msg): GeminiStep => ({
-            type: msg.role === 'assistant' ? 'model_output' : 'user_input',
-            content: [{ type: 'text', text: msg.content }],
-          })
-        ),
-      {
-        type: 'user_input',
-        content: [{ type: 'text', text: message }],
-      },
-    ]
+    const steps = buildGeminiSteps(message, conversationHistory)
 
     return await createGeminiInteraction({
       model: chatbotConfig.aiConfig.gemini.model,
@@ -152,21 +198,21 @@ async function getGeminiResponse(
 async function getAIResponse(
   message: string,
   conversationHistory: Array<{role: string, content: string}> = []
-): Promise<string> {
+): Promise<{ response: string; source: ChatSource }> {
   // Essayer OpenAI en premier
   const openAIResponse = await getOpenAIResponse(message, conversationHistory)
   if (openAIResponse) {
-    return openAIResponse
+    return { response: openAIResponse, source: 'openai' }
   }
 
   // Essayer Gemini en second
   const geminiResponse = await getGeminiResponse(message, conversationHistory)
   if (geminiResponse) {
-    return geminiResponse
+    return { response: geminiResponse, source: 'gemini' }
   }
 
   // Fallback vers le système de réponses intelligentes
-  return findBestResponse(message)
+  return { response: findBestResponse(message), source: 'fallback' }
 }
 
 export async function POST(request: NextRequest) {
@@ -205,9 +251,9 @@ export async function POST(request: NextRequest) {
           }))
       : []
 
-    const response = await getAIResponse(message, conversationHistory)
+    const { response, source } = await getAIResponse(message, conversationHistory)
 
-    return NextResponse.json({ response })
+    return NextResponse.json({ response, source })
   } catch (error) {
     console.error('Chat API error:', error)
     return NextResponse.json(

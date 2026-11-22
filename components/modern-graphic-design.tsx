@@ -18,47 +18,47 @@ const services: {
   image: string;
   accent: BrandAccent;
 }[] = [
-  {
-    icon: Palette,
-    title: "Identité Visuelle & Logos",
-    tag: "Branding",
-    description:
-      "Logos vectoriels, palettes chromatiques, typographies et brandbooks complets pour ancrer votre autorité.",
-    deliverables: ["Logo principal & déclinaisons", "Charte graphique PDF", "Fichiers SVG / Print"],
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop",
-    accent: "blue",
-  },
-  {
-    icon: Layers,
-    title: "UI/UX & Design Systems",
-    tag: "Interfaces Figma",
-    description:
-      "Maquettes interactives web & mobile, parcours utilisateurs fluides et bibliothèques de composants réutilisables.",
-    deliverables: ["Wireframes & parcours", "Prototype Figma cliquable", "Composants états & responsive"],
-    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop",
-    accent: "red",
-  },
-  {
-    icon: Brush,
-    title: "Social Media & Campagnes",
-    tag: "Visuels Ads",
-    description:
-      "Templates Instagram, LinkedIn, TikTok et bannières publicitaires conçus pour capter l'attention dès la première seconde.",
-    deliverables: ["Kits stories & carrousels", "Visuels Ads haute conversion", "Direction photo"],
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop",
-    accent: "blue",
-  },
-  {
-    icon: Sparkles,
-    title: "Design Print & Packaging",
-    tag: "Édition",
-    description:
-      "Plaquettes commerciales, flyers, packaging produit et signalétique prêts pour l'impression haute définition.",
-    deliverables: ["Préparation CMJN 300 DPI", "Mockups 3D réalistes", "Suivi imprimeur"],
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-    accent: "red",
-  },
-];
+    {
+      icon: Palette,
+      title: "Identité Visuelle & Logos",
+      tag: "Branding",
+      description:
+        "Logos vectoriels, palettes chromatiques, typographies et brandbooks complets pour ancrer votre autorité.",
+      deliverables: ["Logo principal & déclinaisons", "Charte graphique PDF", "Fichiers SVG / Print"],
+      image: "/images/studio/branding-identity.webp",
+      accent: "blue",
+    },
+    {
+      icon: Layers,
+      title: "UI/UX & Design Systems",
+      tag: "Interfaces Figma",
+      description:
+        "Maquettes interactives web & mobile, parcours utilisateurs fluides et bibliothèques de composants réutilisables.",
+      deliverables: ["Wireframes & parcours", "Prototype Figma cliquable", "Composants états & responsive"],
+      image: "/images/studio/ui-ux-studio.webp",
+      accent: "red",
+    },
+    {
+      icon: Brush,
+      title: "Social Media & Campagnes",
+      tag: "Visuels Ads",
+      description:
+        "Templates Instagram, LinkedIn, TikTok et bannières publicitaires conçus pour capter l'attention dès la première seconde.",
+      deliverables: ["Kits stories & carrousels", "Visuels Ads haute conversion", "Direction photo"],
+      image: "/images/studio/social-media-ads.webp",
+      accent: "blue",
+    },
+    {
+      icon: Sparkles,
+      title: "Design Print & Packaging",
+      tag: "Édition",
+      description:
+        "Plaquettes commerciales, flyers, packaging produit et signalétique prêts pour l'impression haute définition.",
+      deliverables: ["Préparation CMJN 300 DPI", "Mockups 3D réalistes", "Suivi imprimeur"],
+      image: "/images/studio/print-packaging.webp",
+      accent: "red",
+    },
+  ];
 
 const ModernGraphicDesign = () => {
   return (
@@ -78,9 +78,8 @@ const ModernGraphicDesign = () => {
             <LuxReveal key={service.title} delay={index * 0.08} className="h-full flex">
               <CardContainer className="inter-var h-full w-full" containerClassName="w-full h-full">
                 <CardBody
-                  className={`lux-card-interactive relative group/card w-full h-full p-6 md:p-7 flex flex-col ${
-                    service.accent === "red" ? "lux-card-accent-red" : ""
-                  }`}
+                  className={`lux-card-interactive relative group/card w-full h-full p-6 md:p-7 flex flex-col ${service.accent === "red" ? "lux-card-accent-red" : ""
+                    }`}
                 >
                   <CardItem translateZ="14" className="mb-4 w-full">
                     <div className="flex items-center justify-between gap-3">

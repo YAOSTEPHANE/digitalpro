@@ -13,7 +13,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 const slides = [
   {
-    src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+    src: "/images/studio/web-architecture.webp",
     alt: "Développement web - Sites web modernes et performants",
     category: "Web Architecture",
     metric: "Score Lighthouse 99/100",
@@ -22,7 +22,7 @@ const slides = [
     href: "/sites-web",
   },
   {
-    src: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop",
+    src: "/images/studio/mobile-apps.webp",
     alt: "Applications mobiles - iOS et Android",
     category: "Mobile & SaaS",
     metric: "Temps réel · Multi-écrans",
@@ -31,7 +31,7 @@ const slides = [
     href: "/services",
   },
   {
-    src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+    src: "/images/studio/analytics-growth.webp",
     alt: "SEO et Marketing digital - Augmentez votre visibilité",
     category: "Acquisition & SEO",
     metric: "+180% Trafic qualifié",
@@ -40,7 +40,7 @@ const slides = [
     href: "/services",
   },
   {
-    src: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=600&fit=crop",
+    src: "/images/studio/ui-ux-studio.webp",
     alt: "Conception UI/UX - Design centré utilisateur",
     category: "Direction Artistique",
     metric: "Design Systems Figma",
@@ -49,7 +49,7 @@ const slides = [
     href: "/design",
   },
   {
-    src: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
+    src: "/images/studio/ecommerce-commerce.webp",
     alt: "E-commerce - Solutions de vente en ligne",
     category: "Commerce Digital",
     metric: "Mobile Money & Cartes",
@@ -210,11 +210,10 @@ const ModernSlider = () => {
                   type="button"
                   onClick={() => sliderRef.current?.slickGoTo(idx)}
                   aria-label={`Aller à ${slide.title}`}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    activeSlide === idx
+                  className={`h-1.5 rounded-full transition-all duration-300 ${activeSlide === idx
                       ? "w-8 bg-[var(--brand-blue)]"
                       : "w-2 bg-slate-300 hover:bg-slate-400"
-                  }`}
+                    }`}
                 />
               ))}
             </div>

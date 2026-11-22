@@ -13,6 +13,8 @@ import {
   RotateCcw,
 } from "lucide-react";
 
+type ChatSource = "openai" | "gemini" | "fallback";
+
 interface Message {
   id: string;
   text: string;
@@ -27,12 +29,19 @@ const INITIAL_MESSAGE: Message = {
   timestamp: new Date(),
 };
 
+const SOURCE_LABELS: Record<ChatSource, string> = {
+  gemini: "IA Gemini active",
+  openai: "IA OpenAI active",
+  fallback: "Assistant guidé en ligne",
+};
+
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [messages, setMessages] = useState<Message[]>(() => [INITIAL_MESSAGE]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [activeSource, setActiveSource] = useState<ChatSource | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [hasShownWelcome, setHasShownWelcome] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -85,10 +94,13 @@ export default function Chatbot() {
     setIsLoading(true);
 
     try {
-      const conversationHistory = messages.slice(-5).map((msg) => ({
-        role: msg.sender === "user" ? "user" : "assistant",
-        content: msg.text,
-      }));
+      const conversationHistory = messages
+        .filter((msg, idx) => !(idx === 0 && msg.sender === "bot"))
+        .slice(-6)
+        .map((msg) => ({
+          role: msg.sender === "user" ? "user" : "assistant",
+          content: msg.text,
+        }));
 
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -106,6 +118,14 @@ export default function Chatbot() {
       }
 
       const data = await response.json();
+
+      if (
+        data.source === "openai" ||
+        data.source === "gemini" ||
+        data.source === "fallback"
+      ) {
+        setActiveSource(data.source);
+      }
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -137,6 +157,7 @@ export default function Chatbot() {
   };
 
   const resetConversation = () => {
+    setActiveSource(null);
     setMessages([
       {
         ...INITIAL_MESSAGE,
@@ -239,7 +260,11 @@ export default function Chatbot() {
                     </h3>
                     <div className="mt-0.5 flex items-center gap-2 text-[11px] text-slate-600">
                       <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                      <span>Conseiller IA en ligne</span>
+                      <span>
+                        {activeSource
+                          ? SOURCE_LABELS[activeSource]
+                          : "Assistant en ligne"}
+                      </span>
                     </div>
                   </div>
                 </div>

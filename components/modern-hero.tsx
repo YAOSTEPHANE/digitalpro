@@ -21,7 +21,7 @@ import TrustMarquee from "@/components/trust-marquee";
 
 const craftPillars = [
   {
-    src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=420&fit=crop",
+    src: "/images/studio/web-architecture.webp",
     alt: "Architecture & Développement web",
     tag: "Web & SaaS",
     metric: "99/100 Perf",
@@ -32,7 +32,7 @@ const craftPillars = [
     accent: "blue" as const,
   },
   {
-    src: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&h=420&fit=crop",
+    src: "/images/studio/mobile-apps.webp",
     alt: "Applications mobiles et WebApps",
     tag: "Mobile & POS",
     metric: "iOS · Android",
@@ -43,7 +43,7 @@ const craftPillars = [
     accent: "red" as const,
   },
   {
-    src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=420&fit=crop",
+    src: "/images/studio/analytics-growth.webp",
     alt: "SEO et Marketing d'acquisition",
     tag: "SEO & Growth",
     metric: "+240% Portée",
@@ -54,7 +54,7 @@ const craftPillars = [
     accent: "blue" as const,
   },
   {
-    src: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=420&fit=crop",
+    src: "/images/studio/ui-ux-studio.webp",
     alt: "UI/UX Design & Branding",
     tag: "UI/UX Studio",
     metric: "100% Sur mesure",
