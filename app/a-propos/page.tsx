@@ -31,7 +31,7 @@ import type { BrandAccent } from "@/lib/brand";
 
 const HERO_KPIS = [
   { value: "350+", label: "Lancements accompagnés", icon: Sparkles, accent: "blue" as BrandAccent },
-  { value: "9", label: "Plateformes clients en vitrine", icon: Globe, accent: "red" as BrandAccent },
+  { value: String(REALISATIONS.length), label: "Plateformes clients en vitrine", icon: Globe, accent: "red" as BrandAccent },
   { value: "48h", label: "Délai moyen de démarrage", icon: Clock3, accent: "blue" as BrandAccent },
   { value: "99/100", label: "Standard de performance", icon: Gauge, accent: "red" as BrandAccent },
 ];
@@ -470,12 +470,12 @@ export default function AProposPage() {
         </div>
       </section>
 
-      {/* 05 · Méthode en 4 jalons & 9 plateformes déployées */}
+      {/* 05 · Méthode en 4 jalons & plateformes déployées */}
       <section className="mb-16">
         <LuxSectionHeader
           indexLabel="04"
           label="Méthode & Preuves en Production"
-          title="De l'idée au déploiement, avec 9 plateformes en vitrine"
+          title={`De l'idée au déploiement, avec ${REALISATIONS.length} plateformes en vitrine`}
           description="Notre processus en 4 étapes garantit clarté, délais respectés et qualité mesurable dès la mise en ligne."
           rightSlot={
             <Link
@@ -526,7 +526,7 @@ export default function AProposPage() {
               href="/#nos-realisations"
               className="text-xs font-semibold text-[var(--brand-blue)] hover:text-slate-900 inline-flex items-center gap-1"
             >
-              Voir les 9 projets détaillés
+              Voir les {REALISATIONS.length} projets détaillés
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>

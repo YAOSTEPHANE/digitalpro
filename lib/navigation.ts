@@ -215,9 +215,9 @@ export const HOME_ANCHOR_LINKS: NavItem[] = [
   {
     id: "anchor-nos-realisations",
     label: "Nos réalisations en ligne",
-    description: "9 sites web et applications SaaS déployés en production",
+    description: "5 sites web et plateformes déployés en production",
     href: "/#nos-realisations",
-    badge: "9 projets",
+    badge: "5 projets",
     accent: "blue",
     icon: Globe,
     keywords: [
@@ -226,11 +226,7 @@ export const HOME_ANCHOR_LINKS: NavItem[] = [
       "sites",
       "clients",
       "projets",
-      "infinitecore",
-      "caisseci",
-      "febis",
       "batirem",
-      "noya",
       "tcc",
       "necs",
       "tranlefet",

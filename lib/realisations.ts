@@ -42,25 +42,8 @@ export const REALISATIONS: RealisationItem[] = [
     devisService: "Développement de site web",
   },
   {
-    id: "infinitecore",
-    num: "02",
-    title: "Infinite Core",
-    domain: "www.infinitecore.net",
-    url: "https://www.infinitecore.net",
-    logo: "/realisations/infinitecore.png",
-    logoBg: "dark",
-    monogram: "IC",
-    category: "tech",
-    tag: "Plateforme SaaS",
-    description:
-      "Système d'exploitation modulaire pour entreprises africaines unifiant CRM, finance, RH, gestion de projets et opérations.",
-    bullets: ["ERP & CRM Modulaire", "Finance & RH", "Architecture Cloud"],
-    accent: "red",
-    devisService: "Développement de site web",
-  },
-  {
     id: "necs-sarl",
-    num: "03",
+    num: "02",
     title: "NECS SARL",
     domain: "www.servicesnecs.com",
     url: "https://www.servicesnecs.com",
@@ -77,7 +60,7 @@ export const REALISATIONS: RealisationItem[] = [
   },
   {
     id: "tcc-sarl",
-    num: "04",
+    num: "03",
     title: "TCC SARL",
     domain: "www.tcc-sarl.com",
     url: "https://www.tcc-sarl.com",
@@ -93,25 +76,8 @@ export const REALISATIONS: RealisationItem[] = [
     devisService: "Développement de site web",
   },
   {
-    id: "noya-industries",
-    num: "05",
-    title: "Noya Industries",
-    domain: "www.noyaindustries.com",
-    url: "https://www.noyaindustries.com",
-    logo: "/realisations/noya-industries.webp",
-    logoBg: "light",
-    monogram: "NI",
-    category: "tech",
-    tag: "Tech & Innovation",
-    description:
-      "Plateforme corporate d'un groupe d'innovation, conseil stratégique et ingénierie logicielle basé à Abidjan.",
-    bullets: ["Groupe Tech", "Portefeuille SaaS", "Identité Digitale"],
-    accent: "blue",
-    devisService: "Développement de site web",
-  },
-  {
     id: "batirem-groupe",
-    num: "06",
+    num: "04",
     title: "Batirem Groupe",
     domain: "www.batiremgroupe.com",
     url: "https://www.batiremgroupe.com",
@@ -128,7 +94,7 @@ export const REALISATIONS: RealisationItem[] = [
   },
   {
     id: "college-tranlefet",
-    num: "07",
+    num: "05",
     title: "Collège Privé Tranlefet",
     domain: "www.collegetranlefet.com",
     url: "https://www.collegetranlefet.com",
@@ -143,40 +109,6 @@ export const REALISATIONS: RealisationItem[] = [
     accent: "blue",
     devisService: "Développement de site web",
   },
-  {
-    id: "caisse-ci",
-    num: "08",
-    title: "Caisse CI",
-    domain: "www.caisseci.com",
-    url: "https://www.caisseci.com",
-    logo: "/realisations/caisse-ci.png",
-    logoBg: "light",
-    monogram: "CC",
-    category: "tech",
-    tag: "SaaS POS",
-    description:
-      "Solution de caisse enregistreuse offline-first pour commerces en Côte d'Ivoire avec encaissement Wave, Orange Money et MTN MoMo.",
-    bullets: ["Offline-First", "Mobile Money", "Gestion Boutique"],
-    accent: "red",
-    devisService: "Développement d'application mobile",
-  },
-  {
-    id: "febis-ci",
-    num: "09",
-    title: "FEBiS CI",
-    domain: "febis-ci.com",
-    url: "https://febis-ci.com",
-    logo: "/realisations/febis-ci.png",
-    logoBg: "light",
-    monogram: "FB",
-    category: "education-commerce",
-    tag: "Multi-Pôles & Boutique",
-    description:
-      "Écosystème digital unifié regroupant résidences meublées, BTP, location événementielle et boutique en ligne à Abidjan.",
-    bullets: ["Multi-Activités", "E-commerce", "Réservations"],
-    accent: "blue",
-    devisService: "E-commerce",
-  },
 ];
 
 export const REALISATION_FILTERS: {
@@ -184,7 +116,7 @@ export const REALISATION_FILTERS: {
   label: string;
 }[] = [
   { id: "all", label: "Toutes" },
-  { id: "tech", label: "Tech & SaaS" },
+  { id: "tech", label: "Tech & Studio" },
   { id: "corporate", label: "Corporate & BTP" },
-  { id: "education-commerce", label: "Éducation & Multi-pôles" },
+  { id: "education-commerce", label: "Éducation" },
 ];

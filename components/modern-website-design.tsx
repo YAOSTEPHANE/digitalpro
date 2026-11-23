@@ -49,17 +49,16 @@ const webProjects: WebProject[] = [
     liveUrl: "https://www.nyimmobilier.com",
   },
   {
-    id: "infinitecore",
-    title: "Infinitecore — SaaS Point de Vente",
+    id: "cloud-pos",
+    title: "KoraFlow — SaaS Gestion & Encaissement",
     category: "saas",
     categoryLabel: "Application SaaS",
     image: "/images/studio/web-architecture.webp",
     summary:
-      "Interface de gestion commerciale et d'encaissement temps réel conçue pour la rapidité en boutique et le suivi multi-caisses.",
+      "Interface de gestion commerciale et d'encaissement temps réel conçue pour la rapidité en boutique et le suivi multi-points de vente.",
     lighthouse: "99/100",
     stack: ["React", "Analytics Live", "Cloud API"],
     outcomes: ["Encaissement en moins de 15 secondes", "Tableau de bord journalier automatisé"],
-    liveUrl: "https://enregistreur-caisse.vercel.app",
   },
   {
     id: "atelier-prestige",

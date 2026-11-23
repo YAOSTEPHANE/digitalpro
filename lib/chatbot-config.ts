@@ -44,7 +44,7 @@ PAGES CLÉS DU SITE À RECOMMANDER:
 - /devis pour estimer un projet et recevoir un chiffrage personnalisé
 - /book pour réserver une consultation gratuite de 30 minutes
 - /contact pour envoyer un message ou demander un audit rapide
-- #nos-realisations sur la page d'accueil pour consulter nos 9 projets clients déployés
+- #nos-realisations sur la page d'accueil pour consulter nos 5 projets clients déployés
 
 TON RÔLE:
 - Répondre aux questions sur les services de l'agence
